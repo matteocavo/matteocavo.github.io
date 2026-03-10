@@ -596,8 +596,6 @@ a {
 @media (max-width: 980px) {
   .hero,
   .split-section,
-  .grid-2,
-  .grid-3,
   .two-col-head,
   .footer,
   .topbar {
@@ -685,6 +683,13 @@ a {
   #about .section-title {
     font-size: 2.5rem;
     max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
   }
 }
 
