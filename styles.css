@@ -593,6 +593,12 @@ a {
 
 /* RESPONSIVE */
 
+@media (max-width: 1200px) {
+  .grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 980px) {
   .hero,
   .split-section,
@@ -647,12 +653,6 @@ a {
     width: 100%;
     text-align: center;
     margin: 0;
-  }
-}
-
-@media (max-width: 1200px) {
-  .grid-3 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
