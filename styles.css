@@ -655,6 +655,11 @@ a {
 }
 
 @media (max-width: 640px) {
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
   .site-shell {
     padding: 18px 16px 48px;
   }
@@ -683,13 +688,6 @@ a {
   #about .section-title {
     font-size: 2.5rem;
     max-width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .grid-2,
-  .grid-3 {
-    grid-template-columns: 1fr;
   }
 }
 
