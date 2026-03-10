@@ -184,9 +184,17 @@ a {
 
 .hero-sidecards {
   display: grid;
-  gap: 12px;
+  gap: 18px;
   grid-auto-rows: min-content;
-  padding-top: 58px;
+  align-self: center;
+}
+
+.hero-sidecards .card:nth-child(2) {
+  opacity: 0.96;
+}
+
+.hero-sidecards .card:nth-child(3) {
+  opacity: 0.92;
 }
 
 .hero-sidecards .soft-card {
@@ -209,6 +217,12 @@ a {
 .hero-sidecards .card-copy {
   font-size: 0.9rem;
   line-height: 1.48;
+}
+
+.card-label {
+  letter-spacing: 0.22em;
+  font-size: 0.78rem;
+  opacity: 0.75;
 }
 
 /* BUTTONS */
@@ -452,6 +466,7 @@ a {
 
 .about-copy {
   max-width: 820px;
+  padding-top: 64px;
 }
 
 #about .section-title {
@@ -645,10 +660,10 @@ a {
     gap: 16px;
   }
 
-
-  .hero-sidecards {
+  .about-copy {
     padding-top: 0;
   }
+
 
   .footer {
     width: 100%;
