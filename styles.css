@@ -185,8 +185,7 @@ a {
 .hero-sidecards {
   display: grid;
   gap: 12px;
-  align-content: start;
-  grid-auto-rows: min-content;
+  grid-template-rows: 1fr 1fr;
   padding-top: 58px;
 }
 
@@ -367,7 +366,7 @@ a {
 .about-intro {
   display: grid;
   gap: 14px;
-  align-content: start;
+
 }
 
 .about-meta {
