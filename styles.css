@@ -461,6 +461,20 @@ a {
   line-height: 1.08;
 }
 
+
+/* REPO THUMBNAIL */
+
+.repo-thumb {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+  border-radius: 18px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  display: block;
+  background: var(--bg);
+}
+
 /* PROJECTS */
 
 .grid {

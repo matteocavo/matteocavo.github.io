@@ -1,4 +1,9 @@
 window.PORTFOLIO_PROFILE = {
+  "pinnedRepos": [
+    "dataciviclab/progetto-pilota",
+    "dataciviclab/dataciviclab",
+    "dataciviclab/openbdap-saldi-storico-stato"
+  ],
   "skills": [
     "Power BI",
     "DAX",

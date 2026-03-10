@@ -6,15 +6,25 @@ window.createRepoCard = function createRepoCard(repo, currentLang, labels) {
   const language = repo.language || "N/A";
   const locale = currentLang === "it" ? "it-IT" : "en-US";
   const updatedAt = new Date(repo.updated_at).toLocaleDateString(locale);
-  // FIX: label bilingue per la data di aggiornamento
   const updatedLabel = labels.updatedLabel || "Updated";
 
+  // GitHub genera automaticamente un'OG preview per ogni repo pubblico
+  const owner = repo.owner ? repo.owner.login : repo.full_name.split("/")[0];
+  const thumbUrl = `https://opengraph.githubassets.com/1/${owner}/${repo.name}`;
+
   article.innerHTML = `
+    <img
+      class="repo-thumb"
+      src="${thumbUrl}"
+      alt="${repo.name} preview"
+      loading="lazy"
+      onerror="this.style.display='none'"
+    />
     <p class="section-label">${language}</p>
     <h4 class="repo-title">${repo.name}</h4>
     <p class="repo-desc">${repo.description || (currentLang === "it" ? "Nessuna descrizione disponibile." : "No description available.")}</p>
     <div class="repo-meta">
-      <span class="repo-pill">\u2605 ${repo.stargazers_count}</span>
+      <span class="repo-pill">&#9733; ${repo.stargazers_count}</span>
       <span class="repo-pill">${updatedLabel} ${updatedAt}</span>
       ${topics.slice(0, 4).map((t) => `<span class="repo-pill">${t}</span>`).join("")}
     </div>

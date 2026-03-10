@@ -1,56 +1,68 @@
-# Matteo Cavo — GitHub Pages Portfolio
+# Matteo Cavo — Data & BI Analyst Portfolio
 
-Portfolio website for Matteo Cavo, Data & Business Intelligence Analyst.
+**Live:** https://matteocavo.github.io
 
-Live at: **https://matteocavo.github.io**
+---
 
-## Features
+## Chi sono / About
 
-- Dark minimal design
-- Italian / English language toggle
-- Featured projects section (manual)
-- Automatic GitHub repository loading via GitHub API
-- Recruiter-friendly structure, no build step required
+Professionista multidisciplinare con oltre 15 anni di esperienza internazionale in analisi dati, design digitale, produzione di contenuti e data operations complesse.
 
-## Automatic project loading
+Oggi opero come **Data & Business Intelligence Analyst**, combinando competenze analitiche, creative e operative per costruire dashboard e progetti data-driven che supportano decisioni strategiche chiare e misurabili.
 
-The site automatically loads public repositories tagged with the topic:
+---
 
-```
-portfolio
-```
+*Multidisciplinary professional with 15+ years of international experience across data analysis, digital design, multimedia production, and complex data operations.*
 
-## Recommended repository topics
+*Today I work as a **Data & Business Intelligence Analyst**, combining analytical, creative, and operational capabilities to build dashboards and data-driven projects that support strategic decisions.*
 
-Add these topics to your project repos so they appear in the portfolio:
+---
 
-```
-portfolio  power-bi  sql  python  data-analysis  dashboard  open-data  music-data
-```
+## Progetti / Projects
 
-## Updating featured projects
+| Progetto | Descrizione | Link |
+|---|---|---|
+| Raccolta differenziata vs Rifiuti urbani (ISPRA 2020–2023) | Dashboard Power BI su dati ISPRA per analizzare l'impatto della raccolta differenziata sui rifiuti urbani totali | [GitHub](https://github.com/dataciviclab/progetto-pilota) |
+| Streaming Competitive Benchmark | Analisi strategica dei cataloghi dei principali servizi streaming: scala, attualità, portata internazionale, strategie editoriali e sovrapposizione competitiva | [GitHub](https://github.com/matteocavo/Streaming_Competitive_Benchmark) |
+| Streaming Catalog Performance | Analisi delle performance dei cataloghi streaming: segmentazione contenuti, qualità IMDb, engagement e strategie per piattaforma | [GitHub](https://github.com/matteocavo/streaming-metadata-analytics) |
 
-Edit `data/featured.js`:
-- Set `link` to the real GitHub repo or dashboard URL
-- Set `image` to the screenshot path (e.g. `"images/dataciviclab.png"`)
+---
 
-## Deploy
+## Competenze / Skills
 
-1. Create a GitHub repo named `matteocavo.github.io`
-2. Push all files to the `main` branch
-3. Go to Settings → Pages → Deploy from branch → `main` / `/ (root)`
-4. Site will be live at `https://matteocavo.github.io`
+`Power BI` `DAX` `SQL` `Python` `Data Cleaning` `Data Modeling` `Dashboard Design` `Data Storytelling` `ETL Workflows` `GitHub` `Jupyter Notebooks` `Data Visualization`
 
-## Project repo structure template
+---
 
-```
-project-name/
-├── README.md
-├── images/
-│   ├── cover.png
-│   └── dashboard.png
-├── data/
-├── notebooks/
-├── sql/
-└── dashboard/
-```
+## Certificazioni / Certifications
+
+- Microsoft PL-300 Power BI Data Analyst
+- Microsoft AZ-900 Azure Fundamentals
+- Microsoft DP-900 Azure Data Fundamentals
+- Microsoft AI-900 Azure AI Fundamentals
+- Google Data Analytics Professional Certificate
+- Google Advanced Data Analytics Professional Certificate
+- Oracle OCI AI Foundations Associate
+
+---
+
+## Stack tecnico / Tech stack
+
+Sito statico in HTML/CSS/JS vanilla — nessun framework, nessun build step, deploy diretto su GitHub Pages.
+
+- Repository auto-caricati via GitHub API (topic `portfolio` + lista pinned)
+- Language toggle IT/EN
+- Scroll progress bar + reveal animations
+- Responsive, accessible, dark theme
+
+---
+
+## Links
+
+- GitHub: [github.com/matteocavo](https://github.com/matteocavo)
+- LinkedIn: [linkedin.com/in/matteo-cavo](https://www.linkedin.com/in/matteo-cavo/)
+- Notion Projects: [Data Analysis Projects](https://www.notion.so/Progetti-Data-Analysis-2cadbce01b3080249f63d8d47cb6e647)
+
+---
+
+*Minimal, neutro e pensato per una presentazione efficace verso recruiter e hiring manager.*
