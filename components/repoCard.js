@@ -1,0 +1,50 @@
+window.createRepoCard = function createRepoCard(repo, currentLang, labels) {
+  const article = document.createElement("article");
+  article.className = "repo-card";
+
+  const topics = Array.isArray(repo.topics) ? repo.topics : [];
+  const language = repo.language || "N/A";
+  const locale = currentLang === "it" ? "it-IT" : "en-US";
+  const updatedAt = new Date(repo.updated_at).toLocaleDateString(locale);
+  // FIX: label bilingue per la data di aggiornamento
+  const updatedLabel = labels.updatedLabel || "Updated";
+
+  article.innerHTML = `
+    <p class="section-label">${language}</p>
+    <h4 class="repo-title">${repo.name}</h4>
+    <p class="repo-desc">${repo.description || (currentLang === "it" ? "Nessuna descrizione disponibile." : "No description available.")}</p>
+    <div class="repo-meta">
+      <span class="repo-pill">\u2605 ${repo.stargazers_count}</span>
+      <span class="repo-pill">${updatedLabel} ${updatedAt}</span>
+      ${topics.slice(0, 4).map((t) => `<span class="repo-pill">${t}</span>`).join("")}
+    </div>
+    <div class="repo-actions">
+      <a class="mini-btn" href="${repo.html_url}" target="_blank" rel="noreferrer">${labels.repoCta}</a>
+    </div>
+  `;
+
+  return article;
+};
+
+window.createFeaturedCard = function createFeaturedCard(project) {
+  const article = document.createElement("article");
+  article.className = "featured-card";
+
+  const imgHtml = project.image
+    ? `<img src="${project.image}" alt="${project.title}" style="border-radius:20px; margin-bottom:16px; border:1px solid rgba(255,255,255,.08);">`
+    : "";
+
+  const linkHref = project.link && project.link !== "#" ? project.link : null;
+  const ctaHtml = linkHref
+    ? `<a class="mini-btn" href="${linkHref}" target="_blank" rel="noreferrer">${project.cta}</a>`
+    : `<span class="mini-btn" style="opacity:0.45; cursor:default;">${project.cta}</span>`;
+
+  article.innerHTML = `
+    ${imgHtml}
+    <h4 class="featured-title">${project.title}</h4>
+    <p class="featured-desc">${project.description}</p>
+    <div class="featured-actions">${ctaHtml}</div>
+  `;
+
+  return article;
+};
