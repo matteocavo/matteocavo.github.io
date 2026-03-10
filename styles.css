@@ -667,15 +667,6 @@ a {
     margin: 0;
   }
 
-  .repo-thumb,
-  .featured-thumb {
-    width: calc(100% + 40px);
-    margin: -20px -20px 16px -20px;
-    border-radius: calc(var(--radius) - 2px) calc(var(--radius) - 2px) 0 0;
-    border-left: none;
-    border-right: none;
-    border-top: none;
-  }
 }
 
 @media (max-width: 640px) {
