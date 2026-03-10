@@ -41,7 +41,7 @@ window.createFeaturedCard = function createFeaturedCard(project) {
   article.className = "featured-card";
 
   const imgHtml = project.image
-    ? `<img src="${project.image}" alt="${project.title}" style="border-radius:20px; margin-bottom:16px; border:1px solid rgba(255,255,255,.08);">`
+    ? `<img class="featured-thumb" src="${project.image}" alt="${project.title}">`
     : "";
 
   const linkHref = project.link && project.link !== "#" ? project.link : null;
