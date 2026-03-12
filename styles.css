@@ -331,6 +331,10 @@ a {
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+#projects.section {
+  padding-top: 46px;
+}
+
 .skills-stack {
   display: grid;
   gap: 20px;
@@ -364,13 +368,25 @@ a {
   max-width: 640px;
 }
 
+#projects .section-head {
+  margin-bottom: 28px;
+}
+
 .section-block + .section-block {
   margin-top: 42px;
 }
 
+.section-block > .section-label {
+  margin: 0 0 12px;
+}
+
 .section-note--live {
-  margin: 10px 0 0;
+  margin: 0 0 18px;
   letter-spacing: 0.12em;
+}
+
+.auto-projects-head .section-note {
+  margin: 10px 0 18px;
 }
 
 /* ABOUT */
@@ -751,6 +767,10 @@ a {
 
   .section {
     padding: 42px 0;
+  }
+
+  #projects.section {
+    padding-top: 32px;
   }
 
   .repo-title {
