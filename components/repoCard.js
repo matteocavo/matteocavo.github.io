@@ -57,8 +57,30 @@ window.createFeaturedCard = function createFeaturedCard(project) {
     ? `<div class="repo-meta">${project.tools.slice(0, 4).map(t => `<span class="repo-pill">${t}</span>`).join("")}</div>`
     : "";
 
+  const datasetHtml = project.dataset
+    ? `
+      <div class="featured-detail">
+        <p class="featured-detail__label">Dataset</p>
+        <p class="featured-detail__value">${project.dataset}</p>
+      </div>
+    `
+    : "";
+
+  const keyKpisHtml = Array.isArray(project.keyKPIs) && project.keyKPIs.length
+    ? `
+      <div class="featured-detail">
+        <p class="featured-detail__label">Key KPIs</p>
+        <div class="repo-meta repo-meta--compact">
+          ${project.keyKPIs.map(function(kpi) { return `<span class="repo-pill">${kpi}</span>`; }).join("")}
+        </div>
+      </div>
+    `
+    : "";
+
   const githubBadges = (project.stars !== null && project.stars !== undefined) || project.lastCommit
+    || project.repoStateLabel
     ? `<div class="repo-meta repo-meta--github">
+        ${project.repoStateLabel ? `<span class="repo-pill ${project.repoStateClass || ""}">${project.repoStateLabel}</span>` : ""}
         ${project.stars !== null && project.stars !== undefined ? `<span class="repo-pill">&#9733; ${project.stars}</span>` : ""}
         ${project.lastCommit ? `<span class="repo-pill">${project.lastCommit}</span>` : ""}
       </div>`
@@ -68,6 +90,8 @@ window.createFeaturedCard = function createFeaturedCard(project) {
     ${imgHtml}
     <h4 class="featured-title">${project.title}</h4>
     <p class="featured-desc">${project.description}</p>
+    ${datasetHtml}
+    ${keyKpisHtml}
     ${tools}
     ${githubBadges}
     <div class="featured-actions">${ctaHtml}${dashboardHtml}</div>

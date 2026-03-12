@@ -106,7 +106,7 @@ function updateText(lang) {
   document.getElementById("lang-en").classList.toggle("active", lang === "en");
 }
 
-async function fetchGithubStats(githubUrl) {
+async function fetchGithubRepoMeta(githubUrl) {
   if (!githubUrl) return null;
   const match = githubUrl.match(/github\.com\/([^/]+)\/([^/?#]+)/);
   if (!match) return null;
@@ -114,7 +114,11 @@ async function fetchGithubStats(githubUrl) {
     const res = await fetch("https://api.github.com/repos/" + match[1] + "/" + match[2]);
     if (!res.ok) return null;
     const data = await res.json();
-    return { stars: data.stargazers_count, pushedAt: data.pushed_at };
+    return {
+      stars: data.stargazers_count,
+      pushedAt: data.pushed_at,
+      isArchived: Boolean(data.archived)
+    };
   } catch (e) { return null; }
 }
 
@@ -124,29 +128,39 @@ async function renderFeatured(lang) {
   const cta = lang === "it" ? "Vedi progetto" : "View project";
   const dashboardCta = lang === "it" ? "Apri dashboard" : "Open dashboard";
   const updatedLabel = lang === "it" ? "Aggiornato" : "Updated";
+  const activeRepoLabel = lang === "it" ? "Repo attivo" : "Active repo";
+  const archivedRepoLabel = lang === "it" ? "Archived" : "Archived";
   const locale = lang === "it" ? "it-IT" : "en-US";
   try {
     const res = await fetch("data/projects.json");
     const notionProjects = await res.json();
     const statsResults = await Promise.allSettled(
-      notionProjects.map(function(p) { return fetchGithubStats(p.github); })
+      notionProjects.map(function(p) { return fetchGithubRepoMeta(p.github); })
     );
     notionProjects.forEach(function(p, i) {
-      const stats = statsResults[i].status === "fulfilled" ? statsResults[i].value : null;
-      const lastCommit = stats && stats.pushedAt
-        ? updatedLabel + " " + new Date(stats.pushedAt).toLocaleDateString(locale)
+      const repoMeta = statsResults[i].status === "fulfilled" ? statsResults[i].value : null;
+      const lastCommit = repoMeta && repoMeta.pushedAt
+        ? updatedLabel + " " + new Date(repoMeta.pushedAt).toLocaleDateString(locale)
         : null;
       container.appendChild(window.createFeaturedCard({
         title: p.title,
         description: p.businessGoal,
+        dataset: p.dataset || "",
+        keyKPIs: Array.isArray(p.keyKPIs) ? p.keyKPIs.slice(0, 3) : [],
         tools: p.tools,
         image: p.image || null,
         link: p.github || "#",
         cta: cta,
         dashboard: p.dashboard || null,
         dashboardCta: dashboardCta,
-        stars: stats ? stats.stars : null,
-        lastCommit: lastCommit
+        stars: repoMeta ? repoMeta.stars : null,
+        lastCommit: lastCommit,
+        repoStateLabel: repoMeta
+          ? (repoMeta.isArchived ? archivedRepoLabel : activeRepoLabel)
+          : null,
+        repoStateClass: repoMeta
+          ? (repoMeta.isArchived ? "repo-pill--status-archived" : "repo-pill--status-active")
+          : ""
       }));
     });
   } catch (e) {

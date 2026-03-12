@@ -3,6 +3,7 @@
     "id": "314dbce0-1b30-8075-bbaa-f648f7a7ce51",
     "title": "Streaming Competitive Benchmark",
     "businessGoal": "Build a multi-market competitive intelligence model for streaming catalog benchmarking.",
+    "status": "Portfolio Ready",
     "tools": [
       "Python (Pandas)",
       "Power BI",
@@ -33,6 +34,7 @@
     "id": "305dbce0-1b30-80a0-9747-c261b6447822",
     "title": "DataCivicLab – Analisi Raccolta Differenziata e Rifiuti Urbani (ISPRA)",
     "businessGoal": "Analizzare i dati ISPRA sui rifiuti urbani per identificare trend e differenze territoriali.",
+    "status": "Portfolio Ready",
     "tools": [
       "Python (Pandas)",
       "Power BI",
@@ -60,6 +62,7 @@
     "id": "2cadbce0-1b30-805e-adae-f86669f3d66b",
     "title": "Streaming Metadata Analytics",
     "businessGoal": "Improve metadata quality and generate actionable insights for streaming content performance.",
+    "status": "Portfolio Ready",
     "tools": [
       "Python (Pandas)",
       "Power BI",
