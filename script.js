@@ -106,15 +106,36 @@ function updateText(lang) {
   document.getElementById("lang-en").classList.toggle("active", lang === "en");
 }
 
+async function fetchGithubStats(githubUrl) {
+  if (!githubUrl) return null;
+  const match = githubUrl.match(/github\.com\/([^/]+)\/([^/?#]+)/);
+  if (!match) return null;
+  try {
+    const res = await fetch("https://api.github.com/repos/" + match[1] + "/" + match[2]);
+    if (!res.ok) return null;
+    const data = await res.json();
+    return { stars: data.stargazers_count, pushedAt: data.pushed_at };
+  } catch (e) { return null; }
+}
+
 async function renderFeatured(lang) {
   const container = document.getElementById("featured-projects");
   container.innerHTML = "";
   const cta = lang === "it" ? "Vedi progetto" : "View project";
   const dashboardCta = lang === "it" ? "Apri dashboard" : "Open dashboard";
+  const updatedLabel = lang === "it" ? "Aggiornato" : "Updated";
+  const locale = lang === "it" ? "it-IT" : "en-US";
   try {
     const res = await fetch("data/projects.json");
     const notionProjects = await res.json();
-    notionProjects.forEach(function(p) {
+    const statsResults = await Promise.allSettled(
+      notionProjects.map(function(p) { return fetchGithubStats(p.github); })
+    );
+    notionProjects.forEach(function(p, i) {
+      const stats = statsResults[i].status === "fulfilled" ? statsResults[i].value : null;
+      const lastCommit = stats && stats.pushedAt
+        ? updatedLabel + " " + new Date(stats.pushedAt).toLocaleDateString(locale)
+        : null;
       container.appendChild(window.createFeaturedCard({
         title: p.title,
         description: p.businessGoal,
@@ -123,7 +144,9 @@ async function renderFeatured(lang) {
         link: p.github || "#",
         cta: cta,
         dashboard: p.dashboard || null,
-        dashboardCta: dashboardCta
+        dashboardCta: dashboardCta,
+        stars: stats ? stats.stars : null,
+        lastCommit: lastCommit
       }));
     });
   } catch (e) {

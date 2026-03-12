@@ -57,11 +57,19 @@ window.createFeaturedCard = function createFeaturedCard(project) {
     ? `<div class="repo-meta">${project.tools.slice(0, 4).map(t => `<span class="repo-pill">${t}</span>`).join("")}</div>`
     : "";
 
+  const githubBadges = (project.stars !== null && project.stars !== undefined) || project.lastCommit
+    ? `<div class="repo-meta repo-meta--github">
+        ${project.stars !== null && project.stars !== undefined ? `<span class="repo-pill">&#9733; ${project.stars}</span>` : ""}
+        ${project.lastCommit ? `<span class="repo-pill">${project.lastCommit}</span>` : ""}
+      </div>`
+    : "";
+
   article.innerHTML = `
     ${imgHtml}
     <h4 class="featured-title">${project.title}</h4>
     <p class="featured-desc">${project.description}</p>
     ${tools}
+    ${githubBadges}
     <div class="featured-actions">${ctaHtml}${dashboardHtml}</div>
   `;
 
