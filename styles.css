@@ -537,6 +537,22 @@ a {
   border-color: var(--border-strong);
 }
 
+.mini-btn--accent {
+  border-color: rgba(255, 255, 255, 0.35);
+  color: var(--text);
+}
+
+.mini-btn--accent:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.featured-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 /* PILLS */
 
 .repo-meta,

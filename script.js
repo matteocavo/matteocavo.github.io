@@ -110,6 +110,7 @@ async function renderFeatured(lang) {
   const container = document.getElementById("featured-projects");
   container.innerHTML = "";
   const cta = lang === "it" ? "Vedi progetto" : "View project";
+  const dashboardCta = lang === "it" ? "Apri dashboard" : "Open dashboard";
   try {
     const res = await fetch("data/projects.json");
     const notionProjects = await res.json();
@@ -119,8 +120,10 @@ async function renderFeatured(lang) {
         description: p.businessGoal,
         tools: p.tools,
         image: p.image || null,
-        link: p.github || p.dashboard || "#",
-        cta: cta
+        link: p.github || "#",
+        cta: cta,
+        dashboard: p.dashboard || null,
+        dashboardCta: dashboardCta
       }));
     });
   } catch (e) {
