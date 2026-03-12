@@ -144,9 +144,7 @@ async function renderFeatured(lang) {
       container.appendChild(window.createFeaturedCard({
         title: p.title,
         description: p.businessGoal,
-        dataset: p.dataset || "",
-        keyKPIs: Array.isArray(p.keyKPIs) ? p.keyKPIs.slice(0, 3) : [],
-        tools: p.tools,
+        tools: Array.isArray(p.tools) ? p.tools.slice(0, 3) : [],
         image: p.image || null,
         link: p.github || "#",
         cta: cta,
