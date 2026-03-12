@@ -1,0 +1,32 @@
+name: Sync Notion Projects
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # ogni ora
+  workflow_dispatch:       # run manuale da GitHub UI
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: npm ci
+
+      - name: Fetch projects from Notion
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+        run: node scripts/fetch-notion.js
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/projects.json
+          git diff --cached --quiet || git commit -m "sync: aggiorna progetti da Notion"
+          git push
