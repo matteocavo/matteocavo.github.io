@@ -6,7 +6,7 @@ let hasMotionSetup = false;
 function setupMotionEffects() {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const targets = document.querySelectorAll(
-    ".section-head, .section-block, .hero .hero-copy, .hero .btn, .hero .soft-card, .hero .hero-dashboard, .about-intro > *, .about-copy p, #skills-section > *, #value-section > *, #contact > *, .featured-card, .repo-card, .link-card, .panel-card, .pill, .cert-item"
+    ".section-head, .section-block > .section-label, .auto-projects-head, .hero .hero-copy, .hero .btn, .hero .soft-card, .hero .hero-dashboard, .about-intro > *, .about-copy p, #skills-section > *, #value-section > *, #contact > *, .featured-card, .repo-card, .link-card, .panel-card, .pill, .cert-item"
   );
 
   if (reduceMotion) {
