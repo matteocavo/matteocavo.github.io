@@ -577,12 +577,6 @@ a {
   background: rgba(0, 0, 0, 0.18);
 }
 
-.repo-pill--status-active {
-  color: #b8efca;
-  border-color: rgba(88, 196, 124, 0.38);
-  background: rgba(46, 125, 72, 0.22);
-}
-
 .repo-pill--status-archived {
   color: #f1d6a8;
   border-color: rgba(204, 156, 74, 0.34);

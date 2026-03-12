@@ -128,7 +128,6 @@ async function renderFeatured(lang) {
   const cta = lang === "it" ? "Vedi progetto" : "View project";
   const dashboardCta = lang === "it" ? "Apri dashboard" : "Open dashboard";
   const updatedLabel = lang === "it" ? "Aggiornato" : "Updated";
-  const activeRepoLabel = lang === "it" ? "Repo attivo" : "Active repo";
   const archivedRepoLabel = lang === "it" ? "Archived" : "Archived";
   const locale = lang === "it" ? "it-IT" : "en-US";
   try {
@@ -156,10 +155,10 @@ async function renderFeatured(lang) {
         stars: repoMeta ? repoMeta.stars : null,
         lastCommit: lastCommit,
         repoStateLabel: repoMeta
-          ? (repoMeta.isArchived ? archivedRepoLabel : activeRepoLabel)
+          ? (repoMeta.isArchived ? archivedRepoLabel : null)
           : null,
         repoStateClass: repoMeta
-          ? (repoMeta.isArchived ? "repo-pill--status-archived" : "repo-pill--status-active")
+          ? (repoMeta.isArchived ? "repo-pill--status-archived" : "")
           : ""
       }));
     });
