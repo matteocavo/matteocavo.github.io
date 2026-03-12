@@ -22,12 +22,11 @@ function setupMotionEffects() {
         entries.forEach(function(entry) {
           if (entry.isIntersecting) {
             entry.target.classList.add("in-view");
-          } else {
-            entry.target.classList.remove("in-view");
+            revealObserver.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.16, rootMargin: "0px 0px -6% 0px" }
+      { threshold: 0.08, rootMargin: "0px 0px 10% 0px" }
     );
   }
 

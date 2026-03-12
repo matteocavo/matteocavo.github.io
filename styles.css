@@ -511,6 +511,11 @@ a {
   gap: 20px;
 }
 
+#repo-grid,
+#featured-projects {
+  align-items: start;
+}
+
 .grid-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -549,8 +554,8 @@ a {
 }
 
 .repo-actions {
-  margin-top: auto;
-  padding-top: 20px;
+  margin-top: 16px;
+  padding-top: 0;
 }
 
 .mini-btn {
@@ -714,6 +719,11 @@ a {
     padding-top: 0;
   }
 
+  .repo-card,
+  .featured-card {
+    min-height: 0;
+  }
+
 
   .footer {
     width: 100%;
@@ -741,6 +751,14 @@ a {
 
   .section {
     padding: 42px 0;
+  }
+
+  .repo-title {
+    min-height: 0;
+  }
+
+  .repo-desc {
+    min-height: 0;
   }
 
   .hero-title {
