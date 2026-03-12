@@ -1,3 +1,23 @@
+function normalizeRepoTitle(repoName) {
+  const overrides = {
+    dataciviclab: "DataCivicLab",
+    "openbdap-saldi-storico-stato": "OpenBDAP Saldi Storico Stato"
+  };
+
+  if (overrides[repoName]) {
+    return overrides[repoName];
+  }
+
+  return repoName
+    .replace(/[_-]+/g, " ")
+    .split(" ")
+    .filter(Boolean)
+    .map(function(word) {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(" ");
+}
+
 window.createRepoCard = function createRepoCard(repo, currentLang, labels) {
   const article = document.createElement("article");
   article.className = "repo-card";
@@ -6,7 +26,7 @@ window.createRepoCard = function createRepoCard(repo, currentLang, labels) {
   const locale = currentLang === "it" ? "it-IT" : "en-US";
   const updatedAt = new Date(repo.updated_at).toLocaleDateString(locale);
   const updatedLabel = labels.updatedLabel || "Updated";
-  const displayName = repo.name.replace(/_/g, " ");
+  const displayName = normalizeRepoTitle(repo.name);
 
   // GitHub genera automaticamente un'OG preview per ogni repo pubblico
   const owner = repo.owner ? repo.owner.login : repo.full_name.split("/")[0];
