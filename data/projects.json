@@ -66,7 +66,12 @@
     "tools": [
       "Python (Pandas)",
       "Power BI",
-      "Excel"
+      "Excel",
+      "DAX",
+      "KPI engineering",
+      "Pipeline",
+      "GitHub",
+      "EDA"
     ],
     "keyKPIs": [
       "Total Views",
