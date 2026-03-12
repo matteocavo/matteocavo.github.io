@@ -8,14 +8,14 @@
       name="description"
       content="Portfolio di Matteo Cavo — Data &amp; Business Intelligence Analyst. Power BI, SQL, Python, data visualization, analytics e GitHub projects."
     />
-    <link rel="icon" href="favicon.svg?v=20260312-10" type="image/svg+xml" />
+    <link rel="icon" href="favicon.svg?v=20260312-11" type="image/svg+xml" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://matteocavo.github.io/" />
   <meta property="og:title" content="Matteo Cavo | Data &amp; BI Analyst" />
   <meta property="og:description" content="Portfolio di Matteo Cavo — Data &amp; Business Intelligence Analyst. Power BI, SQL, Python, data visualization e analytics." />
   <meta property="og:image" content="https://matteocavo.github.io/images/og-preview.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="stylesheet" href="styles.css?v=20260312-10" />
+  <link rel="stylesheet" href="styles.css?v=20260312-11" />
   </head>
   <body>
     <div class="scroll-progress" aria-hidden="true">
@@ -79,51 +79,40 @@
                 data-i18n="btnProjects"
                 >Esplora i progetti</a
               >
-              <a
-                class="btn btn-secondary btn-secondary--ghost"
-                href="assets/cv/Matteo_Cavo_CV_IT.pdf"
-                download="Matteo_Cavo_CV_IT.pdf"
-                data-i18n="btnCvIt"
-                >CV IT</a
-              >
-              <a
-                class="btn btn-secondary btn-secondary--ghost"
-                href="assets/cv/Matteo_Cavo_CV_EN.pdf"
-                download="Matteo_Cavo_CV_EN.pdf"
-                data-i18n="btnCvEn"
-                >CV EN</a
-              >
             </div>
           </div>
 
           <div class="hero-sidecards">
             <article class="card hero-dashboard" aria-labelledby="hero-dashboard-heading">
-              <p class="card-label" data-i18n="snapshotTitle">Snapshot</p>
               <h3 id="hero-dashboard-heading" class="card-title" data-i18n="dashboardTitle">
                 Mini dashboard profilo
               </h3>
-              <div class="hero-dashboard__stats">
-                <div class="hero-dashboard__stat">
-                  <span id="hero-metric-years" class="hero-dashboard__value">15+</span>
-                  <span class="hero-dashboard__label" data-i18n="snapshotYearsLabel">Anni esperienza</span>
+              <div class="hero-dashboard__body">
+                <div class="hero-dashboard__mix-block">
+                  <div class="hero-dashboard__mix-head">
+                    <p class="card-label" data-i18n="toolMixLabel">Stack nei progetti</p>
+                  </div>
+                  <div id="hero-tool-mix" class="hero-dashboard__mix"></div>
                 </div>
-                <div class="hero-dashboard__stat">
-                  <span id="hero-metric-featured" class="hero-dashboard__value">3</span>
-                  <span class="hero-dashboard__label" data-i18n="snapshotProjectsLabel">Progetti in evidenza</span>
-                </div>
-                <div class="hero-dashboard__stat">
-                  <span id="hero-metric-dashboards" class="hero-dashboard__value">2</span>
-                  <span class="hero-dashboard__label" data-i18n="snapshotDashboardsLabel">Dashboard live</span>
-                </div>
-                <div class="hero-dashboard__stat">
-                  <span id="hero-metric-certs" class="hero-dashboard__value">7</span>
-                  <span class="hero-dashboard__label" data-i18n="snapshotCertsLabel">Certificazioni</span>
+                <div class="hero-dashboard__stats">
+                  <div class="hero-dashboard__stat">
+                    <span id="hero-metric-years" class="hero-dashboard__value">15+</span>
+                    <span class="hero-dashboard__label" data-i18n="snapshotYearsLabel">Anni esperienza</span>
+                  </div>
+                  <div class="hero-dashboard__stat">
+                    <span id="hero-metric-featured" class="hero-dashboard__value">3</span>
+                    <span class="hero-dashboard__label" data-i18n="snapshotProjectsLabel">Progetti in evidenza</span>
+                  </div>
+                  <div class="hero-dashboard__stat">
+                    <span id="hero-metric-dashboards" class="hero-dashboard__value">2</span>
+                    <span class="hero-dashboard__label" data-i18n="snapshotDashboardsLabel">Dashboard live</span>
+                  </div>
+                  <div class="hero-dashboard__stat">
+                    <span id="hero-metric-certs" class="hero-dashboard__value">7</span>
+                    <span class="hero-dashboard__label" data-i18n="snapshotCertsLabel">Certificazioni</span>
+                  </div>
                 </div>
               </div>
-              <div class="hero-dashboard__mix-head">
-                <p class="card-label" data-i18n="toolMixLabel">Stack nei progetti</p>
-              </div>
-              <div id="hero-tool-mix" class="hero-dashboard__mix"></div>
             </article>
 
             <article class="card soft-card">
@@ -205,8 +194,6 @@
               >Lavori selezionati</h3>
             </div>
           </div>
-
-          <div id="project-signal-strip" class="signal-strip" aria-label="Project signals"></div>
 
           <div class="section-block">
             <p class="section-label" data-i18n="featured">
@@ -293,17 +280,39 @@
           class="section split-section"
           aria-labelledby="contact-heading"
         >
-          <div>
-            <p class="section-label" data-i18n="contact">Contatti</p>
-            <h3
-              id="contact-heading"
-              class="section-title"
-              data-i18n="contactTitle"
-            >Restiamo in contatto</h3>
-            <p class="section-intro" data-i18n="contactText">Qui trovi i link principali per esplorare portfolio, progetti e profilo professionale.</p>
-          </div>
-          <div id="links-list" class="stack-links"></div>
-        </section>
+            <div>
+              <p class="section-label" data-i18n="contact">Contatti</p>
+              <h3
+                id="contact-heading"
+                class="section-title"
+                data-i18n="contactTitle"
+              >Restiamo in contatto</h3>
+              <p class="section-intro" data-i18n="contactText">Qui trovi i link principali per esplorare portfolio, progetti e profilo professionale.</p>
+              <div class="contact-downloads">
+                <div class="contact-download">
+                  <p class="section-note" data-i18n="contactCvItValue">Scarica il CV in italiano</p>
+                  <a
+                    class="mini-btn"
+                    href="assets/cv/Matteo_Cavo_CV_IT.pdf"
+                    download="Matteo_Cavo_CV_IT.pdf"
+                    data-i18n="contactCvItLabel"
+                    >CV IT</a
+                  >
+                </div>
+                <div class="contact-download">
+                  <p class="section-note" data-i18n="contactCvEnValue">Download CV in English</p>
+                  <a
+                    class="mini-btn"
+                    href="assets/cv/Matteo_Cavo_CV_EN.pdf"
+                    download="Matteo_Cavo_CV_EN.pdf"
+                    data-i18n="contactCvEnLabel"
+                    >CV EN</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div id="links-list" class="stack-links"></div>
+          </section>
       </main>
 
       <footer class="footer footer-centered">
@@ -311,11 +320,11 @@
       </footer>
     </div>
 
-    <script src="data/profile.js?v=20260312-10"></script>
-    <script src="data/featured.js?v=20260312-10"></script>
-    <script src="components/repoCard.js?v=20260312-10"></script>
-    <script src="components/repoLoader.js?v=20260312-10"></script>
-    <script src="components/languageToggle.js?v=20260312-10"></script>
-    <script src="script.js?v=20260312-10"></script>
+    <script src="data/profile.js?v=20260312-11"></script>
+    <script src="data/featured.js?v=20260312-11"></script>
+    <script src="components/repoCard.js?v=20260312-11"></script>
+    <script src="components/repoLoader.js?v=20260312-11"></script>
+    <script src="components/languageToggle.js?v=20260312-11"></script>
+    <script src="script.js?v=20260312-11"></script>
   </body>
 </html>

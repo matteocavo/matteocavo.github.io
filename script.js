@@ -6,7 +6,7 @@ let hasMotionSetup = false;
 function setupMotionEffects() {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const targets = document.querySelectorAll(
-    ".section-head, .section-block, .hero .hero-copy, .hero .btn, .hero .soft-card, .hero .hero-dashboard, .signal-strip > *, .about-intro > *, .about-copy p, #skills-section > *, #value-section > *, #contact > *, .featured-card, .repo-card, .link-card, .panel-card, .pill, .cert-item"
+    ".section-head, .section-block, .hero .hero-copy, .hero .btn, .hero .soft-card, .hero .hero-dashboard, .about-intro > *, .about-copy p, #skills-section > *, #value-section > *, #contact > *, .featured-card, .repo-card, .link-card, .panel-card, .pill, .cert-item"
   );
 
   if (reduceMotion) {
@@ -130,12 +130,17 @@ function countToolMatches(projects, matcher) {
 }
 
 function renderHeroDashboard(lang, projects) {
-  const t = window.PORTFOLIO_PROFILE.translations[lang];
+  const profile = window.PORTFOLIO_PROFILE;
   const certifications = window.PORTFOLIO_PROFILE.certifications.length;
   const featuredCount = projects.length;
   const liveDashboards = projects.filter(function(project) {
     return Boolean(project.dashboard);
   }).length;
+  const currentYear = new Date().getFullYear();
+  const startYear = Number(profile.experienceStartYear);
+  const yearsExperience = Number.isFinite(startYear) && startYear > 0
+    ? Math.max(currentYear - startYear, 1) + "+"
+    : "-";
 
   const yearsNode = document.getElementById("hero-metric-years");
   const featuredNode = document.getElementById("hero-metric-featured");
@@ -143,7 +148,7 @@ function renderHeroDashboard(lang, projects) {
   const certsNode = document.getElementById("hero-metric-certs");
   const mixNode = document.getElementById("hero-tool-mix");
 
-  if (yearsNode) yearsNode.textContent = t.snapshotYearsValue || "15+";
+  if (yearsNode) yearsNode.textContent = yearsExperience;
   if (featuredNode) featuredNode.textContent = String(featuredCount);
   if (dashboardsNode) dashboardsNode.textContent = String(liveDashboards);
   if (certsNode) certsNode.textContent = String(certifications);
@@ -175,51 +180,6 @@ function renderHeroDashboard(lang, projects) {
   }).join("");
 }
 
-function renderProjectSignals(lang, projects, repoMetaList) {
-  const t = window.PORTFOLIO_PROFILE.translations[lang];
-  const strip = document.getElementById("project-signal-strip");
-  if (!strip) {
-    return;
-  }
-
-  const featuredCount = projects.length;
-  const liveDashboards = projects.filter(function(project) {
-    return Boolean(project.dashboard);
-  }).length;
-  const totalStars = repoMetaList.reduce(function(total, repoMeta) {
-    return total + (repoMeta && repoMeta.stars ? repoMeta.stars : 0);
-  }, 0);
-  const latestProjectDate = projects
-    .map(function(project) { return project.date; })
-    .filter(Boolean)
-    .sort()
-    .pop();
-
-  const locale = lang === "it" ? "it-IT" : "en-US";
-  const latestLabel = latestProjectDate
-    ? new Date(latestProjectDate).toLocaleDateString(locale, { year: "numeric", month: "short", day: "numeric" })
-    : "-";
-
-  strip.innerHTML = `
-    <div class="signal-strip__item">
-      <span class="signal-strip__value">${featuredCount}</span>
-      <span class="signal-strip__label">${t.signalFeaturedLabel}</span>
-    </div>
-    <div class="signal-strip__item">
-      <span class="signal-strip__value">${liveDashboards}</span>
-      <span class="signal-strip__label">${t.signalDashboardsLabel}</span>
-    </div>
-    <div class="signal-strip__item">
-      <span class="signal-strip__value">${totalStars}</span>
-      <span class="signal-strip__label">${t.signalStarsLabel}</span>
-    </div>
-    <div class="signal-strip__item">
-      <span class="signal-strip__value">${latestLabel}</span>
-      <span class="signal-strip__label">${t.signalUpdatedLabel}</span>
-    </div>
-  `;
-}
-
 async function renderFeatured(lang) {
   const container = document.getElementById("featured-projects");
   container.innerHTML = "";
@@ -239,7 +199,6 @@ async function renderFeatured(lang) {
     });
 
     renderHeroDashboard(lang, notionProjects);
-    renderProjectSignals(lang, notionProjects, repoMetaList);
 
     notionProjects.forEach(function(p, i) {
       const repoMeta = repoMetaList[i];
@@ -267,7 +226,6 @@ async function renderFeatured(lang) {
     });
   } catch (e) {
     renderHeroDashboard(lang, []);
-    renderProjectSignals(lang, [], []);
     const fallback = (window.FEATURED_PROJECTS && window.FEATURED_PROJECTS[lang]) || [];
     fallback.forEach(function(project) {
       container.appendChild(window.createFeaturedCard(project));
@@ -300,32 +258,13 @@ function renderCertifications() {
 function renderLinks(lang) {
   const list = document.getElementById("links-list");
   list.innerHTML = "";
-  const t = window.PORTFOLIO_PROFILE.translations[lang];
-  const extraLinks = [
-    {
-      label: t.contactCvItLabel,
-      value: t.contactCvItValue,
-      href: "assets/cv/Matteo_Cavo_CV_IT.pdf",
-      download: "Matteo_Cavo_CV_IT.pdf"
-    },
-    {
-      label: t.contactCvEnLabel,
-      value: t.contactCvEnValue,
-      href: "assets/cv/Matteo_Cavo_CV_EN.pdf",
-      download: "Matteo_Cavo_CV_EN.pdf"
-    }
-  ];
 
-  window.PORTFOLIO_PROFILE.links.concat(extraLinks).forEach(function(item) {
+  window.PORTFOLIO_PROFILE.links.forEach(function(item) {
     const a = document.createElement("a");
     a.className = "link-card";
     a.href = item.href;
-    if (item.download) {
-      a.download = item.download;
-    } else {
-      a.target = "_blank";
-      a.rel = "noreferrer";
-    }
+    a.target = "_blank";
+    a.rel = "noreferrer";
     a.innerHTML = `
       <p class="section-label">${item.label} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="opacity:0.4;flex-shrink:0;vertical-align:middle;margin-left:4px" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></p>
       <p class="link-value">${item.value}</p>
