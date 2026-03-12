@@ -1,26 +1,5 @@
 [
   {
-    "id": "2cadbce0-1b30-80e5-8bae-c0bbf0f71168",
-    "title": "Spotify 🎧 Audience Segmentation & Growth Intelligence for an Independent Electronic Artist",
-    "businessGoal": "",
-    "tools": [
-      "SQL",
-      "KPI engineering",
-      "Power BI",
-      "GitHub",
-      "EDA",
-      "DAX",
-      "Pipeline"
-    ],
-    "keyKPIs": [],
-    "github": null,
-    "dashboard": null,
-    "dataset": "",
-    "date": "2026-03-12",
-    "notes": "",
-    "image": null
-  },
-  {
     "id": "314dbce0-1b30-8075-bbaa-f648f7a7ce51",
     "title": "Streaming Competitive Benchmark",
     "businessGoal": "Build a multi-market competitive intelligence model for streaming catalog benchmarking.",
