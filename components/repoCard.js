@@ -49,10 +49,15 @@ window.createFeaturedCard = function createFeaturedCard(project) {
     ? `<a class="mini-btn" href="${linkHref}" target="_blank" rel="noreferrer">${project.cta}</a>`
     : `<span class="mini-btn" style="opacity:0.45; cursor:default;">${project.cta}</span>`;
 
+  const tools = Array.isArray(project.tools) && project.tools.length
+    ? `<div class="repo-meta">${project.tools.slice(0, 4).map(t => `<span class="repo-pill">${t}</span>`).join("")}</div>`
+    : "";
+
   article.innerHTML = `
     ${imgHtml}
     <h4 class="featured-title">${project.title}</h4>
     <p class="featured-desc">${project.description}</p>
+    ${tools}
     <div class="featured-actions">${ctaHtml}</div>
   `;
 

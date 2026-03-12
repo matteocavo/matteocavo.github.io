@@ -1,0 +1,82 @@
+[
+  {
+    "id": "314dbce0-1b30-8075-bbaa-f648f7a7ce51",
+    "title": "Streaming Competitive Benchmark",
+    "businessGoal": "Build a multi-market competitive intelligence model for streaming catalog benchmarking.",
+    "tools": [
+      "Python (Pandas)",
+      "Power BI",
+      "DAX",
+      "Numpy",
+      "KPI engineering",
+      "Pipeline",
+      "GitHub",
+      "EDA"
+    ],
+    "keyKPIs": [
+      "Total Titles",
+      "Recent Content %",
+      "Recency Intensity",
+      "Genre Concentration Index",
+      "International Exposure Index",
+      "Catalog Overlap (Jaccard)",
+      "Weighted Rating (log-adjusted)"
+    ],
+    "github": "https://github.com/matteocavo/Streaming_Competitive_Benchmark",
+    "dashboard": "https://app.powerbi.com/view?r=eyJrIjoiMDVhNGNjNWQtYTc2YS00YmI0LTk2NzctMTcwNWU5OGM0MmM0IiwidCI6IjgwNjZmMmRlLTgxZDctNGVjNC04Y2E5LTgzNzVjOTA4NjViNSJ9",
+    "dataset": "TMDB API (multi-market watch provider metadata)",
+    "date": "2026-02-27",
+    "notes": "  • Netflix leads in catalog scale but not necessarily recency intensity. \n  • Apple TV+ shows strongest recency focus with narrower catalog breadth.\n  • Cross-platform overlap remains structurally low (<1%), indicating strong differentiation.\n  • A significant portion of titles show limited voting activity, impacting absolute rating interpretation.",
+    "image": "https://matteocavo.github.io/images/streaming-benchmark.png"
+  },
+  {
+    "id": "305dbce0-1b30-80a0-9747-c261b6447822",
+    "title": "DataCivicLab – Analisi Raccolta Differenziata e Rifiuti Urbani (ISPRA)",
+    "businessGoal": "Analizzare i dati ISPRA sui rifiuti urbani per identificare trend e differenze territoriali.",
+    "tools": [
+      "Python (Pandas)",
+      "Power BI",
+      "DAX",
+      "Python",
+      "KPI engineering",
+      "Pipeline",
+      "GitHub",
+      "EDA"
+    ],
+    "keyKPIs": [
+      "Numero di comuni analizzati",
+      "Comuni RD↑ & RU↑ (N e %)",
+      "Virtuosi strutturali (N e %)",
+      "Mediana Δ RU pro capite (virtuosi)"
+    ],
+    "github": "https://github.com/dataciviclab/progetto-pilota",
+    "dashboard": "https://app.powerbi.com/view?r=eyJrIjoiZmE5MTNlZmItN2NkZC00ZTkyLWEwZGItMzE3ZWJkNzI0ZjZjIiwidCI6IjgwNjZmMmRlLTgxZDctNGVjNC04Y2E5LTgzNzVjOTA4NjViNSJ9",
+    "dataset": "ISPRA – Catasto Rifiuti 2019–2023 (dati comunali, provinciali e regionali)",
+    "date": "2026-02-16",
+    "notes": "L’analisi 2020–2023 evidenzia che: una quota rilevante di comuni registra un aumento della raccolta differenziata una parte di questi presenta però anche un aumento dei rifiuti urbani (pro capite o totali) esiste comunque un gruppo consistente di “virtuosi strutturali”, che migliorano la raccolta differenziata riducendo contemporaneamente i rifiuti pro capite.\n\nLa relazione tra RD e RU non è quindi automaticamente inversa: l’aumento della raccolta differenziata non implica necessariamente una riduzione dei rifiuti prodotti.",
+    "image": "https://matteocavo.github.io/images/ispra-waste.png"
+  },
+  {
+    "id": "2cadbce0-1b30-805e-adae-f86669f3d66b",
+    "title": "Streaming Metadata Analytics",
+    "businessGoal": "Improve metadata quality and generate actionable insights for streaming content performance.",
+    "tools": [
+      "Python (Pandas)",
+      "Power BI",
+      "Excel"
+    ],
+    "keyKPIs": [
+      "Total Views",
+      "Completion Rate",
+      "Rewatch Rate",
+      "Engagement Score",
+      "IMDb Rating"
+    ],
+    "github": "https://github.com/matteocavo/streaming-metadata-analytics",
+    "dashboard": "https://app.powerbi.com/view?r=eyJrIjoiOTQ1M2ExNmQtZWNjMi00YWQ5LWFjMDAtYzIxN2U2MDkxMTk3IiwidCI6IjgwNjZmMmRlLTgxZDctNGVjNC04Y2E5LTgzNzVjOTA4NjViNSJ9",
+    "dataset": "Streaming catalog, users and viewing sessions (enriched metadata). Syntetic",
+    "date": "2025-12-31",
+    "notes": "End-to-end metadata analytics project with strong focus on KPI engineering and business interpretation.",
+    "image": "https://matteocavo.github.io/images/streaming-catalog.png"
+  }
+]

@@ -106,13 +106,29 @@ function updateText(lang) {
   document.getElementById("lang-en").classList.toggle("active", lang === "en");
 }
 
-function renderFeatured(lang) {
+async function renderFeatured(lang) {
   const container = document.getElementById("featured-projects");
   container.innerHTML = "";
-  const projects = window.FEATURED_PROJECTS[lang] || [];
-  projects.forEach(function(project) {
-    container.appendChild(window.createFeaturedCard(project));
-  });
+  const cta = lang === "it" ? "Vedi progetto" : "View project";
+  try {
+    const res = await fetch("data/projects.json");
+    const notionProjects = await res.json();
+    notionProjects.forEach(function(p) {
+      container.appendChild(window.createFeaturedCard({
+        title: p.title,
+        description: p.businessGoal,
+        tools: p.tools,
+        image: p.image || null,
+        link: p.github || p.dashboard || "#",
+        cta: cta
+      }));
+    });
+  } catch (e) {
+    const fallback = (window.FEATURED_PROJECTS && window.FEATURED_PROJECTS[lang]) || [];
+    fallback.forEach(function(project) {
+      container.appendChild(window.createFeaturedCard(project));
+    });
+  }
 }
 
 function renderSkills() {
