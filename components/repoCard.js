@@ -54,7 +54,12 @@ window.createFeaturedCard = function createFeaturedCard(project) {
     : "";
 
   const tools = Array.isArray(project.tools) && project.tools.length
-    ? `<div class="repo-meta">${project.tools.slice(0, 4).map(t => `<span class="repo-pill">${t}</span>`).join("")}</div>`
+    ? `
+      <div class="featured-detail">
+        <p class="featured-detail__label">Tools</p>
+        <div class="repo-meta repo-meta--compact">${project.tools.slice(0, 4).map(t => `<span class="repo-pill">${t}</span>`).join("")}</div>
+      </div>
+    `
     : "";
 
   const datasetHtml = project.dataset
