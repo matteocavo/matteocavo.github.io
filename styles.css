@@ -277,6 +277,12 @@ a {
   padding: 20px;
 }
 
+.repo-card,
+.featured-card {
+  display: flex;
+  flex-direction: column;
+}
+
 .card:hover,
 .repo-card:hover,
 .featured-card:hover,
@@ -360,6 +366,11 @@ a {
 
 .section-block + .section-block {
   margin-top: 42px;
+}
+
+.section-note--live {
+  margin: 10px 0 0;
+  letter-spacing: 0.12em;
 }
 
 /* ABOUT */
@@ -516,9 +527,30 @@ a {
   color: var(--text);
 }
 
+.repo-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  min-height: 3.3rem;
+}
+
+.repo-desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  min-height: 8.6rem;
+}
+
 .featured-actions,
 .repo-actions {
   margin-top: 20px;
+}
+
+.repo-actions {
+  margin-top: auto;
+  padding-top: 20px;
 }
 
 .mini-btn {
