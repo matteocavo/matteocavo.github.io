@@ -123,27 +123,15 @@ async function fetchGithubRepoMeta(githubUrl) {
 
 async function renderFeatured(lang) {
   const container = document.getElementById("featured-projects");
-  const syncNote = document.getElementById("featured-sync-note");
   container.innerHTML = "";
   const cta = lang === "it" ? "Vedi progetto" : "View project";
   const dashboardCta = lang === "it" ? "Apri dashboard" : "Open dashboard";
   const updatedLabel = lang === "it" ? "Aggiornato" : "Updated";
   const archivedRepoLabel = lang === "it" ? "Archived" : "Archived";
-  const syncLabel = window.PORTFOLIO_PROFILE.translations[lang].featuredSyncLabel;
   const locale = lang === "it" ? "it-IT" : "en-US";
   try {
     const res = await fetch("data/projects.json");
     const notionProjects = await res.json();
-    const syncHeader = res.headers.get("last-modified");
-    if (syncNote) {
-      syncNote.textContent = syncHeader
-        ? syncLabel + " " + new Date(syncHeader).toLocaleDateString(locale, {
-            year: "numeric",
-            month: "short",
-            day: "numeric"
-          })
-        : "";
-    }
     const statsResults = await Promise.allSettled(
       notionProjects.map(function(p) { return fetchGithubRepoMeta(p.github); })
     );
@@ -172,9 +160,6 @@ async function renderFeatured(lang) {
       }));
     });
   } catch (e) {
-    if (syncNote) {
-      syncNote.textContent = "";
-    }
     const fallback = (window.FEATURED_PROJECTS && window.FEATURED_PROJECTS[lang]) || [];
     fallback.forEach(function(project) {
       container.appendChild(window.createFeaturedCard(project));
