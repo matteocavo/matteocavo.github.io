@@ -106,6 +106,26 @@ function updateText(lang) {
   document.getElementById("lang-en").classList.toggle("active", lang === "en");
 }
 
+function renderContactCv(lang) {
+  const t = window.PORTFOLIO_PROFILE.translations[lang];
+  const note = document.getElementById("contact-cv-note");
+  const link = document.getElementById("contact-cv-link");
+
+  if (!note || !link) {
+    return;
+  }
+
+  const isItalian = lang === "it";
+  note.textContent = t.contactCvValue;
+  link.textContent = t.contactCvLabel;
+  link.href = isItalian
+    ? "assets/cv/Matteo_Cavo_CV_IT.pdf"
+    : "assets/cv/Matteo_Cavo_CV_EN.pdf";
+  link.download = isItalian
+    ? "Matteo_Cavo_CV_IT.pdf"
+    : "Matteo_Cavo_CV_EN.pdf";
+}
+
 async function fetchGithubRepoMeta(githubUrl) {
   if (!githubUrl) return null;
   const match = githubUrl.match(/github\.com\/([^/]+)\/([^/?#]+)/);
@@ -278,6 +298,7 @@ window.renderPortfolio = async function renderPortfolio() {
   const labels = window.PORTFOLIO_PROFILE.translations[lang];
 
   updateText(lang);
+  renderContactCv(lang);
   renderSkills();
   renderCertifications();
   renderLinks(lang);
