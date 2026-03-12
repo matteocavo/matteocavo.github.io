@@ -211,11 +211,13 @@ window.renderPortfolio = async function renderPortfolio() {
   const labels = window.PORTFOLIO_PROFILE.translations[lang];
 
   updateText(lang);
-  renderFeatured(lang);
   renderSkills();
   renderCertifications();
   renderLinks();
-  await window.loadGithubRepos(lang, labels);
+  await Promise.all([
+    renderFeatured(lang),
+    window.loadGithubRepos(lang, labels)
+  ]);
   setupMotionEffects();
 };
 

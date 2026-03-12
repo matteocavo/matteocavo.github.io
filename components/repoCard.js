@@ -3,10 +3,10 @@ window.createRepoCard = function createRepoCard(repo, currentLang, labels) {
   article.className = "repo-card";
 
   const topics = Array.isArray(repo.topics) ? repo.topics : [];
-  const language = repo.language || "N/A";
   const locale = currentLang === "it" ? "it-IT" : "en-US";
   const updatedAt = new Date(repo.updated_at).toLocaleDateString(locale);
   const updatedLabel = labels.updatedLabel || "Updated";
+  const displayName = repo.name.replace(/_/g, " ");
 
   // GitHub genera automaticamente un'OG preview per ogni repo pubblico
   const owner = repo.owner ? repo.owner.login : repo.full_name.split("/")[0];
@@ -14,21 +14,22 @@ window.createRepoCard = function createRepoCard(repo, currentLang, labels) {
 
   article.innerHTML = `
     <img
-      class="repo-thumb"
+      class="featured-thumb repo-thumb"
       src="${thumbUrl}"
       alt="${repo.name} preview"
       loading="lazy"
       onerror="this.style.display='none'"
     />
-    <p class="section-label">${language}</p>
-    <h4 class="repo-title">${repo.name}</h4>
-    <p class="repo-desc">${repo.description || (currentLang === "it" ? "Nessuna descrizione disponibile." : "No description available.")}</p>
-    <div class="repo-meta">
-      <span class="repo-pill">&#9733; ${repo.stargazers_count}</span>
-      <span class="repo-pill">${updatedLabel} ${updatedAt}</span>
+    <h4 class="featured-title repo-title">${displayName}</h4>
+    <p class="featured-desc repo-desc">${repo.description || (currentLang === "it" ? "Nessuna descrizione disponibile." : "No description available.")}</p>
+    <div class="repo-meta repo-meta--compact">
       ${topics.slice(0, 3).map((t) => `<span class="repo-pill">${t}</span>`).join("")}
     </div>
-    <div class="repo-actions">
+    <div class="repo-meta repo-meta--github">
+      <span class="repo-pill">&#9733; ${repo.stargazers_count}</span>
+      <span class="repo-pill">${updatedLabel} ${updatedAt}</span>
+    </div>
+    <div class="featured-actions repo-actions">
       <a class="mini-btn" href="${repo.html_url}" target="_blank" rel="noreferrer">${labels.repoCta}</a>
     </div>
   `;

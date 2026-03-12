@@ -493,14 +493,7 @@ a {
 /* REPO THUMBNAIL */
 
 .repo-thumb {
-  width: 100%;
   aspect-ratio: 3 / 1;
-  object-fit: cover;
-  border-radius: 18px;
-  margin-bottom: 16px;
-  border: 1px solid var(--border);
-  display: block;
-  background: var(--bg);
 }
 
 
@@ -548,7 +541,7 @@ a {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  min-height: 3.1rem;
+  min-height: 0;
 }
 
 .repo-desc {
@@ -556,7 +549,7 @@ a {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   overflow: hidden;
-  min-height: 6.6rem;
+  min-height: 0;
 }
 
 .featured-actions,
@@ -567,6 +560,10 @@ a {
 .repo-actions {
   margin-top: 16px;
   padding-top: 0;
+}
+
+.repo-card .repo-meta--compact {
+  margin-top: 6px;
 }
 
 .mini-btn {
