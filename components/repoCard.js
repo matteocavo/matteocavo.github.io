@@ -26,7 +26,7 @@ window.createRepoCard = function createRepoCard(repo, currentLang, labels) {
     <div class="repo-meta">
       <span class="repo-pill">&#9733; ${repo.stargazers_count}</span>
       <span class="repo-pill">${updatedLabel} ${updatedAt}</span>
-      ${topics.slice(0, 4).map((t) => `<span class="repo-pill">${t}</span>`).join("")}
+      ${topics.slice(0, 3).map((t) => `<span class="repo-pill">${t}</span>`).join("")}
     </div>
     <div class="repo-actions">
       <a class="mini-btn" href="${repo.html_url}" target="_blank" rel="noreferrer">${labels.repoCta}</a>

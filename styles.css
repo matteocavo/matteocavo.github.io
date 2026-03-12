@@ -532,15 +532,15 @@ a {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  min-height: 3.3rem;
+  min-height: 3.1rem;
 }
 
 .repo-desc {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 3;
   overflow: hidden;
-  min-height: 8.6rem;
+  min-height: 6.6rem;
 }
 
 .featured-actions,
