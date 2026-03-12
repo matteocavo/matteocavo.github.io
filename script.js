@@ -6,7 +6,7 @@ let hasMotionSetup = false;
 function setupMotionEffects() {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const targets = document.querySelectorAll(
-    ".section-head, .section-block, .hero .hero-copy, .hero .btn, .hero .soft-card, .about-intro > *, .about-copy p, #skills-section > *, #value-section > *, #contact > *, .featured-card, .repo-card, .link-card, .panel-card, .pill, .cert-item"
+    ".section-head, .section-block, .hero .hero-copy, .hero .btn, .hero .soft-card, .hero .hero-dashboard, .signal-strip > *, .about-intro > *, .about-copy p, #skills-section > *, #value-section > *, #contact > *, .featured-card, .repo-card, .link-card, .panel-card, .pill, .cert-item"
   );
 
   if (reduceMotion) {
@@ -122,6 +122,104 @@ async function fetchGithubRepoMeta(githubUrl) {
   } catch (e) { return null; }
 }
 
+function countToolMatches(projects, matcher) {
+  return projects.reduce(function(total, project) {
+    const tools = Array.isArray(project.tools) ? project.tools : [];
+    return total + (tools.some(matcher) ? 1 : 0);
+  }, 0);
+}
+
+function renderHeroDashboard(lang, projects) {
+  const t = window.PORTFOLIO_PROFILE.translations[lang];
+  const certifications = window.PORTFOLIO_PROFILE.certifications.length;
+  const featuredCount = projects.length;
+  const liveDashboards = projects.filter(function(project) {
+    return Boolean(project.dashboard);
+  }).length;
+
+  const yearsNode = document.getElementById("hero-metric-years");
+  const featuredNode = document.getElementById("hero-metric-featured");
+  const dashboardsNode = document.getElementById("hero-metric-dashboards");
+  const certsNode = document.getElementById("hero-metric-certs");
+  const mixNode = document.getElementById("hero-tool-mix");
+
+  if (yearsNode) yearsNode.textContent = t.snapshotYearsValue || "15+";
+  if (featuredNode) featuredNode.textContent = String(featuredCount);
+  if (dashboardsNode) dashboardsNode.textContent = String(liveDashboards);
+  if (certsNode) certsNode.textContent = String(certifications);
+
+  if (!mixNode) {
+    return;
+  }
+
+  const toolMix = [
+    { label: "Power BI", count: countToolMatches(projects, function(tool) { return tool === "Power BI"; }) },
+    { label: "SQL", count: countToolMatches(projects, function(tool) { return tool === "SQL"; }) },
+    { label: "Python", count: countToolMatches(projects, function(tool) { return /^Python/i.test(tool); }) },
+    { label: "DAX", count: countToolMatches(projects, function(tool) { return tool === "DAX"; }) }
+  ];
+
+  const maxCount = Math.max.apply(null, toolMix.map(function(item) { return item.count; }).concat([1]));
+
+  mixNode.innerHTML = toolMix.map(function(item) {
+    const width = item.count > 0 ? Math.max((item.count / maxCount) * 100, 14) : 0;
+    return `
+      <div class="hero-dashboard__mix-row">
+        <span class="hero-dashboard__mix-label">${item.label}</span>
+        <span class="hero-dashboard__mix-track">
+          <span class="hero-dashboard__mix-fill" style="width:${width}%"></span>
+        </span>
+        <strong class="hero-dashboard__mix-value">${item.count}</strong>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderProjectSignals(lang, projects, repoMetaList) {
+  const t = window.PORTFOLIO_PROFILE.translations[lang];
+  const strip = document.getElementById("project-signal-strip");
+  if (!strip) {
+    return;
+  }
+
+  const featuredCount = projects.length;
+  const liveDashboards = projects.filter(function(project) {
+    return Boolean(project.dashboard);
+  }).length;
+  const totalStars = repoMetaList.reduce(function(total, repoMeta) {
+    return total + (repoMeta && repoMeta.stars ? repoMeta.stars : 0);
+  }, 0);
+  const latestProjectDate = projects
+    .map(function(project) { return project.date; })
+    .filter(Boolean)
+    .sort()
+    .pop();
+
+  const locale = lang === "it" ? "it-IT" : "en-US";
+  const latestLabel = latestProjectDate
+    ? new Date(latestProjectDate).toLocaleDateString(locale, { year: "numeric", month: "short", day: "numeric" })
+    : "-";
+
+  strip.innerHTML = `
+    <div class="signal-strip__item">
+      <span class="signal-strip__value">${featuredCount}</span>
+      <span class="signal-strip__label">${t.signalFeaturedLabel}</span>
+    </div>
+    <div class="signal-strip__item">
+      <span class="signal-strip__value">${liveDashboards}</span>
+      <span class="signal-strip__label">${t.signalDashboardsLabel}</span>
+    </div>
+    <div class="signal-strip__item">
+      <span class="signal-strip__value">${totalStars}</span>
+      <span class="signal-strip__label">${t.signalStarsLabel}</span>
+    </div>
+    <div class="signal-strip__item">
+      <span class="signal-strip__value">${latestLabel}</span>
+      <span class="signal-strip__label">${t.signalUpdatedLabel}</span>
+    </div>
+  `;
+}
+
 async function renderFeatured(lang) {
   const container = document.getElementById("featured-projects");
   container.innerHTML = "";
@@ -136,8 +234,15 @@ async function renderFeatured(lang) {
     const statsResults = await Promise.allSettled(
       notionProjects.map(function(p) { return fetchGithubRepoMeta(p.github); })
     );
+    const repoMetaList = statsResults.map(function(result) {
+      return result.status === "fulfilled" ? result.value : null;
+    });
+
+    renderHeroDashboard(lang, notionProjects);
+    renderProjectSignals(lang, notionProjects, repoMetaList);
+
     notionProjects.forEach(function(p, i) {
-      const repoMeta = statsResults[i].status === "fulfilled" ? statsResults[i].value : null;
+      const repoMeta = repoMetaList[i];
       const lastCommit = repoMeta && repoMeta.pushedAt
         ? updatedLabel + " " + new Date(repoMeta.pushedAt).toLocaleDateString(locale)
         : null;
@@ -161,6 +266,8 @@ async function renderFeatured(lang) {
       }));
     });
   } catch (e) {
+    renderHeroDashboard(lang, []);
+    renderProjectSignals(lang, [], []);
     const fallback = (window.FEATURED_PROJECTS && window.FEATURED_PROJECTS[lang]) || [];
     fallback.forEach(function(project) {
       container.appendChild(window.createFeaturedCard(project));
@@ -190,15 +297,35 @@ function renderCertifications() {
   });
 }
 
-function renderLinks() {
+function renderLinks(lang) {
   const list = document.getElementById("links-list");
   list.innerHTML = "";
-  window.PORTFOLIO_PROFILE.links.forEach(function(item) {
+  const t = window.PORTFOLIO_PROFILE.translations[lang];
+  const extraLinks = [
+    {
+      label: t.contactCvItLabel,
+      value: t.contactCvItValue,
+      href: "assets/cv/Matteo_Cavo_CV_IT.pdf",
+      download: "Matteo_Cavo_CV_IT.pdf"
+    },
+    {
+      label: t.contactCvEnLabel,
+      value: t.contactCvEnValue,
+      href: "assets/cv/Matteo_Cavo_CV_EN.pdf",
+      download: "Matteo_Cavo_CV_EN.pdf"
+    }
+  ];
+
+  window.PORTFOLIO_PROFILE.links.concat(extraLinks).forEach(function(item) {
     const a = document.createElement("a");
     a.className = "link-card";
     a.href = item.href;
-    a.target = "_blank";
-    a.rel = "noreferrer";
+    if (item.download) {
+      a.download = item.download;
+    } else {
+      a.target = "_blank";
+      a.rel = "noreferrer";
+    }
     a.innerHTML = `
       <p class="section-label">${item.label} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="opacity:0.4;flex-shrink:0;vertical-align:middle;margin-left:4px" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></p>
       <p class="link-value">${item.value}</p>
@@ -214,7 +341,7 @@ window.renderPortfolio = async function renderPortfolio() {
   updateText(lang);
   renderSkills();
   renderCertifications();
-  renderLinks();
+  renderLinks(lang);
   await Promise.all([
     renderFeatured(lang),
     window.loadGithubRepos(lang, labels)

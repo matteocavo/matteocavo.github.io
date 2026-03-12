@@ -79,10 +79,53 @@
                 data-i18n="btnProjects"
                 >Esplora i progetti</a
               >
+              <a
+                class="btn btn-secondary btn-secondary--ghost"
+                href="assets/cv/Matteo_Cavo_CV_IT.pdf"
+                download="Matteo_Cavo_CV_IT.pdf"
+                data-i18n="btnCvIt"
+                >CV IT</a
+              >
+              <a
+                class="btn btn-secondary btn-secondary--ghost"
+                href="assets/cv/Matteo_Cavo_CV_EN.pdf"
+                download="Matteo_Cavo_CV_EN.pdf"
+                data-i18n="btnCvEn"
+                >CV EN</a
+              >
             </div>
           </div>
 
           <div class="hero-sidecards">
+            <article class="card hero-dashboard" aria-labelledby="hero-dashboard-heading">
+              <p class="card-label" data-i18n="snapshotTitle">Snapshot</p>
+              <h3 id="hero-dashboard-heading" class="card-title" data-i18n="dashboardTitle">
+                Mini dashboard profilo
+              </h3>
+              <div class="hero-dashboard__stats">
+                <div class="hero-dashboard__stat">
+                  <span id="hero-metric-years" class="hero-dashboard__value">15+</span>
+                  <span class="hero-dashboard__label" data-i18n="snapshotYearsLabel">Anni esperienza</span>
+                </div>
+                <div class="hero-dashboard__stat">
+                  <span id="hero-metric-featured" class="hero-dashboard__value">3</span>
+                  <span class="hero-dashboard__label" data-i18n="snapshotProjectsLabel">Progetti in evidenza</span>
+                </div>
+                <div class="hero-dashboard__stat">
+                  <span id="hero-metric-dashboards" class="hero-dashboard__value">2</span>
+                  <span class="hero-dashboard__label" data-i18n="snapshotDashboardsLabel">Dashboard live</span>
+                </div>
+                <div class="hero-dashboard__stat">
+                  <span id="hero-metric-certs" class="hero-dashboard__value">7</span>
+                  <span class="hero-dashboard__label" data-i18n="snapshotCertsLabel">Certificazioni</span>
+                </div>
+              </div>
+              <div class="hero-dashboard__mix-head">
+                <p class="card-label" data-i18n="toolMixLabel">Stack nei progetti</p>
+              </div>
+              <div id="hero-tool-mix" class="hero-dashboard__mix"></div>
+            </article>
+
             <article class="card soft-card">
               <p class="card-label" data-i18n="currentFocus">Ruolo attuale</p>
               <h3 class="card-title" data-i18n="currentFocusTitle">
@@ -95,12 +138,6 @@
               <p class="card-label" data-i18n="edge">Punto di forza</p>
               <p class="card-copy" data-i18n="edgeText">Un profilo ibrido che combina analytics, visual design, ottimizzazione dei processi, esperienza nei media data e comunicazione efficace per reporting orientato alle decisioni.</p>
             </article>
-
-            <article class="card soft-card">
-              <p class="card-label" data-i18n="analysisLabel">TIPO DI ANALISI</p>
-              <p class="card-copy" data-i18n="analysisText">Analisi dati e dashboard progettate per trasformare dataset complessi in insight chiari e decisioni misurabili.</p>
-            </article>
-
           </div>
         </section>
 
@@ -168,6 +205,8 @@
               >Lavori selezionati</h3>
             </div>
           </div>
+
+          <div id="project-signal-strip" class="signal-strip" aria-label="Project signals"></div>
 
           <div class="section-block">
             <p class="section-label" data-i18n="featured">
