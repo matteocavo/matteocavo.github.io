@@ -6,7 +6,7 @@ let hasMotionSetup = false;
 function setupMotionEffects() {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const targets = document.querySelectorAll(
-    ".section-head, .section-block, .auto-projects-head, .hero .hero-copy, .hero .btn, .hero .soft-card, .about-intro > *, .about-copy p, #value-section > *, #contact > *, #skills-section > *, .featured-card, .repo-card, .link-card, .panel-card, .pill, .cert-item"
+    ".section, .hero .hero-copy, .hero .btn, .hero .soft-card, .about-profile, .featured-card, .repo-card, .link-card, .panel-card, .pill, .cert-item"
   );
 
   if (reduceMotion) {
@@ -27,7 +27,7 @@ function setupMotionEffects() {
           }
         });
       },
-      { threshold: 0.08, rootMargin: "0px 0px 10% 0px" }
+      { threshold: 0.16, rootMargin: "0px 0px -6% 0px" }
     );
   }
 
@@ -37,9 +37,8 @@ function setupMotionEffects() {
       el.style.setProperty("--reveal-delay", (index % 6) * 45 + "ms");
     }
 
-    revealObserver.observe(el);
     if (!el.classList.contains("in-view")) {
-      el.classList.remove("in-view");
+      revealObserver.observe(el);
     }
   });
 }
