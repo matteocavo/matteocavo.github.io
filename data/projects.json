@@ -1,5 +1,32 @@
 [
   {
+    "id": "315dbce0-1b30-80a8-bc62-f13d508d1f13",
+    "title": "Openbdap saldi storico stato",
+    "businessGoal": "Trasformare le domande civiche sui conti dello Stato in risposte dati riproducibili: capire se il deficit e strutturale, quanto pesano spesa corrente, ricorso al mercato e interessi, e collegare ogni insight a notebook pubblici e verificabili.",
+    "status": "Portfolio Ready",
+    "tools": [
+      "Python",
+      "Python (Pandas)",
+      "GitHub",
+      "EDA",
+      "Pipeline",
+      "KPI engineering"
+    ],
+    "keyKPIs": [
+      "Deficit strutturale (22/22)",
+      "Spesa corrente media (64.0%)",
+      "Spesa in conto capitale media (8.5%)",
+      "Interessi > avanzo primario (22/22)",
+      "Ricorso al mercato (22/22)"
+    ],
+    "github": "https://github.com/dataciviclab/openbdap-saldi-storico-stato",
+    "dashboard": "https://github.com/dataciviclab/openbdap-saldi-storico-stato/discussions",
+    "dataset": "OpenBDAP - Rendiconto Pubblicato, Serie storica Saldi (2003-2024); OpenBDAP - Spese per Missione, Programma e Macroaggregato (2008-2024). Livello: Stato centrale.",
+    "date": "2026-03-13",
+    "notes": "Al 13 marzo 2026 il repo e sostanzialmente chiuso come legacy-active / stable. Il filone piu forte e quello dei saldi storici: 6 discussion mappate, 4 notebook importati, 2 follow-up lasciati aperti intenzionalmente.",
+    "image": "https://matteocavo.github.io/images/openbdap.png"
+  },
+  {
     "id": "314dbce0-1b30-8075-bbaa-f648f7a7ce51",
     "title": "Streaming Competitive Benchmark",
     "businessGoal": "Build a multi-market competitive intelligence model for streaming catalog benchmarking.",
