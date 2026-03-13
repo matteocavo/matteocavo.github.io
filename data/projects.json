@@ -2,7 +2,7 @@
   {
     "id": "315dbce0-1b30-80a8-bc62-f13d508d1f13",
     "title": "Openbdap saldi storico stato",
-    "businessGoal": "Trasformare le domande civiche sui conti dello Stato in risposte dati riproducibili: capire se il deficit e strutturale, quanto pesano spesa corrente, ricorso al mercato e interessi, e collegare ogni insight a notebook pubblici e verificabili.",
+    "businessGoal": "Verificare se il deficit dello Stato è strutturale e quanto pesano spesa corrente, mercato e interessi. Insight riproducibili da dati pubblici.",
     "status": "Portfolio Ready",
     "tools": [
       "Python",
