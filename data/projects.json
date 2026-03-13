@@ -20,10 +20,10 @@
       "Ricorso al mercato (22/22)"
     ],
     "github": "https://github.com/dataciviclab/openbdap-saldi-storico-stato",
-    "dashboard": "https://github.com/dataciviclab/openbdap-saldi-storico-stato/discussions",
+    "dashboard": null,
     "dataset": "OpenBDAP - Rendiconto Pubblicato, Serie storica Saldi (2003-2024); OpenBDAP - Spese per Missione, Programma e Macroaggregato (2008-2024). Livello: Stato centrale.",
     "date": "2026-03-13",
-    "notes": "Al 13 marzo 2026 il repo e sostanzialmente chiuso come legacy-active / stable. Il filone piu forte e quello dei saldi storici: 6 discussion mappate, 4 notebook importati, 2 follow-up lasciati aperti intenzionalmente.",
+    "notes": "Al 13 marzo 2026 il repo e sostanzialmente chiuso come legacy-active / stable. Il filone più forte e quello dei saldi storici: 6 discussion mappate, 4 notebook importati, 2 follow-up lasciati aperti intenzionalmente.",
     "image": "https://matteocavo.github.io/images/openbdap.png"
   },
   {
