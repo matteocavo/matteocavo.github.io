@@ -1,5 +1,25 @@
 [
   {
+    "id": "323dbce0-1b30-81a6-87d5-da5f28be4a62",
+    "title": "Quaero",
+    "businessGoal": "Framework Python question-driven che automatizza la conversione di dataset grezzi in analytical marts semantici, metriche inferite e output pronti per dashboard BI. Core workflow: Dataset → Question → Profiling → Cleaning → Semantic Engine → Mart Builder → Dashboard.",
+    "status": "Portfolio Ready",
+    "tools": [
+      "Python",
+      "Engineering",
+      "KPI",
+      "GitHub",
+      "Python (Pandas)"
+    ],
+    "keyKPIs": [],
+    "github": "https://github.com/matteocavo/Quaero",
+    "dashboard": null,
+    "dataset": "CSV, Parquet (locale o URL remoto) — agnostico rispetto al dominio. Demo: release_impact_sample.csv, global_economic_indicators (multi-dataset).",
+    "date": "2026-03-14",
+    "notes": "Framework Python per automazione pipeline analytics. Architettura raw → staging → (integrated) → marts con semantic naming convention. Anomaly detection, dashboard suggestions e final_summary_report.json automatici. Cover URL da inserire dopo approvazione immagine.",
+    "image": "https://opengraph.githubassets.com/1/matteocavo/Quaero"
+  },
+  {
     "id": "315dbce0-1b30-80a8-bc62-f13d508d1f13",
     "title": "Openbdap saldi storico stato",
     "businessGoal": "Verificare se il deficit dello Stato è strutturale e quanto pesano spesa corrente, mercato e interessi. Insight riproducibili da dati pubblici.",
