@@ -225,6 +225,10 @@ async function renderFeatured(lang) {
       const lastCommit = repoMeta && repoMeta.pushedAt
         ? updatedLabel + " " + new Date(repoMeta.pushedAt).toLocaleDateString(locale)
         : null;
+      const isInternalPage = p.dashboard && p.dashboard.endsWith(".html");
+      const projectDashboardCta = isInternalPage
+        ? (lang === "it" ? "Esplora progetto" : "Explore project")
+        : dashboardCta;
       container.appendChild(window.createFeaturedCard({
         title: p.title,
         description: p.businessGoal,
@@ -233,7 +237,7 @@ async function renderFeatured(lang) {
         link: p.github || "#",
         cta: cta,
         dashboard: p.dashboard || null,
-        dashboardCta: dashboardCta,
+        dashboardCta: projectDashboardCta,
         stars: repoMeta ? repoMeta.stars : null,
         lastCommit: lastCommit,
         repoStateLabel: repoMeta

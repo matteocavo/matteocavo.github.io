@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quaero | Matteo Cavo</title>
+  <meta name="description" content="Quaero — A question-driven analytics pipeline that automates profiling, cleaning, semantic inference and mart generation from raw datasets." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <style>
+    :root {
+      --bg: #1e1f2a; --card: #343543; --card2: #2a2b3a;
+      --border: rgba(255,255,255,0.08); --border-strong: rgba(255,255,255,0.14);
+      --text: #f4f4f5; --text-soft: #d4d4dc; --text-muted: #a1a1aa; --text-dim: #7b7b87;
+      --accent: #79e9ff; --radius: 24px; --radius-sm: 14px; --max: 900px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+    .page { max-width: var(--max); margin: 0 auto; padding: 48px 24px 96px; }
+
+    .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-muted); text-decoration: none; margin-bottom: 36px; opacity: .75; transition: opacity .15s; }
+    .back-link:hover { opacity: 1; }
+
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; background: rgba(74,222,128,.1); color: #4ade80; border: 1px solid rgba(74,222,128,.25); margin-bottom: 16px; }
+    .project-title { font-size: clamp(28px,5vw,44px); font-weight: 800; letter-spacing: -.03em; line-height: 1.1; margin-bottom: 8px; }
+    .project-latin { font-size: 13px; color: var(--text-dim); font-style: italic; margin-bottom: 20px; }
+    .project-desc { font-size: 16px; color: var(--text-soft); line-height: 1.7; max-width: 680px; margin-bottom: 28px; }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .tag { font-size: 12px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--border-strong); color: var(--text-soft); background: rgba(255,255,255,.04); }
+
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 56px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; font-size: 14px; font-weight: 500; text-decoration: none; transition: opacity .15s; }
+    .btn:hover { opacity: .82; }
+    .btn-primary { background: #fff; color: #111; }
+    .btn-secondary { background: rgba(255,255,255,.07); color: var(--text); border: 1px solid var(--border-strong); }
+
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit,minmax(130px,1fr)); gap: 12px; margin-bottom: 56px; }
+    .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px 20px; }
+    .stat-value { font-size: 28px; font-weight: 800; letter-spacing: -.02em; color: var(--accent); }
+    .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+    .section { margin-bottom: 56px; }
+    .section-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
+    .section-title { font-size: 22px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 16px; line-height: 1.25; }
+    .section-body { font-size: 15px; color: var(--text-soft); line-height: 1.75; max-width: 720px; }
+    .section-body p { margin-bottom: 12px; }
+    .section-body p:last-child { margin-bottom: 0; }
+
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    .steps-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: 12px; margin-top: 20px; }
+    .step-card { background: var(--card2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px 20px; display: flex; gap: 14px; align-items: flex-start; }
+    .step-num { font-size: 11px; font-weight: 700; color: var(--accent); background: rgba(121,233,255,.1); border-radius: 6px; padding: 2px 8px; flex-shrink: 0; margin-top: 2px; }
+    .step-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .step-desc { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+
+    .inference-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13px; border-radius: var(--radius-sm); overflow: hidden; }
+    .inference-table th { background: var(--card); padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border-strong); }
+    .inference-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-soft); vertical-align: top; }
+    .inference-table tr:last-child td { border-bottom: none; }
+    .inference-table code, .section-body code { font-family: 'SF Mono','Fira Code',monospace; background: rgba(255,255,255,.07); padding: 2px 6px; border-radius: 4px; font-size: 12px; color: var(--accent); }
+
+    .code-block { background: #12131c; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 20px 24px; margin-top: 16px; font-family: 'SF Mono','Fira Code',monospace; font-size: 13px; color: #a5f3c4; line-height: 1.7; overflow-x: auto; }
+    .code-block .comment { color: #4b5563; }
+    .code-block .cmd { color: #6ee7b7; }
+    .code-block .flag { color: #93c5fd; }
+
+    .slides-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; }
+    .slides-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .slide-item { background: var(--card2); border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+    .slide-item img { width: 100%; display: block; border-bottom: 1px solid var(--border); }
+    .slide-caption { padding: 12px 16px; font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
+
+    .modes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+    @media (max-width: 540px) { .modes-grid { grid-template-columns: 1fr; } }
+    .mode-card { background: var(--card2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; }
+    .mode-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+    .mode-list { list-style: none; }
+    .mode-list li { font-size: 13px; color: var(--text-muted); padding: 4px 0; display: flex; gap: 8px; align-items: flex-start; }
+    .mode-list li::before { content: "→"; color: var(--accent); flex-shrink: 0; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <a href="index.html" class="back-link" id="back-link">← All projects</a>
+
+  <span class="badge">Open Source</span>
+  <h1 class="project-title">Quaero</h1>
+  <p class="project-latin">quaerō · Latin · to seek · to ask · to inquire</p>
+  <p class="project-desc" id="project-desc">A question-driven analytics pipeline that automates data profiling, cleaning, semantic inference, and mart generation — from raw datasets to BI-ready Parquet outputs.</p>
+
+  <div class="tag-row">
+    <span class="tag">Python 3.11+</span><span class="tag">Pandas</span><span class="tag">Parquet</span>
+    <span class="tag">Power BI</span><span class="tag">Tableau</span><span class="tag">Looker Studio</span>
+    <span class="tag">CLI</span><span class="tag">MIT License</span>
+  </div>
+
+  <div class="cta-row">
+    <a href="https://github.com/matteocavo/Quaero" target="_blank" rel="noreferrer" class="btn btn-primary">↗ GitHub</a>
+    <a href="#slides" class="btn btn-secondary" id="cta-slides">▾ Architecture slides</a>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-value">8</div><div class="stat-label" data-k="statSteps">Pipeline steps</div></div>
+    <div class="stat-card"><div class="stat-value">~80%</div><div class="stat-label" data-k="statInference">Auto-inference rate</div></div>
+    <div class="stat-card"><div class="stat-value">3</div><div class="stat-label" data-k="statBI">BI tools supported</div></div>
+    <div class="stat-card"><div class="stat-value">MIT</div><div class="stat-label" data-k="statLicense">License</div></div>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <p class="section-eyebrow" data-k="whyEyebrow">The Problem</p>
+    <h2 class="section-title" data-k="whyTitle">Data analysts spend most of their time preparing data. Not analyzing it.</h2>
+    <div class="section-body">
+      <p data-k="whyP1">Messy exports, inconsistent schemas, missing documentation, manual cleaning — the same deterministic steps repeated across every project. By the time actual analysis begins, half the working session is already gone.</p>
+      <p data-k="whyP2">Quaero automates the deterministic part. The creative part — metric selection, business framing, interpretation — stays human.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <p class="section-eyebrow" data-k="paradigmEyebrow">The Approach</p>
+    <h2 class="section-title" data-k="paradigmTitle">Start with the question, not the schema.</h2>
+    <div class="section-body">
+      <p data-k="paradigmP1">You provide a raw dataset (CSV, Parquet, or URL) and a business question in plain language. Quaero uses that question to guide every downstream decision — which fields become metrics, which become dimensions, how the mart is structured, what the README says.</p>
+      <p data-k="paradigmP2">Raw dataset + business question = semantic metrics + analytical marts. Manual data wrangling drops out of the picture entirely.</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <p class="section-eyebrow" data-k="pipelineEyebrow">Architecture</p>
+    <h2 class="section-title" data-k="pipelineTitle">An 8-step automated refinery</h2>
+    <div class="steps-grid">
+      <div class="step-card"><span class="step-num">01</span><div><div class="step-title" data-k="s1t">Dataset Profiling</div><div class="step-desc" data-k="s1d">Schema detection, null rates, cardinality analysis.</div></div></div>
+      <div class="step-card"><span class="step-num">02</span><div><div class="step-title" data-k="s2t">Data Cleaning</div><div class="step-desc" data-k="s2d">Type normalization, deduplication, standardization.</div></div></div>
+      <div class="step-card"><span class="step-num">03</span><div><div class="step-title" data-k="s3t">Semantic Inference</div><div class="step-desc" data-k="s3d">Metric and dimension detection guided by the business question.</div></div></div>
+      <div class="step-card"><span class="step-num">04</span><div><div class="step-title" data-k="s4t">Mart Generation</div><div class="step-desc" data-k="s4d">Structured analytical tables ready for BI tools.</div></div></div>
+      <div class="step-card"><span class="step-num">05</span><div><div class="step-title" data-k="s5t">Metadata Creation</div><div class="step-desc" data-k="s5d">Field-level descriptions and coverage information.</div></div></div>
+      <div class="step-card"><span class="step-num">06</span><div><div class="step-title" data-k="s6t">Anomaly Detection</div><div class="step-desc" data-k="s6d">Flags outliers before they reach the dashboard.</div></div></div>
+      <div class="step-card"><span class="step-num">07</span><div><div class="step-title" data-k="s7t">Dashboard Suggestions</div><div class="step-desc" data-k="s7d">Recommended visualizations based on mart structure.</div></div></div>
+      <div class="step-card"><span class="step-num">08</span><div><div class="step-title" data-k="s8t">BI-Ready Output</div><div class="step-desc" data-k="s8d">Parquet files compatible with Power BI, Tableau, Looker Studio.</div></div></div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <p class="section-eyebrow" data-k="engineEyebrow">Semantic Engine</p>
+    <h2 class="section-title" data-k="engineTitle">Deterministic inference — no configuration needed.</h2>
+    <div class="section-body"><p data-k="engineP1">The engine parses the business question and maps it to three components. Example: <em>"What is the average trip distance by location?"</em></p></div>
+    <table class="inference-table">
+      <thead><tr><th data-k="thComp">Component</th><th data-k="thHow">How it's inferred</th><th data-k="thEx">Example</th></tr></thead>
+      <tbody>
+        <tr><td data-k="tdAgg">Aggregation Intent</td><td data-k="tdAggH">Keywords: average, total, highest, count…</td><td><code>average</code></td></tr>
+        <tr><td data-k="tdMet">Metric Column</td><td data-k="tdMetH">Deterministically from numeric fields</td><td><code>trip_distance</code></td></tr>
+        <tr><td data-k="tdDim">Dimension Column</td><td data-k="tdDimH">From categorical / ID fields</td><td><code>location</code></td></tr>
+      </tbody>
+    </table>
+    <div class="section-body" style="margin-top:16px"><p data-k="engineP2">Works ~80% of the time without configuration. For the remaining 20%, manual overrides <code>--metric-column</code> and <code>--dimension-column</code> are available.</p></div>
+  </div>
+
+  <div class="section">
+    <p class="section-eyebrow" data-k="namEyebrow">Naming Convention</p>
+    <h2 class="section-title" data-k="namTitle">Every output field is self-descriptive.</h2>
+    <table class="inference-table">
+      <thead><tr><th data-k="thType">Type</th><th data-k="thFmt">Format</th><th data-k="thSam">Example</th></tr></thead>
+      <tbody>
+        <tr><td data-k="tdPhy">Physical Metrics</td><td><code>&lt;aggregation&gt;_&lt;source_column&gt;</code></td><td><code>avg_trip_distance</code></td></tr>
+        <tr><td data-k="tdCnt">Row Counts</td><td><code>record_count</code></td><td><code>record_count</code></td></tr>
+        <tr><td data-k="tdTot">Total Values</td><td><code>total_&lt;source_column&gt;</code></td><td><code>total_fare_amount</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <p class="section-eyebrow" data-k="wsEyebrow">Project Structure</p>
+    <h2 class="section-title" data-k="wsTitle">Every project is isolated and portable.</h2>
+    <div class="code-block">
+<span class="comment"># projects/&lt;normalized_source_name&gt;/</span>
+├── <span class="cmd">raw/</span>          <span class="comment"># original files, never modified</span>
+├── <span class="cmd">staging/</span>      <span class="comment"># intermediate cleaned data</span>
+├── <span class="cmd">marts/</span>        <span class="comment"># final Parquet tables for BI</span>
+├── <span class="cmd">metadata/</span>     <span class="comment"># field descriptions, README.md</span>
+└── <span class="cmd">final_summary_report.json</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <p class="section-eyebrow" data-k="modEyebrow">Execution Modes</p>
+    <h2 class="section-title" data-k="modTitle">CLI for exploration. Config-driven for production.</h2>
+    <div class="modes-grid">
+      <div class="mode-card">
+        <div class="mode-title" data-k="modCLI">CLI Mode</div>
+        <ul class="mode-list">
+          <li data-k="cli1">Command-line flags</li>
+          <li data-k="cli2">Single datasets</li>
+          <li data-k="cli3">Quick, one-off inference</li>
+          <li data-k="cli4">Rapid prototyping</li>
+        </ul>
+      </div>
+      <div class="mode-card">
+        <div class="mode-title" data-k="modCFG">Config-Driven Mode</div>
+        <ul class="mode-list">
+          <li><code>project_config.json</code></li>
+          <li data-k="cfg2">Multi-dataset projects</li>
+          <li data-k="cfg3">Question guides all metadata</li>
+          <li data-k="cfg4">Production-grade pipelines</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <p class="section-eyebrow" data-k="startEyebrow">Getting Started</p>
+    <h2 class="section-title" data-k="startTitle">Three commands to get running.</h2>
+    <div class="code-block">
+<span class="cmd">python -m venv venv</span>
+<span class="cmd">source venv/bin/activate</span>   <span class="comment"># Windows: venv\Scripts\activate</span>
+<span class="cmd">pip install -r requirements.txt</span>
+
+<span class="comment"># Run with a question</span>
+<span class="cmd">python -m quaero</span> <span class="flag">--dataset</span> data/myfile.csv <span class="flag">--question</span> <span class="comment">"What is the average revenue by region?"</span>
+    </div>
+  </div>
+
+  <hr>
+
+  <div id="slides">
+    <p class="slides-eyebrow" data-k="slidesEyebrow">Architecture Deck — 13 slides</p>
+    <div class="slides-grid">
+      <div class="slide-item"><img src="assets/quaero/slide_01.png" alt="Quaero overview" loading="lazy"><div class="slide-caption"><span data-k="sl01">Overview: The Question-Driven Analytics Pipeline</span><span>01 / 13</span></div></div>
+      <div class="slide-item"><img src="assets/quaero/slide_02.png" alt="The analytics bottleneck" loading="lazy"><div class="slide-caption"><span data-k="sl02">The Analytics Bottleneck</span><span>02 / 13</span></div></div>
+      <div class="slide-item"><img src="assets/quaero/slide_03.png" alt="Paradigm shift" loading="lazy"><div class="slide-caption"><span data-k="sl03">The Paradigm Shift: Question-Driven Analytics</span><span>03 / 13</span></div></div>
+      <div class="slide-item"><img src="assets/quaero/slide_04.png" alt="8-step pipeline" loading="lazy"><div class="slide-caption"><span data-k="sl04">The Automated Refinery: 8-Step Pipeline</span><span>04 / 13</span></div></div>
+      <div class="slide-item"><img src="assets/quaero/slide_05.png" alt="Semantic inference engine" loading="lazy"><div class="slide-caption"><span data-k="sl05">The Engine: Deterministic Semantic Inference</span><span>05 / 13</span></div></div>
+      <div class="slide-item"><img src="assets/quaero/slide_06.png" alt="Standardizing the semantic layer" loading="lazy"><div class="slide-caption"><span data-k="sl06">Standardizing the Semantic Layer</span><span>06 / 13</span></div></div>
+      <div class="slide-item"><img src="assets/quaero/slide_07.png" alt="Project workspace anatomy" loading="lazy"><div class="slide-caption"><span data-k="sl07">Anatomy of a Project Workspace</span><span>07 / 13</span></div></div>
+      <div class="slide-item"><img src="assets/quaero/slide_08.png" alt="Dashboard-ready outputs" loading="lazy"><div class="slide-caption"><span data-k="sl08">Dashboard-Ready Outputs</span><span>08 / 13</span></div></div>
+      <div class="slide-item"><img src="assets/quaero/slide_09.png" alt="Automated analytics documentation" loading="lazy"><div class="slide-caption"><span data-k="sl09">Automated Analytics Documentation</span><span>09 / 13</span></div></div>
+      <div class="slide-item"><img src="assets/quaero/slide_10.png" alt="CLI vs config-driven" loading="lazy"><div class="slide-caption"><span data-k="sl10">Execution Matrix: CLI vs. Config-Driven</span><span>10 / 13</span></div></div>
+      <div class="slide-item"><img src="assets/quaero/slide_11.png" alt="Scalability" loading="lazy"><div class="slide-caption"><span data-k="sl11">Scalability & External Dataset Management</span><span>11 / 13</span></div></div>
+      <div class="slide-item"><img src="assets/quaero/slide_12.png" alt="Complete architecture" loading="lazy"><div class="slide-caption"><span data-k="sl12">The Complete Analytics Architecture</span><span>12 / 13</span></div></div>
+      <div class="slide-item"><img src="assets/quaero/slide_13.png" alt="Getting started" loading="lazy"><div class="slide-caption"><span data-k="sl13">From Raw Data to Insights in Seconds</span><span>13 / 13</span></div></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const T = {
+  en: {
+    backLink:"← All projects", projectDesc:"A question-driven analytics pipeline that automates data profiling, cleaning, semantic inference, and mart generation — from raw datasets to BI-ready Parquet outputs.", ctaSlides:"▾ Architecture slides",
+    statSteps:"Pipeline steps", statInference:"Auto-inference rate", statBI:"BI tools supported", statLicense:"License",
+    whyEyebrow:"The Problem", whyTitle:"Data analysts spend most of their time preparing data. Not analyzing it.",
+    whyP1:"Messy exports, inconsistent schemas, missing documentation, manual cleaning — the same deterministic steps repeated across every project. By the time actual analysis begins, half the working session is already gone.",
+    whyP2:"Quaero automates the deterministic part. The creative part — metric selection, business framing, interpretation — stays human.",
+    paradigmEyebrow:"The Approach", paradigmTitle:"Start with the question, not the schema.",
+    paradigmP1:"You provide a raw dataset (CSV, Parquet, or URL) and a business question in plain language. Quaero uses that question to guide every downstream decision — which fields become metrics, which become dimensions, how the mart is structured, what the README says.",
+    paradigmP2:"Raw dataset + business question = semantic metrics + analytical marts. Manual data wrangling drops out of the picture entirely.",
+    pipelineEyebrow:"Architecture", pipelineTitle:"An 8-step automated refinery",
+    s1t:"Dataset Profiling", s1d:"Schema detection, null rates, cardinality analysis.",
+    s2t:"Data Cleaning", s2d:"Type normalization, deduplication, standardization.",
+    s3t:"Semantic Inference", s3d:"Metric and dimension detection guided by the business question.",
+    s4t:"Mart Generation", s4d:"Structured analytical tables ready for BI tools.",
+    s5t:"Metadata Creation", s5d:"Field-level descriptions and coverage information.",
+    s6t:"Anomaly Detection", s6d:"Flags outliers before they reach the dashboard.",
+    s7t:"Dashboard Suggestions", s7d:"Recommended visualizations based on mart structure.",
+    s8t:"BI-Ready Output", s8d:"Parquet files compatible with Power BI, Tableau, Looker Studio.",
+    engineEyebrow:"Semantic Engine", engineTitle:"Deterministic inference — no configuration needed.",
+    engineP1:'The engine parses the business question and maps it to three components. Example: <em>"What is the average trip distance by location?"</em>',
+    thComp:"Component", thHow:"How it's inferred", thEx:"Example",
+    tdAgg:"Aggregation Intent", tdAggH:"Keywords: average, total, highest, count…",
+    tdMet:"Metric Column", tdMetH:"Deterministically from numeric fields",
+    tdDim:"Dimension Column", tdDimH:"From categorical / ID fields",
+    engineP2:"Works ~80% of the time without configuration. For the remaining 20%, manual overrides <code>--metric-column</code> and <code>--dimension-column</code> are available.",
+    namEyebrow:"Naming Convention", namTitle:"Every output field is self-descriptive.",
+    thType:"Type", thFmt:"Format", thSam:"Example",
+    tdPhy:"Physical Metrics", tdCnt:"Row Counts", tdTot:"Total Values",
+    wsEyebrow:"Project Structure", wsTitle:"Every project is isolated and portable.",
+    modEyebrow:"Execution Modes", modTitle:"CLI for exploration. Config-driven for production.",
+    modCLI:"CLI Mode", modCFG:"Config-Driven Mode",
+    cli1:"Command-line flags", cli2:"Single datasets", cli3:"Quick, one-off inference", cli4:"Rapid prototyping",
+    cfg2:"Multi-dataset projects", cfg3:"Question guides all metadata", cfg4:"Production-grade pipelines",
+    startEyebrow:"Getting Started", startTitle:"Three commands to get running.",
+    slidesEyebrow:"Architecture Deck — 13 slides",
+    sl01:"Overview: The Question-Driven Analytics Pipeline", sl02:"The Analytics Bottleneck",
+    sl03:"The Paradigm Shift: Question-Driven Analytics", sl04:"The Automated Refinery: 8-Step Pipeline",
+    sl05:"The Engine: Deterministic Semantic Inference", sl06:"Standardizing the Semantic Layer",
+    sl07:"Anatomy of a Project Workspace", sl08:"Dashboard-Ready Outputs",
+    sl09:"Automated Analytics Documentation", sl10:"Execution Matrix: CLI vs. Config-Driven",
+    sl11:"Scalability & External Dataset Management", sl12:"The Complete Analytics Architecture",
+    sl13:"From Raw Data to Insights in Seconds"
+  },
+  it: {
+    backLink:"← Tutti i progetti", projectDesc:"Una pipeline analytics question-driven che automatizza profiling, cleaning, semantic inference e generazione di mart — dai dataset grezzi a output Parquet pronti per BI.", ctaSlides:"▾ Slide architettura",
+    statSteps:"Step della pipeline", statInference:"Tasso di auto-inferenza", statBI:"Tool BI supportati", statLicense:"Licenza",
+    whyEyebrow:"Il Problema", whyTitle:"I data analyst trascorrono la maggior parte del tempo a preparare i dati. Non ad analizzarli.",
+    whyP1:"Export disordinati, schemi inconsistenti, documentazione mancante, cleaning manuale — gli stessi step deterministici ripetuti in ogni progetto. Quando l'analisi vera inizia, metà sessione è già andata.",
+    whyP2:"Quaero automatizza la parte deterministica. La parte creativa — selezione delle metriche, framing di business, interpretazione — rimane umana.",
+    paradigmEyebrow:"L'Approccio", paradigmTitle:"Inizia dalla domanda, non dallo schema.",
+    paradigmP1:"Fornisci un dataset grezzo (CSV, Parquet o URL) e una domanda di business in linguaggio naturale. Quaero usa quella domanda per guidare ogni decisione a valle — quali campi diventano metriche, quali dimensioni, come si struttura il mart, cosa dice il README.",
+    paradigmP2:"Dataset grezzo + domanda di business = metriche semantiche + mart analitici. Il data wrangling manuale esce completamente dal quadro.",
+    pipelineEyebrow:"Architettura", pipelineTitle:"Una raffineria automatizzata in 8 step",
+    s1t:"Dataset Profiling", s1d:"Rilevazione schema, null rate, analisi cardinalità.",
+    s2t:"Data Cleaning", s2d:"Normalizzazione tipi, deduplicazione, standardizzazione.",
+    s3t:"Semantic Inference", s3d:"Rilevazione metriche e dimensioni guidata dalla domanda di business.",
+    s4t:"Mart Generation", s4d:"Tabelle analitiche strutturate pronte per i tool BI.",
+    s5t:"Metadata Creation", s5d:"Descrizioni a livello di campo e informazioni di copertura.",
+    s6t:"Anomaly Detection", s6d:"Segnala outlier prima che raggiungano la dashboard.",
+    s7t:"Dashboard Suggestions", s7d:"Visualizzazioni consigliate basate sulla struttura del mart.",
+    s8t:"Output BI-Ready", s8d:"File Parquet compatibili con Power BI, Tableau, Looker Studio.",
+    engineEyebrow:"Motore Semantico", engineTitle:"Inferenza deterministica — zero configurazione.",
+    engineP1:'Il motore analizza la domanda di business e la mappa su tre componenti. Esempio: <em>"Qual è la distanza media del viaggio per location?"</em>',
+    thComp:"Componente", thHow:"Come viene inferito", thEx:"Esempio",
+    tdAgg:"Aggregation Intent", tdAggH:"Parole chiave: average, total, highest, count…",
+    tdMet:"Metric Column", tdMetH:"Deterministicamente dai campi numerici",
+    tdDim:"Dimension Column", tdDimH:"Da campi categorici / ID",
+    engineP2:"Funziona ~80% delle volte senza configurazione. Per il restante 20% sono disponibili gli override manuali <code>--metric-column</code> e <code>--dimension-column</code>.",
+    namEyebrow:"Naming Convention", namTitle:"Ogni campo di output è auto-descrittivo.",
+    thType:"Tipo", thFmt:"Formato", thSam:"Esempio",
+    tdPhy:"Metriche fisiche", tdCnt:"Conteggi righe", tdTot:"Valori totali",
+    wsEyebrow:"Struttura del Progetto", wsTitle:"Ogni progetto è isolato e portabile.",
+    modEyebrow:"Modalità di Esecuzione", modTitle:"CLI per l'esplorazione. Config-driven per la produzione.",
+    modCLI:"Modalità CLI", modCFG:"Modalità Config-Driven",
+    cli1:"Flag da riga di comando", cli2:"Dataset singoli", cli3:"Inferenza rapida una-tantum", cli4:"Prototipazione veloce",
+    cfg2:"Progetti multi-dataset", cfg3:"La domanda guida tutti i metadati", cfg4:"Pipeline production-grade",
+    startEyebrow:"Per Iniziare", startTitle:"Tre comandi per partire.",
+    slidesEyebrow:"Architecture Deck — 13 slide",
+    sl01:"Panoramica: La Pipeline Analytics Question-Driven", sl02:"Il Collo di Bottiglia dell'Analytics",
+    sl03:"Il Cambio di Paradigma: Question-Driven Analytics", sl04:"La Raffineria Automatizzata: Pipeline in 8 Step",
+    sl05:"Il Motore: Semantic Inference Deterministica", sl06:"Standardizzare il Semantic Layer",
+    sl07:"Anatomia di un Project Workspace", sl08:"Output Dashboard-Ready",
+    sl09:"Documentazione Analytics Automatizzata", sl10:"Matrice di Esecuzione: CLI vs. Config-Driven",
+    sl11:"Scalabilità e Gestione Dataset Esterni", sl12:"L'Architettura Analytics Completa",
+    sl13:"Dai Dati Grezzi agli Insight in Secondi"
+  }
+};
+
+function applyLang(lang) {
+  const t = T[lang] || T.en;
+  document.documentElement.lang = lang;
+  document.getElementById("back-link").textContent = t.backLink;
+  document.getElementById("project-desc").textContent = t.projectDesc;
+  document.getElementById("cta-slides").textContent = t.ctaSlides;
+  document.querySelectorAll("[data-k]").forEach(function(el) {
+    var v = t[el.dataset.k];
+    if (v !== undefined) el.innerHTML = v;
+  });
+}
+
+var lang = localStorage.getItem("portfolio-lang") || "en";
+applyLang(lang);
+</script>
+</body>
+</html>

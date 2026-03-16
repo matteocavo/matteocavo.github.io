@@ -1,6 +1,15 @@
 window.FEATURED_PROJECTS = {
   it: [
     {
+      title: "Quaero — Question-Driven Analytics Pipeline",
+      description: "Pipeline analytics open source che automatizza profiling, cleaning, semantic inference e generazione di mart a partire da una domanda di business. Output pronti per Power BI, Tableau e Looker.",
+      link: "https://github.com/matteocavo/Quaero",
+      image: "images/quaero.png",
+      cta: "Vedi progetto",
+      dashboard: "quaero.html",
+      dashboardCta: "Esplora progetto"
+    },
+    {
       title: "Raccolta differenziata vs Rifiuti urbani (ISPRA 2020–2023)",
       description: "Dashboard Power BI su dati ISPRA per analizzare se i comuni che migliorano la raccolta differenziata aumentano o riducono i rifiuti urbani totali.",
       link: "https://github.com/dataciviclab/progetto-pilota",
@@ -23,6 +32,15 @@ window.FEATURED_PROJECTS = {
     }
   ],
   en: [
+    {
+      title: "Quaero — Question-Driven Analytics Pipeline",
+      description: "Open source analytics pipeline that automates profiling, cleaning, semantic inference and mart generation from a business question. BI-ready outputs for Power BI, Tableau and Looker.",
+      link: "https://github.com/matteocavo/Quaero",
+      image: "images/quaero.png",
+      cta: "View project",
+      dashboard: "quaero.html",
+      dashboardCta: "Explore project"
+    },
     {
       title: "Recycling vs Urban Waste (ISPRA 2020–2023)",
       description: "Power BI dashboard on ISPRA data analyzing whether municipalities that improve recycling rates also reduce or increase total urban waste.",

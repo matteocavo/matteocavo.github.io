@@ -70,8 +70,9 @@ window.createFeaturedCard = function createFeaturedCard(project) {
     ? `<a class="mini-btn" href="${linkHref}" target="_blank" rel="noreferrer">${project.cta}</a>`
     : `<span class="mini-btn" style="opacity:0.45; cursor:default;">${project.cta}</span>`;
 
+  const isInternalDashboard = project.dashboard && project.dashboard.endsWith(".html");
   const dashboardHtml = project.dashboard
-    ? `<a class="mini-btn mini-btn--accent" href="${project.dashboard}" target="_blank" rel="noreferrer">${project.dashboardCta}</a>`
+    ? `<a class="mini-btn mini-btn--accent" href="${project.dashboard}"${isInternalDashboard ? "" : ' target="_blank" rel="noreferrer"'}>${project.dashboardCta}</a>`
     : "";
 
   const tools = Array.isArray(project.tools) && project.tools.length
