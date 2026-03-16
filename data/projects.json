@@ -13,7 +13,7 @@
     ],
     "keyKPIs": [],
     "github": "https://github.com/matteocavo/Quaero",
-    "dashboard": "https://matteocavo.github.io/quaero.html",
+    "dashboard": null,
     "dataset": "CSV, Parquet (locale o URL remoto) — agnostico rispetto al dominio. Demo: release_impact_sample.csv, global_economic_indicators (multi-dataset).",
     "date": "2026-03-14",
     "notes": "Framework Python per automazione pipeline analytics. Architettura raw → staging → (integrated) → marts con semantic naming convention. Anomaly detection, dashboard suggestions e final_summary_report.json automatici. Core workflow: Dataset → Question → Profiling → Cleaning → Semantic Engine → Mart Builder → Dashboard.",
