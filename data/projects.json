@@ -2,7 +2,7 @@
   {
     "id": "323dbce0-1b30-81a6-87d5-da5f28be4a62",
     "title": "Quaero",
-    "businessGoal": "Framework Python question-driven che automatizza la conversione di dataset grezzi in analytical marts semantici, metriche inferite e output pronti per dashboard BI.",
+    "businessGoal": "Analytics pipeline framework that converts raw datasets into semantic analytical marts and dashboard-ready outputs. Question-driven: one business question drives profiling, cleaning, semantic inference, mart building, and metadata generation.",
     "status": "Portfolio Ready",
     "tools": [
       "Python",
@@ -14,9 +14,9 @@
     "keyKPIs": [],
     "github": "https://github.com/matteocavo/Quaero",
     "dashboard": "https://matteocavo.github.io/quaero.html",
-    "dataset": "CSV, Parquet (locale o URL remoto) — agnostico rispetto al dominio. Demo: release_impact_sample.csv, global_economic_indicators (multi-dataset).",
+    "dataset": "CSV, Parquet (local or direct URL) — domain-agnostic. Public demo: global_economic_indicators (World Bank GDP, inflation, unemployment).",
     "date": "2026-03-14",
-    "notes": "Framework Python per automazione pipeline analytics. Architettura raw → staging → (integrated) → marts con semantic naming convention. Anomaly detection, dashboard suggestions e final_summary_report.json automatici. Core workflow: Dataset → Question → Profiling → Cleaning → Semantic Engine → Mart Builder → Dashboard.",
+    "notes": "v0.2.1 — March 2026. Three entrypoints: CLI, importable module (run_pipeline), Streamlit UI. Optional LLM fallback via Claude 3 Haiku (deterministic-first). v0.2.1 patched CI/AppTest compatibility and is now the current stable public release. Public demo: global_economic_indicators (multi-dataset). Private BI projects live in separate repos.",
     "image": "https://matteocavo.github.io/images/quaero.png"
   },
   {
