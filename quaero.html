@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quaero | Matteo Cavo</title>
-  <meta name="description" content="Quaero v0.2.1 — A question-driven analytics pipeline that transforms raw datasets into analytical marts, semantic metrics and BI-ready outputs." />
+  <meta name="description" content="Quaero v0.2.2 — A question-driven analytics pipeline that transforms raw datasets into analytical marts, semantic metrics and BI-ready outputs." />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <style>
     :root {
@@ -112,7 +112,7 @@
 
   <div class="badge-row">
     <span class="badge">Open Source</span>
-    <span class="badge badge--version">v0.2.1</span>
+    <span class="badge badge--version">v0.2.2</span>
   </div>
   <h1 class="project-title">Quaero</h1>
   <p class="project-latin">quaerō · Latin · to seek · to ask · to inquire</p>
@@ -130,8 +130,8 @@
   </div>
 
   <div class="stats-row">
-    <div class="stat-card"><div class="stat-value">v0.2.1</div><div class="stat-label" data-k="statVersion">Current release</div></div>
-    <div class="stat-card"><div class="stat-value">86</div><div class="stat-label" data-k="statInference">CI passing</div></div>
+    <div class="stat-card"><div class="stat-value">v0.2.2</div><div class="stat-label" data-k="statVersion">Current release</div></div>
+    <div class="stat-card"><div class="stat-value">89</div><div class="stat-label" data-k="statInference">CI passing</div></div>
     <div class="stat-card"><div class="stat-value">3</div><div class="stat-label" data-k="statBI">BI tools supported</div></div>
     <div class="stat-card"><div class="stat-value">MIT</div><div class="stat-label" data-k="statLicense">License</div></div>
   </div>
@@ -204,28 +204,31 @@
   <hr>
 
   <div class="section">
-    <p class="section-eyebrow" data-k="v2Eyebrow">What's New in v0.2.1</p>
-    <h2 class="section-title" data-k="v2Title">Local UI, Python wrapper, and smarter inference.</h2>
+    <p class="section-eyebrow" data-k="v2Eyebrow">What's New in v0.2.2</p>
+    <h2 class="section-title" data-k="v2Title">Multi-dataset UI, new project wrapper, and 89 tests passing.</h2>
+    <div style="margin:20px 0 28px;border-radius:var(--radius-sm);overflow:hidden;border:1px solid rgba(121,233,255,.15);">
+      <img src="assets/quaero/quaero_ui_v2.png" alt="Quaero Streamlit UI" style="width:100%;display:block;">
+    </div>
     <div class="what-new-grid">
       <div class="what-new-card">
         <div class="what-new-icon">🖥</div>
-        <div class="what-new-title" data-k="v2F1T">Local Streamlit UI</div>
-        <div class="what-new-desc" data-k="v2F1D">Run the pipeline visually from a local web interface — no terminal required.</div>
+        <div class="what-new-title" data-k="v2F1T">Multi-dataset Streamlit UI</div>
+        <div class="what-new-desc" data-k="v2F1D">Run single or multi-dataset projects directly from the local UI — upload files or pass direct URLs, with per-dataset source selection.</div>
       </div>
       <div class="what-new-card">
         <div class="what-new-icon">🐍</div>
-        <div class="what-new-title" data-k="v2F2T">Importable Python Wrapper</div>
-        <div class="what-new-desc" data-k="v2F2D">Use Quaero programmatically inside any Python script or notebook via <code>run_pipeline()</code>.</div>
+        <div class="what-new-title" data-k="v2F2T">Project Pipeline Wrapper</div>
+        <div class="what-new-desc" data-k="v2F2D">New <code>run_project_pipeline(config_path, project_root)</code> for config-driven multi-dataset runs from any Python script.</div>
       </div>
       <div class="what-new-card">
         <div class="what-new-icon">🤖</div>
         <div class="what-new-title" data-k="v2F3T">Optional LLM Fallback</div>
-        <div class="what-new-desc" data-k="v2F3D">When deterministic inference is ambiguous, an optional LLM step resolves edge cases. Deterministic-first by default.</div>
+        <div class="what-new-desc" data-k="v2F3D">When deterministic inference is ambiguous, an optional Claude 3 Haiku step resolves edge cases. Deterministic-first by default.</div>
       </div>
       <div class="what-new-card">
         <div class="what-new-icon">📦</div>
         <div class="what-new-title" data-k="v2F4T">Public Demo Project</div>
-        <div class="what-new-desc" data-k="v2F4D">Ships with <code>global_economic_indicators</code> — a ready-to-run example dataset.</div>
+        <div class="what-new-desc" data-k="v2F4D">Ships with <code>global_economic_indicators</code> — a ready-to-run example dataset and config.</div>
       </div>
     </div>
   </div>
@@ -259,7 +262,7 @@
         <tr><td data-k="tdDim">Dimension Column</td><td data-k="tdDimH">From categorical / ID fields</td><td><code>location</code></td></tr>
       </tbody>
     </table>
-    <div class="section-body" style="margin-top:16px"><p data-k="engineP2">For ambiguous cases, manual overrides <code>--metric-column</code> and <code>--dimension-column</code> are available. In v0.2.1, an optional Claude 3 Haiku fallback handles edge cases automatically when deterministic inference is uncertain.</p></div>
+    <div class="section-body" style="margin-top:16px"><p data-k="engineP2">For ambiguous cases, manual overrides <code>--metric-column</code> and <code>--dimension-column</code> are available. In v0.2.2, an optional Claude 3 Haiku fallback handles edge cases automatically when deterministic inference is uncertain.</p></div>
   </div>
 
   <div class="section">
@@ -372,11 +375,11 @@ const T = {
     archEyebrow:"Architecture", archTitle:"A layered data architecture, built automatically.",
     archP1:"Every project follows the same structure, making outputs predictable and portable.",
     archRaw:"Raw", archStaging:"Staging", archMarts:"Marts", archIntegrated:"Integrated", archBI:"BI / App",
-    v2Eyebrow:"What's New in v0.2.1", v2Title:"Local UI, Python wrapper, and smarter inference.",
-    v2F1T:"Local Streamlit UI", v2F1D:"Run the pipeline visually from a local web interface — no terminal required.",
-    v2F2T:"Importable Python Wrapper", v2F2D:"Use Quaero programmatically inside any Python script or notebook via run_pipeline().",
-    v2F3T:"Optional LLM Fallback", v2F3D:"When deterministic inference is ambiguous, an optional LLM step resolves edge cases. Deterministic-first by default.",
-    v2F4T:"Public Demo Project", v2F4D:"Ships with global_economic_indicators — a ready-to-run example dataset.",
+    v2Eyebrow:"What's New in v0.2.2", v2Title:"Multi-dataset UI, new project wrapper, and 89 tests passing.",
+    v2F1T:"Multi-dataset Streamlit UI", v2F1D:"Run single or multi-dataset projects from the local UI — upload files or pass direct URLs, with per-dataset source selection.",
+    v2F2T:"Project Pipeline Wrapper", v2F2D:"New run_project_pipeline(config_path, project_root) for config-driven multi-dataset runs from any Python script.",
+    v2F3T:"Optional LLM Fallback", v2F3D:"When deterministic inference is ambiguous, an optional Claude 3 Haiku step resolves edge cases. Deterministic-first by default.",
+    v2F4T:"Public Demo Project", v2F4D:"Ships with global_economic_indicators — a ready-to-run example dataset and config.",
     demoEyebrow:"Public Demo Project", demoTitle:"global_economic_indicators",
     demoCardTitle:"Bundled example — run it immediately after install",
     demoCardDesc:"A real-world dataset of global economic indicators included in the repository. It demonstrates the full pipeline end-to-end: profiling, cleaning, semantic inference, mart generation and metadata output — without needing to supply your own data.",
@@ -387,7 +390,7 @@ const T = {
     tdAgg:"Aggregation Intent", tdAggH:"Keywords: average, total, highest, count…",
     tdMet:"Metric Column", tdMetH:"Deterministically from numeric fields",
     tdDim:"Dimension Column", tdDimH:"From categorical / ID fields",
-    engineP2:"For ambiguous cases, manual overrides <code>--metric-column</code> and <code>--dimension-column</code> are available. In v0.2.1, an optional Claude 3 Haiku fallback handles edge cases automatically when deterministic inference is uncertain.",
+    engineP2:"For ambiguous cases, manual overrides <code>--metric-column</code> and <code>--dimension-column</code> are available. In v0.2.2, an optional Claude 3 Haiku fallback handles edge cases automatically when deterministic inference is uncertain.",
     modEyebrow:"Execution Modes", modTitle:"Three ways to run Quaero.",
     modCLI:"CLI Mode", modUI:"Streamlit UI", modCFG:"Config-Driven / Python API",
     cli1:"Command-line flags", cli2:"Single datasets", cli3:"Quick, one-off inference", cli4:"Rapid prototyping",
@@ -428,11 +431,11 @@ const T = {
     archEyebrow:"Architettura", archTitle:"Un'architettura dati a livelli, costruita automaticamente.",
     archP1:"Ogni progetto segue la stessa struttura, rendendo gli output prevedibili e portabili.",
     archRaw:"Raw", archStaging:"Staging", archMarts:"Marts", archIntegrated:"Integrated", archBI:"BI / App",
-    v2Eyebrow:"Novità in v0.2.1", v2Title:"UI locale, Python wrapper e inferenza più intelligente.",
-    v2F1T:"Streamlit UI locale", v2F1D:"Esegui la pipeline visivamente da un'interfaccia web locale — senza terminale.",
-    v2F2T:"Python Wrapper importabile", v2F2D:"Usa Quaero in modo programmatico in qualsiasi script o notebook Python tramite run_pipeline().",
-    v2F3T:"LLM Fallback opzionale", v2F3D:"Quando l'inferenza deterministica è ambigua, uno step LLM opzionale risolve i casi limite. L'approccio deterministico rimane il default.",
-    v2F4T:"Progetto Demo Pubblico", v2F4D:"Include global_economic_indicators — un dataset di esempio pronto all'uso.",
+    v2Eyebrow:"Novità in v0.2.2", v2Title:"UI multi-dataset, nuovo wrapper di progetto e 89 test superati.",
+    v2F1T:"Streamlit UI multi-dataset", v2F1D:"Esegui progetti singoli o multi-dataset dall'UI locale — carica file o passa URL diretti, con selezione sorgente per dataset.",
+    v2F2T:"Wrapper di progetto", v2F2D:"Nuovo run_project_pipeline(config_path, project_root) per esecuzioni config-driven multi-dataset da qualsiasi script Python.",
+    v2F3T:"LLM Fallback opzionale", v2F3D:"Quando l'inferenza deterministica è ambigua, uno step opzionale via Claude 3 Haiku risolve i casi limite. L'approccio deterministico rimane il default.",
+    v2F4T:"Progetto Demo Pubblico", v2F4D:"Include global_economic_indicators — un dataset di esempio con config pronto all'uso.",
     demoEyebrow:"Progetto Demo Pubblico", demoTitle:"global_economic_indicators",
     demoCardTitle:"Esempio incluso — eseguibile subito dopo l'installazione",
     demoCardDesc:"Un dataset reale di indicatori economici globali incluso nel repository. Dimostra la pipeline completa end-to-end: profiling, cleaning, semantic inference, mart generation e output dei metadati — senza dover fornire i propri dati.",
@@ -443,7 +446,7 @@ const T = {
     tdAgg:"Aggregation Intent", tdAggH:"Parole chiave: average, total, highest, count…",
     tdMet:"Metric Column", tdMetH:"Deterministicamente dai campi numerici",
     tdDim:"Dimension Column", tdDimH:"Da campi categorici / ID",
-    engineP2:"Per i casi ambigui sono disponibili gli override manuali <code>--metric-column</code> e <code>--dimension-column</code>. In v0.2.1, un fallback opzionale via Claude 3 Haiku gestisce automaticamente i casi limite quando l'inferenza deterministica è incerta.",
+    engineP2:"Per i casi ambigui sono disponibili gli override manuali <code>--metric-column</code> e <code>--dimension-column</code>. In v0.2.2, un fallback opzionale via Claude 3 Haiku gestisce automaticamente i casi limite quando l'inferenza deterministica è incerta.",
     modEyebrow:"Modalità di Esecuzione", modTitle:"Tre modi per eseguire Quaero.",
     modCLI:"Modalità CLI", modUI:"Streamlit UI", modCFG:"Config-Driven / Python API",
     cli1:"Flag da riga di comando", cli2:"Dataset singoli", cli3:"Inferenza rapida una-tantum", cli4:"Prototipazione veloce",
