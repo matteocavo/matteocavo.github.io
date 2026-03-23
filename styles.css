@@ -767,12 +767,14 @@ a {
 .contact-links-row .link-card {
   flex: 1 1 200px;
   min-width: 0;
+  overflow: hidden;
 }
 
 .contact-links-row .link-value {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  max-width: 100%;
 }
 
 .contact-form {
