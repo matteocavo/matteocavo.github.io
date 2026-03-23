@@ -107,7 +107,13 @@ window.PORTFOLIO_PROFILE = {
       "footer1": "© Matteo Cavo — Portfolio Data & BI Analyst",
       "footer2": "Minimal, neutro e pensato per una presentazione efficace verso recruiter e hiring manager.",
       "repoCta": "Apri progetto",
-      "updatedLabel": "Aggiornato il"
+      "updatedLabel": "Aggiornato il",
+      "formName": "Nome",
+      "formEmail": "Email",
+      "formMessage": "Messaggio",
+      "formSend": "Invia messaggio",
+      "formSuccess": "Messaggio inviato. Ti rispondo al più presto.",
+      "formError": "Qualcosa è andato storto. Riprova o scrivimi direttamente."
     },
     "en": {
       "siteTitle": "Data & BI Analyst Portfolio",
@@ -170,7 +176,13 @@ window.PORTFOLIO_PROFILE = {
       "footer1": "© Matteo Cavo — Data & BI Analyst Portfolio",
       "footer2": "Minimal, neutral, and designed for recruiter-facing presentation.",
       "repoCta": "Open project",
-      "updatedLabel": "Updated"
+      "updatedLabel": "Updated",
+      "formName": "Name",
+      "formEmail": "Email",
+      "formMessage": "Message",
+      "formSend": "Send message",
+      "formSuccess": "Message sent. I'll get back to you shortly.",
+      "formError": "Something went wrong. Please try again or reach out directly."
     }
   }
 };

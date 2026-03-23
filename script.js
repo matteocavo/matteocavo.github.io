@@ -313,8 +313,47 @@ window.renderPortfolio = async function renderPortfolio() {
   setupMotionEffects();
 };
 
+function setupContactForm() {
+  const form = document.getElementById("contact-form");
+  const feedback = document.getElementById("form-feedback");
+  if (!form || !feedback) return;
+
+  form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const lang = document.documentElement.lang || "it";
+    const labels = window.PORTFOLIO_PROFILE && window.PORTFOLIO_PROFILE.labels
+      ? window.PORTFOLIO_PROFILE.labels[lang] || window.PORTFOLIO_PROFILE.labels["it"]
+      : {};
+    const btn = form.querySelector(".form-submit");
+    btn.disabled = true;
+    feedback.textContent = "";
+    feedback.className = "form-feedback";
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: new FormData(form)
+      });
+      const data = await res.json();
+      if (data.success) {
+        feedback.textContent = labels.formSuccess || "Messaggio inviato.";
+        feedback.className = "form-feedback success";
+        form.reset();
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (err) {
+      feedback.textContent = labels.formError || "Qualcosa è andato storto. Riprova.";
+      feedback.className = "form-feedback error";
+    } finally {
+      btn.disabled = false;
+    }
+  });
+}
+
 document.addEventListener("DOMContentLoaded", async function() {
   window.setupLanguageToggle();
   setupScrollMotion();
   await window.renderPortfolio();
+  setupContactForm();
 });

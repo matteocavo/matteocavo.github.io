@@ -756,6 +756,68 @@ a {
   width: fit-content;
 }
 
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.form-field input,
+.form-field textarea {
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 12px 16px;
+  transition: border-color 0.18s ease;
+  resize: vertical;
+  outline: none;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.form-submit {
+  align-self: flex-start;
+  margin-top: 4px;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+
+.form-feedback {
+  font-size: 0.88rem;
+  min-height: 1.2em;
+  color: var(--text-muted);
+}
+
+.form-feedback.success {
+  color: #6ee7b7;
+}
+
+.form-feedback.error {
+  color: #fca5a5;
+}
+
 .text-stack p,
 .hero-copy {
   margin: 0;
