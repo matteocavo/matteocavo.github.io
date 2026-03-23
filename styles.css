@@ -769,6 +769,12 @@ a {
   min-width: 0;
 }
 
+.contact-links-row .link-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .contact-form {
   display: flex;
   flex-direction: column;
