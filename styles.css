@@ -756,8 +756,17 @@ a {
   width: fit-content;
 }
 
-.contact-top {
+.contact-links-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
   margin-bottom: 40px;
+}
+
+.contact-links-row .link-card {
+  flex: 1 1 200px;
+  min-width: 0;
 }
 
 .contact-form {
