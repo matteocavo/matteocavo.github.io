@@ -321,8 +321,8 @@ function setupContactForm() {
   form.addEventListener("submit", async function(e) {
     e.preventDefault();
     const lang = document.documentElement.lang || "it";
-    const labels = window.PORTFOLIO_PROFILE && window.PORTFOLIO_PROFILE.labels
-      ? window.PORTFOLIO_PROFILE.labels[lang] || window.PORTFOLIO_PROFILE.labels["it"]
+    const labels = window.PORTFOLIO_PROFILE && window.PORTFOLIO_PROFILE.translations
+      ? window.PORTFOLIO_PROFILE.translations[lang] || window.PORTFOLIO_PROFILE.translations["it"]
       : {};
     const btn = form.querySelector(".form-submit");
     btn.disabled = true;
