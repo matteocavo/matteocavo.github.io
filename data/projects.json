@@ -11,7 +11,8 @@
       "Engineering",
       "KPI",
       "GitHub",
-      "Python (Pandas)"
+      "Python (Pandas)",
+      "ETL / Automation"
     ],
     "keyKPIs": [],
     "github": "https://github.com/matteocavo/Quaero",
@@ -34,7 +35,8 @@
       "GitHub",
       "EDA",
       "Pipeline",
-      "KPI engineering"
+      "KPI engineering",
+      "ETL / Automation"
     ],
     "keyKPIs": [
       "Deficit strutturale (22/22)",
@@ -65,7 +67,8 @@
       "KPI engineering",
       "Pipeline",
       "GitHub",
-      "EDA"
+      "EDA",
+      "ETL / Automation"
     ],
     "keyKPIs": [
       "Total Titles",
@@ -98,7 +101,8 @@
       "KPI engineering",
       "Pipeline",
       "GitHub",
-      "EDA"
+      "EDA",
+      "ETL / Automation"
     ],
     "keyKPIs": [
       "Numero di comuni analizzati",
@@ -128,7 +132,8 @@
       "KPI engineering",
       "Pipeline",
       "GitHub",
-      "EDA"
+      "EDA",
+      "ETL / Automation"
     ],
     "keyKPIs": [
       "Total Views",
