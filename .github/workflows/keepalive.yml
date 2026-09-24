@@ -1,0 +1,42 @@
+name: Keep Repository Active
+
+on:
+  schedule:
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Check repository inactivity
+        id: inactivity
+        shell: bash
+        run: |
+          last_commit_ts=$(git log -1 --format=%ct)
+          now_ts=$(date +%s)
+          age_days=$(( (now_ts - last_commit_ts) / 86400 ))
+
+          echo "age_days=$age_days" >> "$GITHUB_OUTPUT"
+
+          if [ "$age_days" -ge 45 ]; then
+            echo "should_commit=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_commit=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create keepalive commit
+        if: steps.inactivity.outputs.should_commit == 'true'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit --allow-empty -m "chore: keep repository active"
+          git push origin HEAD:${{ github.event.repository.default_branch }}
