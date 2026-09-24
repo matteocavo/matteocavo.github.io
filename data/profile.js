@@ -47,7 +47,7 @@ window.PORTFOLIO_PROFILE = {
   ],
   "translations": {
     "it": {
-      "siteTitle": "Data & BI Analyst",
+      "siteTitle": "Portfolio Data & BI Analyst",
       "navAbout": "Profilo",
       "navProjects": "Progetti",
       "navSkills": "Competenze",
@@ -116,7 +116,7 @@ window.PORTFOLIO_PROFILE = {
       "formError": "Qualcosa è andato storto. Riprova o scrivimi direttamente."
     },
     "en": {
-      "siteTitle": "Data & BI Analyst",
+      "siteTitle": "Portfolio Data & BI Analyst",
       "navAbout": "About",
       "navProjects": "Projects",
       "navSkills": "Skills",
