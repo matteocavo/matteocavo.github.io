@@ -3,6 +3,8 @@
     "id": "323dbce0-1b30-81a6-87d5-da5f28be4a62",
     "title": "Quaero",
     "businessGoal": "Analytics pipeline framework that converts raw datasets into semantic analytical marts and dashboard-ready outputs. Question-driven: one business question drives profiling, cleaning, semantic inference, mart building, and metadata generation.",
+    "businessGoalIt": "Offrire agli analisti un framework riutilizzabile che trasforma qualsiasi dataset grezzo in mart analitici pronti per la BI — guidato da una singola domanda di business — per spostare il tempo speso dalla pulizia manuale dei dati all'analisi vera e propria in Power BI, Tableau o Looker Studio.",
+    "businessGoalEn": "Give data analysts a reusable pipeline that turns any raw dataset into BI-ready analytical marts — driven by a single business question — so prep time shifts from manual cleaning to actual analysis in Power BI, Tableau, or Looker Studio.",
     "status": "Portfolio Ready",
     "tools": [
       "Python",
@@ -23,6 +25,8 @@
     "id": "315dbce0-1b30-80a8-bc62-f13d508d1f13",
     "title": "Openbdap saldi storico stato",
     "businessGoal": "Verificare se il deficit dello Stato è strutturale e quanto pesano spesa corrente, mercato e interessi. Insight riproducibili da dati pubblici.",
+    "businessGoalIt": "Usare oltre 20 anni di dati ufficiali di finanza pubblica per verificare se il deficit dello Stato italiano sia strutturale, spiegando in modo comprensibile anche a un pubblico non tecnico quanto pesano spesa corrente, ricorso al mercato e interessi sul debito.",
+    "businessGoalEn": "Use 20+ years of official Italian public accounts data to test whether the State's deficit is structural, and explain in plain terms how much of it comes from current spending, market borrowing, and interest costs.",
     "status": "Portfolio Ready",
     "tools": [
       "Python",
@@ -50,6 +54,8 @@
     "id": "314dbce0-1b30-8075-bbaa-f648f7a7ce51",
     "title": "Streaming Competitive Benchmark",
     "businessGoal": "Build a multi-market competitive intelligence model for streaming catalog benchmarking.",
+    "businessGoalIt": "Costruire un modello di competitive intelligence multi-mercato per confrontare le piattaforme streaming su ampiezza del catalogo, strategia di recency, posizionamento per genere e diversificazione internazionale — individuando dove i provider si differenziano realmente, non solo quanto sono grandi i loro cataloghi.",
+    "businessGoalEn": "Build a multi-market competitive intelligence model that benchmarks streaming platforms on catalog scale, content recency, genre positioning, and international reach — surfacing where providers actually differentiate rather than just how big their libraries are.",
     "status": "Portfolio Ready",
     "tools": [
       "Python (Pandas)",
@@ -81,6 +87,8 @@
     "id": "305dbce0-1b30-80a0-9747-c261b6447822",
     "title": "DataCivicLab: Raccolta Differenziata e Rifiuti Urbani (ISPRA)",
     "businessGoal": "Analizzare i dati ISPRA sui rifiuti urbani per identificare trend e differenze territoriali.",
+    "businessGoalIt": "Verificare se l'aumento della percentuale di raccolta differenziata nei comuni italiani si traduca davvero in meno rifiuti prodotti, o sia solo un miglioramento \"sulla carta\" — per distinguere i comuni realmente virtuosi da quelli che migliorano solo l'indicatore principale.",
+    "businessGoalEn": "Test whether a rising differentiated-collection rate in Italian municipalities actually translates into less total waste, or just looks better on paper — giving policymakers and citizens a way to tell \"structurally virtuous\" municipalities from ones improving only on the headline metric.",
     "status": "Portfolio Ready",
     "tools": [
       "Python (Pandas)",
@@ -109,6 +117,8 @@
     "id": "2cadbce0-1b30-805e-adae-f86669f3d66b",
     "title": "Streaming Metadata Analytics",
     "businessGoal": "Improve metadata quality and generate actionable insights for streaming content performance.",
+    "businessGoalIt": "Trasformare metadati streaming grezzi (titoli, utenti, sessioni) in una base solida e guidata dai KPI, per permettere a team editoriali e di content strategy di confrontare provider e generi su engagement, completion rate e rewatch, andando oltre il semplice conteggio delle visualizzazioni.",
+    "businessGoalEn": "Turn messy synthetic streaming metadata (titles, users, sessions) into a clean, KPI-driven foundation that lets content and editorial teams compare providers and genres on engagement, completion, and rewatch — not just raw view counts.",
     "status": "Portfolio Ready",
     "tools": [
       "Python (Pandas)",

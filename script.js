@@ -142,6 +142,18 @@ async function fetchGithubRepoMeta(githubUrl) {
   } catch (e) { return null; }
 }
 
+function pickBusinessGoal(p, lang) {
+  const localized = lang === "it" ? p.businessGoalIt : p.businessGoalEn;
+  const otherLocalized = lang === "it" ? p.businessGoalEn : p.businessGoalIt;
+  return localized || otherLocalized || p.businessGoal || "";
+}
+
+function isExternalDashboardUrl(url) {
+  if (!url) return false;
+  const clean = String(url).split(/[?#]/)[0];
+  return !/\.html?$/i.test(clean);
+}
+
 function countToolMatches(projects, matcher) {
   return projects.reduce(function(total, project) {
     const tools = Array.isArray(project.tools) ? project.tools : [];
@@ -151,10 +163,11 @@ function countToolMatches(projects, matcher) {
 
 function renderHeroDashboard(lang, projects) {
   const profile = window.PORTFOLIO_PROFILE;
-  const certifications = window.PORTFOLIO_PROFILE.certifications.length;
+  const certList = profile.certifications && profile.certifications.completed;
+  const certifications = Array.isArray(certList) ? certList.length : 0;
   const featuredCount = projects.length;
   const liveDashboards = projects.filter(function(project) {
-    return Boolean(project.dashboard);
+    return isExternalDashboardUrl(project.dashboard);
   }).length;
   const currentYear = new Date().getFullYear();
   const startYear = Number(profile.experienceStartYear);
@@ -177,12 +190,31 @@ function renderHeroDashboard(lang, projects) {
     return;
   }
 
-  const toolMix = [
-    { label: "Power BI", count: countToolMatches(projects, function(tool) { return tool === "Power BI"; }) },
-    { label: "SQL", count: countToolMatches(projects, function(tool) { return tool === "SQL"; }) },
-    { label: "Python", count: countToolMatches(projects, function(tool) { return /^Python/i.test(tool); }) },
-    { label: "DAX", count: countToolMatches(projects, function(tool) { return tool === "DAX"; }) }
+  const isIt = lang === "it";
+  // Canonical, exact-match Notion Tool tags. Each Featured Project's high-level
+  // Stack Mix category is driven ONLY by these single canonical tags, kept
+  // separate from detailed project metadata tags (EDA, Pipeline, DAX, Numpy,
+  // etc.), which never imply a high-level category on their own.
+  const stackCategories = [
+    { label: "Power BI", match: function(tool) { return tool === "Power BI"; } },
+    { label: "SQL", match: function(tool) { return tool === "SQL"; } },
+    { label: "Python", match: function(tool) { return tool === "Python" || tool === "Python (Pandas)"; } },
+    {
+      label: isIt ? "ETL / Automazione" : "ETL / Automation",
+      match: function(tool) { return tool === "ETL / Automation"; }
+    },
+    {
+      label: isIt ? "Analisi statistica" : "Statistical Analysis",
+      match: function(tool) { return tool === "Statistical Analysis"; }
+    },
+    {
+      label: isIt ? "ML applicato" : "Applied ML",
+      match: function(tool) { return tool === "Applied ML"; }
+    }
   ];
+  const toolMix = stackCategories.map(function(cat) {
+    return { label: cat.label, count: countToolMatches(projects, cat.match) };
+  });
 
   const maxCount = Math.max.apply(null, toolMix.map(function(item) { return item.count; }).concat([1]));
 
@@ -225,13 +257,13 @@ async function renderFeatured(lang) {
       const lastCommit = repoMeta && repoMeta.pushedAt
         ? updatedLabel + " " + new Date(repoMeta.pushedAt).toLocaleDateString(locale)
         : null;
-      const isInternalPage = p.dashboard && p.dashboard.endsWith(".html");
+      const isInternalPage = Boolean(p.dashboard) && !isExternalDashboardUrl(p.dashboard);
       const projectDashboardCta = isInternalPage
         ? (lang === "it" ? "Esplora progetto" : "Explore project")
         : dashboardCta;
       container.appendChild(window.createFeaturedCard({
         title: p.title,
-        description: p.businessGoal,
+        description: pickBusinessGoal(p, lang),
         tools: Array.isArray(p.tools) ? p.tools.slice(0, 3) : [],
         image: p.image || null,
         link: p.github || "#",
@@ -257,26 +289,110 @@ async function renderFeatured(lang) {
   }
 }
 
-function renderSkills() {
+function renderSkills(lang) {
   const list = document.getElementById("skills-list");
   list.innerHTML = "";
-  window.PORTFOLIO_PROFILE.skills.forEach(function(skill) {
-    const span = document.createElement("span");
-    span.className = "pill";
-    span.textContent = skill;
-    list.appendChild(span);
+  const groups = window.PORTFOLIO_PROFILE.skillGroups || [];
+  const separator = " \u00b7 ";
+
+  groups.forEach(function(group) {
+    const groupEl = document.createElement("div");
+    groupEl.className = "skill-group";
+
+    const labelEl = document.createElement("p");
+    labelEl.className = "skill-group__label";
+    labelEl.textContent = (group.label && (group.label[lang] || group.label.en)) || group.key;
+    groupEl.appendChild(labelEl);
+
+    const itemsEl = document.createElement("p");
+    itemsEl.className = "skill-group__items";
+    itemsEl.textContent = (group.skills || []).join(separator);
+    groupEl.appendChild(itemsEl);
+
+    list.appendChild(groupEl);
   });
 }
 
-function renderCertifications() {
+function renderCertifications(lang) {
   const list = document.getElementById("certifications-list");
   list.innerHTML = "";
-  window.PORTFOLIO_PROFILE.certifications.forEach(function(cert) {
-    const div = document.createElement("div");
-    div.className = "cert-item";
-    div.textContent = cert;
-    list.appendChild(div);
-  });
+  const labels = window.PORTFOLIO_PROFILE.translations[lang] || {};
+  const certs = window.PORTFOLIO_PROFILE.certifications || {};
+
+  function renderGroup(items, statusKey, statusLabel) {
+    (items || []).forEach(function(cert) {
+      const name = typeof cert === "string" ? cert : cert.name;
+      const year = cert && cert.year ? " \u00b7 " + cert.year : "";
+      const credentialUrl = cert && statusKey === "completed" ? cert.credentialUrl : null;
+      const div = document.createElement("div");
+      div.className = "cert-item cert-item--" + statusKey;
+
+      let nameNode;
+      if (credentialUrl) {
+        nameNode = document.createElement("a");
+        nameNode.href = credentialUrl;
+        nameNode.target = "_blank";
+        nameNode.rel = "noreferrer";
+        nameNode.className = "cert-item__name cert-item__name--link";
+        nameNode.appendChild(document.createTextNode(name + year));
+        const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        icon.setAttribute("width", "11");
+        icon.setAttribute("height", "11");
+        icon.setAttribute("viewBox", "0 0 24 24");
+        icon.setAttribute("fill", "none");
+        icon.setAttribute("stroke", "currentColor");
+        icon.setAttribute("stroke-width", "2.5");
+        icon.setAttribute("aria-hidden", "true");
+        icon.classList.add("cert-item__link-icon");
+        icon.innerHTML = '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>';
+        nameNode.appendChild(icon);
+      } else {
+        nameNode = document.createElement("span");
+        nameNode.className = "cert-item__name";
+        nameNode.textContent = name + year;
+      }
+
+      const badgeSpan = document.createElement("span");
+      badgeSpan.className = "cert-item__badge cert-item__badge--" + statusKey;
+      badgeSpan.textContent = statusLabel;
+      div.appendChild(nameNode);
+      div.appendChild(badgeSpan);
+      list.appendChild(div);
+    });
+  }
+
+  renderGroup(certs.completed, "completed", labels.certStatusCompleted || "Completed");
+  renderGroup(certs.inProgress, "in-progress", labels.certStatusInProgress || "In progress");
+}
+
+function updateStructuredData() {
+  const scriptEl = document.querySelector('script[type="application/ld+json"]');
+  if (!scriptEl) return;
+  let data;
+  try {
+    data = JSON.parse(scriptEl.textContent);
+  } catch (e) {
+    return;
+  }
+  const profile = window.PORTFOLIO_PROFILE;
+  if (Array.isArray(profile.skillGroups)) {
+    data.knowsAbout = profile.skillGroups.reduce(function(acc, group) {
+      return acc.concat(Array.isArray(group.skills) ? group.skills : []);
+    }, []);
+  }
+  const completed = profile.certifications && profile.certifications.completed;
+  if (Array.isArray(completed)) {
+    data.hasCredential = completed.map(function(cert) {
+      const credential = {
+        "@type": "EducationalOccupationalCredential",
+        "name": cert.name,
+        "credentialCategory": "certificate"
+      };
+      if (cert.year) credential.dateCreated = String(cert.year);
+      return credential;
+    });
+  }
+  scriptEl.textContent = JSON.stringify(data);
 }
 
 function renderLinks(lang) {
@@ -303,9 +419,10 @@ window.renderPortfolio = async function renderPortfolio() {
 
   updateText(lang);
   renderContactCv(lang);
-  renderSkills();
-  renderCertifications();
+  renderSkills(lang);
+  renderCertifications(lang);
   renderLinks(lang);
+  updateStructuredData();
   await Promise.all([
     renderFeatured(lang),
     window.loadGithubRepos(lang, labels)

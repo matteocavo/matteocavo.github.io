@@ -29,6 +29,8 @@ async function fetchProjects() {
       id: page.id,
       title: p['Nome progetto']?.title?.[0]?.plain_text ?? '',
       businessGoal: p['Business Goal']?.rich_text?.[0]?.plain_text ?? '',
+      businessGoalIt: p['Business Goal IT']?.rich_text?.[0]?.plain_text ?? '',
+      businessGoalEn: p['Business Goal EN']?.rich_text?.[0]?.plain_text ?? '',
       status: p['Status']?.status?.name ?? null,
       tools: p['Tools']?.multi_select?.map(t => t.name) ?? [],
       keyKPIs: p['Key KPIs']?.multi_select?.map(k => k.name) ?? [],
