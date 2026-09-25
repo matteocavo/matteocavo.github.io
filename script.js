@@ -101,9 +101,72 @@ function updateText(lang) {
     }
   });
 
+  document.querySelectorAll("[data-i18n-aria-label]").forEach(function(el) {
+    const key = el.dataset.i18nAriaLabel;
+    if (t[key] !== undefined) {
+      el.setAttribute("aria-label", t[key]);
+    }
+  });
+
+  const mobileNavToggle = document.getElementById("mobile-nav-toggle");
+  if (mobileNavToggle) {
+    const menuLabelKey = mobileNavToggle.getAttribute("aria-expanded") === "true"
+      ? "navMenuClose"
+      : "navMenuOpen";
+    mobileNavToggle.setAttribute("aria-label", t[menuLabelKey]);
+  }
+
   document.getElementById("site-title").textContent = t.siteTitle;
   document.getElementById("lang-it").classList.toggle("active", lang === "it");
   document.getElementById("lang-en").classList.toggle("active", lang === "en");
+}
+
+function setupMobileNavigation() {
+  const toggle = document.getElementById("mobile-nav-toggle");
+  const nav = document.getElementById("main-nav");
+  if (!toggle || !nav) return;
+
+  function updateToggleLabel(isOpen) {
+    const lang = document.documentElement.lang || "it";
+    const translations = window.PORTFOLIO_PROFILE.translations[lang];
+    toggle.setAttribute("aria-label", translations[isOpen ? "navMenuClose" : "navMenuOpen"]);
+  }
+
+  function closeMenu() {
+    nav.classList.remove("is-open");
+    toggle.classList.remove("is-open");
+    toggle.setAttribute("aria-expanded", "false");
+    updateToggleLabel(false);
+  }
+
+  toggle.addEventListener("click", function() {
+    const isOpen = toggle.getAttribute("aria-expanded") === "true";
+    if (isOpen) {
+      closeMenu();
+      return;
+    }
+    nav.classList.add("is-open");
+    toggle.classList.add("is-open");
+    toggle.setAttribute("aria-expanded", "true");
+    updateToggleLabel(true);
+  });
+
+  nav.querySelectorAll("a").forEach(function(link) {
+    link.addEventListener("click", closeMenu);
+  });
+
+  document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+      closeMenu();
+      toggle.focus();
+    }
+  });
+
+  window.addEventListener("resize", function() {
+    if (window.innerWidth > 640) {
+      closeMenu();
+    }
+  });
 }
 
 function renderContactCv(lang) {
@@ -179,14 +242,23 @@ function renderHeroDashboard(lang, projects) {
   }
 
   const isIt = lang === "it";
-  // Canonical, exact-match Notion Tool tags. Each Featured Project's high-level
-  // Stack Mix category is driven ONLY by these single canonical tags, kept
-  // separate from detailed project metadata tags (EDA, Pipeline, DAX, Numpy,
-  // etc.), which never imply a high-level category on their own.
+  // Canonical, exact-match Notion Tool tags. Related platform-specific tags
+  // are grouped under one high-level category, while unrelated metadata tags
+  // (EDA, Pipeline, DAX, Numpy, etc.) never imply a category on their own.
+  const databricksTools = new Set([
+    "Databricks",
+    "Databricks SQL",
+    "Delta Lake",
+    "Apache Spark",
+    "PySpark",
+    "Lakehouse Architecture",
+    "Data Intelligence Platform"
+  ]);
   const stackCategories = [
     { label: "Power BI", match: function(tool) { return tool === "Power BI"; } },
     { label: "SQL", match: function(tool) { return tool === "SQL"; } },
     { label: "Python", match: function(tool) { return tool === "Python" || tool === "Python (Pandas)"; } },
+    { label: "Databricks", match: function(tool) { return databricksTools.has(tool); } },
     {
       label: isIt ? "ETL / Automazione" : "ETL / Automation",
       match: function(tool) { return tool === "ETL / Automation"; }
@@ -465,6 +537,7 @@ function setupContactForm() {
 
 document.addEventListener("DOMContentLoaded", async function() {
   window.setupLanguageToggle();
+  setupMobileNavigation();
   setupScrollMotion();
   await window.renderPortfolio();
   setupContactForm();

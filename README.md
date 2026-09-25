@@ -8,7 +8,7 @@
 
 Professionista multidisciplinare con oltre 15 anni di esperienza internazionale tra progetti digitali, content operations, processi data-driven, analytics e sviluppo web.
 
-Oggi opero come **Data & Business Intelligence Analyst**, con focus su Business Intelligence, data modeling, ETL, automazione dei workflow, data quality e data visualization, estendendo il mio percorso verso Statistical Analysis, Advanced Analytics e Applied Machine Learning.
+Oggi opero come **Data & Business Intelligence Analyst**, con focus su Business Intelligence, data modeling, Databricks, ETL, automazione dei workflow, data quality e data visualization, estendendo il mio percorso verso Statistical Analysis, Advanced Analytics e Applied Machine Learning.
 
 Negli ultimi anni ho lavorato in un contesto enterprise presso **Gracenote (Nielsen)**, occupandomi di content operations e qualità dei metadata su cataloghi multimediali di grandi dimensioni per piattaforme internazionali come Netflix, Amazon Prime Video, Disney+ e Sky. L'esperienza in un ambiente fortemente data-driven, tra qualità del dato, data visualization, metriche di performance e processi su larga scala, ha rafforzato il mio interesse per il modo in cui i dati possono guidare sviluppo e decisioni. Da qui il passaggio naturale verso ETL, automazione e Business Intelligence.
 
@@ -16,7 +16,7 @@ Negli ultimi anni ho lavorato in un contesto enterprise presso **Gracenote (Niel
 
 *Multidisciplinary professional with 15+ years of international experience across digital projects, content operations, data-driven workflows, analytics, and web development.*
 
-*Today I work as a **Data & Business Intelligence Analyst**, focusing on Business Intelligence, data modeling, ETL, workflow automation, data quality, and data visualization, while extending my analytical capabilities into Statistical Analysis, Advanced Analytics, and Applied Machine Learning.*
+*Today I work as a **Data & Business Intelligence Analyst**, focusing on Business Intelligence, data modeling, Databricks, ETL, workflow automation, data quality, and data visualization, while extending my analytical capabilities into Statistical Analysis, Advanced Analytics, and Applied Machine Learning.*
 
 *In recent years, I worked in an enterprise environment at **Gracenote (Nielsen)**, focusing on content operations and metadata quality across large-scale media catalogs for international platforms including Netflix, Amazon Prime Video, Disney+, and Sky. Working in a strongly data-driven environment, where data quality, data visualization, performance metrics, and large-scale processes support ongoing development and operational decisions, strengthened my interest in how data can guide better decisions. This naturally led me toward ETL, workflow automation, and Business Intelligence.*
 
@@ -30,7 +30,7 @@ Negli ultimi anni ho lavorato in un contesto enterprise presso **Gracenote (Niel
 
 ### Data Engineering & Automation
 
-`Python` · `SQL` · `ETL` · `APIs` · `RAW → CLEAN → MART` · `Data Quality` · `DuckDB` · `YAML` · `Git / GitHub` · `Workflow Automation` · `Reproducible Workflows`
+`Python` · `SQL` · `Databricks` · `Databricks SQL` · `Delta Lake` · `Apache Spark` · `PySpark` · `Lakehouse Architecture` · `Data Intelligence Platform` · `ETL` · `APIs` · `RAW → CLEAN → MART` · `Data Quality` · `DuckDB` · `YAML` · `Git / GitHub` · `Workflow Automation` · `Reproducible Workflows`
 
 ### Statistical Analysis
 
@@ -42,12 +42,13 @@ Negli ultimi anni ho lavorato in un contesto enterprise presso **Gracenote (Niel
 
 ---
 
-## Certificazioni / Certifications
+## Certificazioni e badge / Certifications & badges
 
 ### Completed
 
 - **Google Advanced Data Analytics Professional Certificate — 2026**
 - **Google AI Professional Certificate — 2026**
+- **Databricks Fundamentals Accreditation — 2026**
 
 ### In progress
 
@@ -90,6 +91,7 @@ Le categorie attuali sono:
 - Power BI
 - SQL
 - Python
+- Databricks
 - ETL / Automation
 - Statistical Analysis
 - Applied ML
