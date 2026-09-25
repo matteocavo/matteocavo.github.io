@@ -48,7 +48,7 @@ Negli ultimi anni ho lavorato in un contesto enterprise presso **Gracenote (Niel
 
 - **Google Advanced Data Analytics Professional Certificate — 2026**
 - **Google AI Professional Certificate — 2026**
-- **Databricks Fundamentals Accreditation — 2026**
+- **[Databricks Fundamentals Accreditation — 2026](https://credentials.databricks.com/efe62f89-12ff-4802-bd0b-2eb18cb94734#acc.W6Cd2iUt)**
 
 ### In progress
 
