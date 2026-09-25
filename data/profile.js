@@ -31,7 +31,7 @@ window.PORTFOLIO_PROFILE = {
     "completed": [
       { "name": "Google Advanced Data Analytics Professional Certificate", "year": 2026, "credentialUrl": "https://www.coursera.org/account/accomplishments/specialization/890TXH56F3JV" },
       { "name": "Google AI Professional Certificate", "year": 2026, "credentialUrl": "https://www.coursera.org/account/accomplishments/specialization/51MFH4Y84CU6" },
-      { "name": "Databricks Fundamentals Accreditation", "year": 2026 }
+      { "name": "Databricks Fundamentals Accreditation", "year": 2026, "credentialUrl": "https://credentials.databricks.com/efe62f89-12ff-4802-bd0b-2eb18cb94734#acc.W6Cd2iUt" }
     ],
     "inProgress": [
       { "name": "Microsoft PL-300 \u2014 Power BI Data Analyst" },
