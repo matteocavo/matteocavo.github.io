@@ -6,7 +6,7 @@
     <title>Matteo Cavo | Data &amp; BI Analyst</title>
     <meta
       name="description"
-      content="Portfolio di Matteo Cavo — Data &amp; Business Intelligence Analyst. Business Intelligence, Power BI, SQL, Python, ETL &amp; Automation, data modeling e data visualization per decisioni misurabili."
+      content="Portfolio di Matteo Cavo — Data &amp; Business Intelligence Analyst. Business Intelligence, Power BI, SQL, Python, Databricks, ETL &amp; Automation, data modeling e data visualization per decisioni misurabili."
     />
     <link rel="icon" href="favicon.svg?v=20260925-1" type="image/svg+xml" />
     <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32" />
@@ -16,13 +16,13 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://matteocavo.github.io/" />
   <meta property="og:title" content="Matteo Cavo | Data &amp; BI Analyst" />
-  <meta property="og:description" content="Portfolio di Matteo Cavo — Data &amp; Business Intelligence Analyst. Business Intelligence, Power BI, SQL, Python, ETL &amp; Automation, data modeling e data visualization." />
+  <meta property="og:description" content="Portfolio di Matteo Cavo — Data &amp; Business Intelligence Analyst. Business Intelligence, Power BI, SQL, Python, Databricks, ETL &amp; Automation, data modeling e data visualization." />
   <meta property="og:image" content="https://matteocavo.github.io/images/og-preview.jpg" />
   <meta property="og:locale" content="it_IT" />
   <meta property="og:locale:alternate" content="en_US" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Matteo Cavo | Data &amp; BI Analyst" />
-  <meta name="twitter:description" content="Portfolio di Matteo Cavo — Data &amp; Business Intelligence Analyst. Business Intelligence, Power BI, SQL, Python, ETL &amp; Automation, data modeling e data visualization." />
+  <meta name="twitter:description" content="Portfolio di Matteo Cavo — Data &amp; Business Intelligence Analyst. Business Intelligence, Power BI, SQL, Python, Databricks, ETL &amp; Automation, data modeling e data visualization." />
   <meta name="twitter:image" content="https://matteocavo.github.io/images/og-preview.jpg" />
   <script type="application/ld+json">
   {
@@ -31,14 +31,14 @@
     "name": "Matteo Cavo",
     "url": "https://matteocavo.github.io/",
     "jobTitle": "Data & BI Analyst",
-    "knowsAbout": ["Business Intelligence", "Power BI", "SQL", "Python", "ETL & Automation", "Data Modeling", "Data Visualization", "Advanced Analytics"],
+    "knowsAbout": ["Business Intelligence", "Power BI", "SQL", "Python", "Databricks", "Databricks SQL", "Delta Lake", "Apache Spark", "PySpark", "Lakehouse Architecture", "Data Intelligence Platform", "ETL & Automation", "Data Modeling", "Data Visualization", "Advanced Analytics"],
     "sameAs": [
       "https://github.com/matteocavo",
       "https://www.linkedin.com/in/matteo-cavo/"
     ]
   }
   </script>
-  <link rel="stylesheet" href="styles.css?v=20260925-1" />
+  <link rel="stylesheet" href="styles.css?v=20260925-3" />
   </head>
   <body>
     <div class="scroll-progress" aria-hidden="true">
@@ -78,7 +78,21 @@
         </div>
 
         <div class="topbar-right">
-          <nav class="nav" aria-label="Main navigation">
+          <button
+            id="mobile-nav-toggle"
+            class="mobile-nav-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="main-nav"
+            aria-label="Apri menu"
+            data-i18n-aria-label="navMenuOpen"
+          >
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+              <path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </button>
+
+          <nav id="main-nav" class="nav" aria-label="Navigazione principale" data-i18n-aria-label="navAriaLabel">
             <a href="#about" data-i18n="navAbout">Profilo</a>
             <a href="#projects" data-i18n="navProjects">Progetti</a>
             <a href="#skills-section" data-i18n="navSkillsCert"
@@ -87,7 +101,7 @@
             <a href="#contact" data-i18n="navContact">Contatti</a>
           </nav>
 
-          <div class="lang-switcher" role="group" aria-label="Language switcher">
+          <div class="lang-switcher" role="group" aria-label="Lingua" data-i18n-aria-label="langLabel">
             <button id="lang-it" class="lang-btn active" aria-pressed="true">
               IT
             </button>
@@ -133,7 +147,7 @@
               <h3 class="card-title" data-i18n="currentFocusTitle">
                 Data &amp; Business Intelligence Analyst
               </h3>
-              <p class="card-copy" data-i18n="currentFocusText">Power BI, SQL e Python per dashboard chiare, insight concreti e decisioni misurabili.</p>
+              <p class="card-copy" data-i18n="currentFocusText">Power BI, SQL, Python e Databricks per dashboard chiare, insight concreti e decisioni misurabili.</p>
             </article>
 
             <article class="card soft-card">
@@ -148,7 +162,7 @@
               <div class="hero-dashboard__body">
                 <div class="hero-dashboard__mix-block">
                   <div class="hero-dashboard__mix-head">
-                    <p class="card-label" data-i18n="toolMixLabel">Stack nei progetti</p>
+                    <p class="card-label" data-i18n="toolMixLabel">Tecnologie nei progetti</p>
                   </div>
                   <div id="hero-tool-mix" class="hero-dashboard__mix"></div>
                 </div>
@@ -196,6 +210,7 @@
               <span class="meta-pill">Power BI</span>
               <span class="meta-pill">SQL</span>
               <span class="meta-pill">Python</span>
+              <span class="meta-pill">Databricks</span>
               <span class="meta-pill">ETL &amp; Automation</span>
               <span class="meta-pill">Data Modeling</span>
               <span class="meta-pill">DAX</span>
@@ -293,13 +308,13 @@
             aria-labelledby="cert-heading"
           >
             <p class="section-label" data-i18n="certifications">
-              Certificazioni
+              Certificazioni e badge
             </p>
             <h3
               id="cert-heading"
               class="section-title small"
               data-i18n="certificationsTitle"
-            >Certificazioni</h3>
+            >Certificazioni e badge</h3>
             <div id="certifications-list" class="stack-list"></div>
           </article>
         </section>
@@ -319,7 +334,7 @@
             >Perché questo portfolio è diverso</h3>
           </div>
           <div class="text-stack">
-            <p data-i18n="valueP1">Unisco competenze tecniche in Power BI, DAX, SQL, Python e preparazione dati con una solida base di comunicazione visiva e storytelling strutturato.</p>
+            <p data-i18n="valueP1">Unisco competenze tecniche in Power BI, DAX, SQL, Python, Databricks e preparazione dati con una solida base di comunicazione visiva e storytelling strutturato.</p>
             <p data-i18n="valueP2">Non tratto le dashboard come semplice grafica. Le costruisco come strumenti analitici: domande chiare, logica pulita, layout leggibile e insight che supportano decisioni efficaci.</p>
             <p data-i18n="valueP3">La mia esperienza internazionale e multidisciplinare mi permette di collegare analisi, processi e strategia, traducendo dati complessi in insight concreti e azioni utili.</p>
           </div>
@@ -385,11 +400,11 @@
       </footer>
     </div>
 
-    <script src="data/profile.js?v=20260925-1"></script>
-    <script src="data/featured.js?v=20260925-1"></script>
-    <script src="components/repoCard.js?v=20260925-1"></script>
-    <script src="components/repoLoader.js?v=20260925-1"></script>
-    <script src="components/languageToggle.js?v=20260925-1"></script>
-    <script src="script.js?v=20260925-1"></script>
+    <script src="data/profile.js?v=20260925-3"></script>
+    <script src="data/featured.js?v=20260925-3"></script>
+    <script src="components/repoCard.js?v=20260925-3"></script>
+    <script src="components/repoLoader.js?v=20260925-3"></script>
+    <script src="components/languageToggle.js?v=20260925-3"></script>
+    <script src="script.js?v=20260925-3"></script>
   </body>
 </html>
