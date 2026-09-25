@@ -1,0 +1,143 @@
+[
+  {
+    "name": "dataciviclab",
+    "full_name": "dataciviclab/dataciviclab",
+    "description": "Hub pubblico del DataCivicLab. Spieghiamo chi siamo, cosa facciamo e come partecipare.",
+    "html_url": "https://github.com/dataciviclab/dataciviclab",
+    "topics": [
+      "civic-tech",
+      "data-journalism",
+      "italy",
+      "open-data"
+    ],
+    "stargazers_count": 9,
+    "updated_at": "2026-09-21T17:22:15Z",
+    "pushed_at": "2026-09-21T17:22:32Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "dataciviclab"
+    }
+  },
+  {
+    "name": "bilancio-pubblico",
+    "full_name": "dataciviclab/bilancio-pubblico",
+    "description": "I conti dello Stato italiano in serie storica — spesa corrente, investimenti e saldi di bilancio.",
+    "html_url": "https://github.com/dataciviclab/bilancio-pubblico",
+    "topics": [
+      "civic-tech",
+      "italy",
+      "open-data",
+      "public-finance",
+      "public-spending"
+    ],
+    "stargazers_count": 2,
+    "updated_at": "2026-09-21T16:02:26Z",
+    "pushed_at": "2026-09-21T16:02:24Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "dataciviclab"
+    }
+  },
+  {
+    "name": "progetto-pilota",
+    "full_name": "dataciviclab/progetto-pilota",
+    "description": "Prima analisi del Lab — rifiuti urbani, raccolta differenziata e performance ambientale nei comuni italiani.",
+    "html_url": "https://github.com/dataciviclab/progetto-pilota",
+    "topics": [
+      "civic-tech",
+      "environment",
+      "italy",
+      "open-data",
+      "waste"
+    ],
+    "stargazers_count": 4,
+    "updated_at": "2026-07-27T12:21:44Z",
+    "pushed_at": "2026-03-02T09:15:27Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "dataciviclab"
+    }
+  },
+  {
+    "name": "Quaero",
+    "full_name": "matteocavo/Quaero",
+    "description": "Question-driven analytics pipeline: raw datasets → analytical marts, semantic metrics, and dashboard-ready outputs.",
+    "html_url": "https://github.com/matteocavo/Quaero",
+    "topics": [
+      "analytics",
+      "data-engineering",
+      "data-pipeline",
+      "kpi",
+      "pandas",
+      "parquet",
+      "portfolio",
+      "python",
+      "semantic-layer"
+    ],
+    "stargazers_count": 1,
+    "updated_at": "2026-04-29T12:04:58Z",
+    "pushed_at": "2026-04-29T12:06:10Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "matteocavo"
+    }
+  },
+  {
+    "name": "Streaming_Competitive_Benchmark",
+    "full_name": "matteocavo/Streaming_Competitive_Benchmark",
+    "description": "Strategic benchmarking of streaming providers' catalogs across scale, recency, reach, genre strategy, quality, and overlap.",
+    "html_url": "https://github.com/matteocavo/Streaming_Competitive_Benchmark",
+    "topics": [
+      "amazon-prime-video",
+      "apple-tv-plus",
+      "competitive-analysis",
+      "content-strategy",
+      "data-analytics",
+      "disney-plus",
+      "netflix",
+      "pandas",
+      "portfolio",
+      "power-bi",
+      "python",
+      "streaming",
+      "tmdb",
+      "tmdb-api"
+    ],
+    "stargazers_count": 1,
+    "updated_at": "2026-03-12T19:38:28Z",
+    "pushed_at": "2026-02-27T14:44:19Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "matteocavo"
+    }
+  },
+  {
+    "name": "streaming-metadata-analytics",
+    "full_name": "matteocavo/streaming-metadata-analytics",
+    "description": "End-to-end streaming analytics project with Python, Plotly and Power BI",
+    "html_url": "https://github.com/matteocavo/streaming-metadata-analytics",
+    "topics": [
+      "data-visualization",
+      "metadata",
+      "pandas",
+      "plotly",
+      "portfolio",
+      "power-bi",
+      "python",
+      "streaming"
+    ],
+    "stargazers_count": 1,
+    "updated_at": "2026-03-10T16:25:31Z",
+    "pushed_at": "2026-02-27T14:27:39Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "matteocavo"
+    }
+  }
+]

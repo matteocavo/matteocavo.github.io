@@ -126,20 +126,8 @@ function renderContactCv(lang) {
     : "Matteo_Cavo_CV_EN.pdf";
 }
 
-async function fetchGithubRepoMeta(githubUrl) {
-  if (!githubUrl) return null;
-  const match = githubUrl.match(/github\.com\/([^/]+)\/([^/?#]+)/);
-  if (!match) return null;
-  try {
-    const res = await fetch("https://api.github.com/repos/" + match[1] + "/" + match[2]);
-    if (!res.ok) return null;
-    const data = await res.json();
-    return {
-      stars: data.stargazers_count,
-      pushedAt: data.pushed_at,
-      isArchived: Boolean(data.archived)
-    };
-  } catch (e) { return null; }
+function normalizeGithubUrl(url) {
+  return String(url || "").replace(/\/$/, "").toLowerCase();
 }
 
 function pickBusinessGoal(p, lang) {
@@ -214,6 +202,8 @@ function renderHeroDashboard(lang, projects) {
   ];
   const toolMix = stackCategories.map(function(cat) {
     return { label: cat.label, count: countToolMatches(projects, cat.match) };
+  }).filter(function(item) {
+    return item.count > 0;
   });
 
   const maxCount = Math.max.apply(null, toolMix.map(function(item) { return item.count; }).concat([1]));
@@ -241,21 +231,26 @@ async function renderFeatured(lang) {
   const archivedRepoLabel = lang === "it" ? "Archived" : "Archived";
   const locale = lang === "it" ? "it-IT" : "en-US";
   try {
-    const res = await fetch("data/projects.json");
-    const notionProjects = await res.json();
-    const statsResults = await Promise.allSettled(
-      notionProjects.map(function(p) { return fetchGithubRepoMeta(p.github); })
-    );
-    const repoMetaList = statsResults.map(function(result) {
-      return result.status === "fulfilled" ? result.value : null;
-    });
+    const [projectsResponse, repoSnapshot] = await Promise.all([
+      fetch("data/projects.json"),
+      fetch("data/github-repos.json")
+        .then(function(response) { return response.ok ? response.json() : []; })
+        .catch(function() { return []; })
+    ]);
+    if (!projectsResponse.ok) {
+      throw new Error("Projects snapshot error: " + projectsResponse.status);
+    }
+    const notionProjects = await projectsResponse.json();
+    const repoIndex = new Map(repoSnapshot.map(function(repo) {
+      return [normalizeGithubUrl(repo.html_url), repo];
+    }));
 
     renderHeroDashboard(lang, notionProjects);
 
-    notionProjects.forEach(function(p, i) {
-      const repoMeta = repoMetaList[i];
-      const lastCommit = repoMeta && repoMeta.pushedAt
-        ? updatedLabel + " " + new Date(repoMeta.pushedAt).toLocaleDateString(locale)
+    notionProjects.forEach(function(p) {
+      const repoMeta = repoIndex.get(normalizeGithubUrl(p.github));
+      const lastCommit = repoMeta && repoMeta.pushed_at
+        ? updatedLabel + " " + new Date(repoMeta.pushed_at).toLocaleDateString(locale)
         : null;
       const isInternalPage = Boolean(p.dashboard) && !isExternalDashboardUrl(p.dashboard);
       const projectDashboardCta = isInternalPage
@@ -270,13 +265,13 @@ async function renderFeatured(lang) {
         cta: cta,
         dashboard: p.dashboard || null,
         dashboardCta: projectDashboardCta,
-        stars: repoMeta ? repoMeta.stars : null,
+        stars: repoMeta ? repoMeta.stargazers_count : null,
         lastCommit: lastCommit,
         repoStateLabel: repoMeta
-          ? (repoMeta.isArchived ? archivedRepoLabel : null)
+          ? (repoMeta.archived ? archivedRepoLabel : null)
           : null,
         repoStateClass: repoMeta
-          ? (repoMeta.isArchived ? "repo-pill--status-archived" : "")
+          ? (repoMeta.archived ? "repo-pill--status-archived" : "")
           : ""
       }));
     });
