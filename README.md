@@ -79,7 +79,9 @@ I progetti con `Status = Portfolio Ready` vengono sincronizzati automaticamente 
 
 La sezione **All Projects** utilizza invece:
 
-**GitHub API → repository con topic `portfolio` + pinned repositories**
+**GitHub API → GitHub Actions → `data/github-repos.json` → All Projects**
+
+Lo snapshot include i repository con topic `portfolio` e i pinned repository configurati nel profilo. La pagina legge solo il JSON locale: in questo modo il rendering pubblico non dipende dal rate limit delle API GitHub.
 
 Il **Profile Snapshot / Project Stack Mix** viene calcolato dinamicamente dai Tools assegnati ai Featured Projects in Notion.
 
@@ -92,7 +94,7 @@ Le categorie attuali sono:
 - Statistical Analysis
 - Applied ML
 
-I conteggi non sono hard-coded: quando i Tools di un progetto vengono aggiornati in Notion, il portfolio si aggiorna automaticamente al successivo sync.
+I conteggi non sono hard-coded: quando i Tools di un progetto vengono aggiornati in Notion, il portfolio si aggiorna automaticamente al successivo sync. Le categorie senza progetti associati non vengono mostrate.
 
 ---
 

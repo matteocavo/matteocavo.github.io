@@ -1,4 +1,4 @@
-name: Sync Notion Projects
+name: Sync Portfolio Data
 
 on:
   schedule:
@@ -29,12 +29,17 @@ jobs:
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
         run: node scripts/fetch-notion.js
 
+      - name: Build GitHub repository snapshot
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/fetch-github-repos.js
+
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/projects.json
+          git add data/projects.json data/github-repos.json
           if ! git diff --cached --quiet; then
-            git commit -m "sync: aggiorna progetti da Notion"
+            git commit -m "sync: aggiorna dati portfolio"
             git push origin HEAD:${{ github.ref_name }}
           fi

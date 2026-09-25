@@ -52,6 +52,7 @@ body {
 
 img {
   max-width: 100%;
+  height: auto;
   display: block;
 }
 
@@ -204,7 +205,7 @@ a {
 }
 
 .hero-dashboard .card-label {
-  color: rgba(202, 212, 255, 0.74);
+  color: #b8bfdc;
 }
 
 .hero-dashboard__body {
@@ -324,7 +325,7 @@ a {
 .card-label {
   letter-spacing: 0.22em;
   font-size: 0.78rem;
-  opacity: 0.75;
+  opacity: 1;
 }
 
 /* BUTTONS */
@@ -579,7 +580,12 @@ a {
   margin: 1px 0 0;
   font-size: 0.84rem;
   letter-spacing: 0.01em;
-  color: var(--text-dim);
+  color: var(--text-muted);
+}
+
+.text-link {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .profile-badge {
@@ -1102,6 +1108,21 @@ a {
     padding: 42px 0;
   }
 
+  .topbar {
+    position: static;
+  }
+
+  .topbar-right {
+    gap: 14px;
+  }
+
+  .nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    gap: 10px 16px;
+  }
+
   .section {
     padding: 42px 0;
   }
@@ -1132,7 +1153,11 @@ a {
   }
 
   .hero-title {
-    font-size: 2.9rem;
+    font-size: clamp(2.5rem, 12vw, 2.9rem);
+  }
+
+  .contact-form-fields {
+    grid-template-columns: 1fr;
   }
 
   .about-profile {

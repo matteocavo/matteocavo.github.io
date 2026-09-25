@@ -28,6 +28,18 @@ function normalizeRepoTitle(repoName) {
     .join(" ");
 }
 
+function imageDimensions(imageUrl) {
+  const filename = String(imageUrl || "").split("/").pop();
+  const dimensions = {
+    "quaero.png": [1280, 640],
+    "ispra-waste.png": [1526, 858],
+    "openbdap.png": [1526, 858],
+    "streaming-benchmark.png": [1527, 856],
+    "streaming-catalog.png": [1527, 858]
+  };
+  return dimensions[filename] || null;
+}
+
 window.createRepoCard = function createRepoCard(repo, currentLang, labels) {
   const article = document.createElement("article");
   article.className = "repo-card";
@@ -47,7 +59,10 @@ window.createRepoCard = function createRepoCard(repo, currentLang, labels) {
       class="featured-thumb repo-thumb"
       src="${escapeHtml(thumbUrl)}"
       alt="${escapeHtml(repo.name)} preview"
+      width="1280"
+      height="640"
       loading="lazy"
+      decoding="async"
       onerror="this.style.display='none'"
     />
     <h4 class="featured-title repo-title">${escapeHtml(displayName)}</h4>
@@ -71,8 +86,12 @@ window.createFeaturedCard = function createFeaturedCard(project) {
   const article = document.createElement("article");
   article.className = "featured-card";
 
+  const dimensions = imageDimensions(project.image);
+  const dimensionsHtml = dimensions
+    ? ` width="${dimensions[0]}" height="${dimensions[1]}"`
+    : "";
   const imgHtml = project.image
-    ? `<img class="featured-thumb" src="${escapeHtml(project.image)}" alt="${escapeHtml(project.title)}">`
+    ? `<img class="featured-thumb" src="${escapeHtml(project.image)}" alt="${escapeHtml(project.title)}"${dimensionsHtml} loading="lazy" decoding="async">`
     : "";
 
   const linkHref = project.link && project.link !== "#" ? project.link : null;
