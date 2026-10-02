@@ -1,5 +1,26 @@
 [
   {
+    "name": "bilancio-pubblico",
+    "full_name": "dataciviclab/bilancio-pubblico",
+    "description": "I conti dello Stato italiano in serie storica — spesa corrente, investimenti e saldi di bilancio.",
+    "html_url": "https://github.com/dataciviclab/bilancio-pubblico",
+    "topics": [
+      "civic-tech",
+      "italy",
+      "open-data",
+      "public-finance",
+      "public-spending"
+    ],
+    "stargazers_count": 2,
+    "updated_at": "2026-10-02T12:47:00Z",
+    "pushed_at": "2026-10-02T12:46:58Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "dataciviclab"
+    }
+  },
+  {
     "name": "dataciviclab",
     "full_name": "dataciviclab/dataciviclab",
     "description": "Hub pubblico del DataCivicLab. Spieghiamo chi siamo, cosa facciamo e come partecipare.",
@@ -13,27 +34,6 @@
     "stargazers_count": 9,
     "updated_at": "2026-09-21T17:22:15Z",
     "pushed_at": "2026-09-21T17:22:32Z",
-    "archived": false,
-    "fork": false,
-    "owner": {
-      "login": "dataciviclab"
-    }
-  },
-  {
-    "name": "bilancio-pubblico",
-    "full_name": "dataciviclab/bilancio-pubblico",
-    "description": "I conti dello Stato italiano in serie storica — spesa corrente, investimenti e saldi di bilancio.",
-    "html_url": "https://github.com/dataciviclab/bilancio-pubblico",
-    "topics": [
-      "civic-tech",
-      "italy",
-      "open-data",
-      "public-finance",
-      "public-spending"
-    ],
-    "stargazers_count": 2,
-    "updated_at": "2026-09-21T16:02:26Z",
-    "pushed_at": "2026-09-21T16:02:24Z",
     "archived": false,
     "fork": false,
     "owner": {
