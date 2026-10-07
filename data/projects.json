@@ -2,7 +2,7 @@
   {
     "id": "3f2dbce0-1b30-8161-89c3-d6b201ffa418",
     "title": "Rome Public Transport Reliability & Delay Prediction",
-    "businessGoal": "",
+    "businessGoal": "Analizzare l’affidabilità del trasporto pubblico romano e prevedere il rischio di ritardo alla fermata successiva tramite una pipeline end-to-end su dati GTFS e GTFS-Realtime.",
     "businessGoalIt": "Analizzare l'affidabilità del trasporto pubblico romano e costruire una pipeline end-to-end capace di misurare i ritardi, individuare pattern operativi, studiare la propagazione dei ritardi e stimare il rischio di ritardo alla fermata successiva utilizzando dati GTFS e GTFS-Realtime.",
     "businessGoalEn": "Analyse Rome public transport reliability and build an end-to-end analytics and machine learning pipeline to measure delays, identify operational patterns, study delay propagation and estimate next-stop delay risk using GTFS and GTFS-Realtime data.",
     "status": "Portfolio Ready",
@@ -17,7 +17,18 @@
       "ETL / Automation",
       "GitHub"
     ],
-    "keyKPIs": [],
+    "keyKPIs": [
+      "Final Labeled Observations",
+      "Realtime Snapshots",
+      "Eligible Routes",
+      "Eligible Stops",
+      "Regression MAE",
+      "Classification F1",
+      "ROC-AUC",
+      "PR-AUC",
+      "Peak Major Delay Rate",
+      "Delay Propagation Rate"
+    ],
     "github": "https://github.com/matteocavo/rome-public-transport-reliability",
     "dashboard": "https://github.com/matteocavo/rome-public-transport-reliability/blob/main/dashboard/databricks/pdf/Affidabilita_Trasporto_Pubblico_Roma.pdf",
     "dataset": "GTFS Static + GTFS-Realtime ufficiali di Roma Servizi per la Mobilità. Pipeline Bronze → Silver → Features → ML → Gold su Databricks. Dataset finale etichettato: 9.975.703 osservazioni, 964 snapshot realtime, 8 service date, 412 route, 82.936 trip e 2.157 vehicle.",

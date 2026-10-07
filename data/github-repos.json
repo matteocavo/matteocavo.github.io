@@ -1,5 +1,36 @@
 [
   {
+    "name": "rome-public-transport-reliability",
+    "full_name": "matteocavo/rome-public-transport-reliability",
+    "description": "Analisi end-to-end su Databricks dell'affidabilità del trasporto pubblico di Roma e previsione del ritardo alla fermata successiva con dati GTFS e GTFS-Realtime.",
+    "html_url": "https://github.com/matteocavo/rome-public-transport-reliability",
+    "topics": [
+      "data-analytics",
+      "data-engineering",
+      "databricks",
+      "delta-lake",
+      "gtfs",
+      "gtfs-realtime",
+      "machine-learning",
+      "mlflow",
+      "portfolio",
+      "public-transport",
+      "pyspark",
+      "python",
+      "spark",
+      "sql",
+      "transport-analytics"
+    ],
+    "stargazers_count": 1,
+    "updated_at": "2026-10-07T15:20:01Z",
+    "pushed_at": "2026-10-07T15:16:49Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "matteocavo"
+    }
+  },
+  {
     "name": "dataciviclab",
     "full_name": "dataciviclab/dataciviclab",
     "description": "Hub pubblico del DataCivicLab. Spieghiamo chi siamo, cosa facciamo e come partecipare.",
