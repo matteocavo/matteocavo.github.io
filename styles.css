@@ -201,10 +201,11 @@ a {
     linear-gradient(180deg, rgba(56, 60, 82, 0.96), rgba(46, 50, 70, 0.96));
   border-color: rgba(134, 162, 223, 0.22);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  container-type: inline-size;
 }
 
 .hero-dashboard .card-title {
-  margin: 0 0 14px;
+  margin: 0 0 16px;
   font-size: 1.08rem;
 }
 
@@ -214,9 +215,9 @@ a {
 
 .hero-dashboard__body {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(180px, 0.9fr);
-  gap: 16px;
-  align-items: start;
+  grid-template-columns: minmax(0, 1.3fr) minmax(170px, 0.85fr);
+  gap: 18px;
+  align-items: stretch;
 }
 
 .hero-dashboard__mix-block {
@@ -226,13 +227,18 @@ a {
 .hero-dashboard__stats {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  gap: 10px;
+  /* Centre the 2x2 grid against the (taller) tool-mix column so it no
+     longer hugs the top edge of the card. */
+  align-self: center;
 }
 
 .hero-dashboard__stat {
   display: grid;
-  gap: 2px;
-  padding: 10px 10px 9px;
+  gap: 4px;
+  align-content: center;
+  min-height: 72px;
+  padding: 12px 10px;
   border: 1px solid rgba(166, 186, 238, 0.12);
   border-radius: 16px;
   background: rgba(12, 16, 29, 0.2);
@@ -251,15 +257,29 @@ a {
   color: var(--text-muted);
 }
 
+/* When the card itself is narrow (e.g. 981-1250px viewports, where the
+   hero side column shrinks), stack the KPI grid under the tool mix instead
+   of squeezing the bars to nothing. */
+@container (max-width: 360px) {
+  .hero-dashboard__body {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .hero-dashboard__stat {
+    min-height: 0;
+  }
+}
+
 .hero-dashboard__mix-head {
   margin: 0 0 10px;
 }
 
 .hero-dashboard__mix {
   display: grid;
-  grid-template-columns: max-content minmax(0, 1fr) max-content;
+  grid-template-columns: max-content minmax(44px, 1fr) max-content;
   column-gap: 10px;
-  row-gap: 8px;
+  row-gap: 9px;
   margin-top: 0;
   align-items: center;
 }
