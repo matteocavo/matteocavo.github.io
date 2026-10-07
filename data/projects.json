@@ -1,5 +1,31 @@
 [
   {
+    "id": "3f2dbce0-1b30-8161-89c3-d6b201ffa418",
+    "title": "Rome Public Transport Reliability & Delay Prediction",
+    "businessGoal": "",
+    "businessGoalIt": "Analizzare l'affidabilità del trasporto pubblico romano e costruire una pipeline end-to-end capace di misurare i ritardi, individuare pattern operativi, studiare la propagazione dei ritardi e stimare il rischio di ritardo alla fermata successiva utilizzando dati GTFS e GTFS-Realtime.",
+    "businessGoalEn": "Analyse Rome public transport reliability and build an end-to-end analytics and machine learning pipeline to measure delays, identify operational patterns, study delay propagation and estimate next-stop delay risk using GTFS and GTFS-Realtime data.",
+    "status": "Portfolio Ready",
+    "tools": [
+      "Python",
+      "SQL",
+      "Databricks",
+      "Applied ML",
+      "Statistical Analysis",
+      "Pipeline",
+      "Engineering",
+      "ETL / Automation",
+      "GitHub"
+    ],
+    "keyKPIs": [],
+    "github": "https://github.com/matteocavo/rome-public-transport-reliability",
+    "dashboard": "https://github.com/matteocavo/rome-public-transport-reliability/blob/main/dashboard/databricks/pdf/Affidabilita_Trasporto_Pubblico_Roma.pdf",
+    "dataset": "GTFS Static + GTFS-Realtime ufficiali di Roma Servizi per la Mobilità. Pipeline Bronze → Silver → Features → ML → Gold su Databricks. Dataset finale etichettato: 9.975.703 osservazioni, 964 snapshot realtime, 8 service date, 412 route, 82.936 trip e 2.157 vehicle.",
+    "date": "2026-10-07",
+    "notes": "Pipeline Databricks completa dalla raccolta dei dati fino ai layer Gold e al dashboard AI/BI.\n\nRegressione: la persistence baseline è risultata il miglior approccio finale, con TEST MAE 136.98 s, RMSE 401.85 s e R² 0.694. Non presentare questo risultato come se un modello complesso avesse battuto la baseline.\n\nClassificazione: RandomForestClassifier con threshold > 0.45. TEST accuracy 0.9401, precision 0.8450, recall 0.8123, F1 0.8283, ROC-AUC 0.9690, PR-AUC 0.9063.\n\nInsight principali: maggiore criticità nelle fasce serali, con major-delay rate fino a circa 30.3% alle 20:00; tasso weekend superiore al weekday; forte persistenza descrittiva dei ritardi: quando current e previous state sono entrambi major, il next-stop major-delay rate è circa 88.7%; 354 route e 5.172 stop superano le soglie minime di osservazione.\n\nImportante distinzione metodologica: il target ML di classificazione è major delay >=300 secondi; nel dashboard operativo la severità 'Ritardo Grave' è >600 secondi. Le probabilità e le metriche del modello si riferiscono al target >=300 secondi, non al >600 secondi del dashboard.",
+    "image": "https://matteocavo.github.io/images/rome-transport.png"
+  },
+  {
     "id": "323dbce0-1b30-81a6-87d5-da5f28be4a62",
     "title": "Quaero",
     "businessGoal": "Analytics pipeline framework that converts raw datasets into semantic analytical marts and dashboard-ready outputs. Question-driven: one business question drives profiling, cleaning, semantic inference, mart building, and metadata generation.",
