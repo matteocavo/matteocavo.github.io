@@ -231,6 +231,9 @@ a {
   /* Centre the 2x2 grid against the (taller) tool-mix column so it no
      longer hugs the top edge of the card. */
   align-self: center;
+  /* Optical nudge: the tool-mix column carries a two-line label above the
+     bars, so the geometric centre sits slightly high next to them. */
+  transform: translateY(16px);
 }
 
 .hero-dashboard__stat {
@@ -264,6 +267,10 @@ a {
   .hero-dashboard__body {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+
+  .hero-dashboard__stats {
+    transform: none;
   }
 
   .hero-dashboard__stat {
@@ -1100,6 +1107,7 @@ a {
 
   .hero-dashboard__stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    transform: none;
   }
 
   .repo-card,
