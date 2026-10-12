@@ -1,5 +1,26 @@
 [
   {
+    "name": "bilancio-pubblico",
+    "full_name": "dataciviclab/bilancio-pubblico",
+    "description": "I conti dello Stato italiano in serie storica — spesa corrente, investimenti e saldi di bilancio.",
+    "html_url": "https://github.com/dataciviclab/bilancio-pubblico",
+    "topics": [
+      "civic-tech",
+      "italy",
+      "open-data",
+      "public-finance",
+      "public-spending"
+    ],
+    "stargazers_count": 2,
+    "updated_at": "2026-10-12T11:02:30Z",
+    "pushed_at": "2026-10-12T11:02:28Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "dataciviclab"
+    }
+  },
+  {
     "name": "rome-public-transport-reliability",
     "full_name": "matteocavo/rome-public-transport-reliability",
     "description": "Analisi end-to-end su Databricks dell'affidabilità del trasporto pubblico di Roma e previsione del ritardo alla fermata successiva con dati GTFS e GTFS-Realtime.",
@@ -44,27 +65,6 @@
     "stargazers_count": 9,
     "updated_at": "2026-10-06T13:49:51Z",
     "pushed_at": "2026-10-08T21:55:59Z",
-    "archived": false,
-    "fork": false,
-    "owner": {
-      "login": "dataciviclab"
-    }
-  },
-  {
-    "name": "bilancio-pubblico",
-    "full_name": "dataciviclab/bilancio-pubblico",
-    "description": "I conti dello Stato italiano in serie storica — spesa corrente, investimenti e saldi di bilancio.",
-    "html_url": "https://github.com/dataciviclab/bilancio-pubblico",
-    "topics": [
-      "civic-tech",
-      "italy",
-      "open-data",
-      "public-finance",
-      "public-spending"
-    ],
-    "stargazers_count": 2,
-    "updated_at": "2026-10-02T12:47:00Z",
-    "pushed_at": "2026-10-11T22:55:46Z",
     "archived": false,
     "fork": false,
     "owner": {
