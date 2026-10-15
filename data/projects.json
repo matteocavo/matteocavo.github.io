@@ -53,10 +53,10 @@
     ],
     "keyKPIs": [],
     "github": "https://github.com/matteocavo/Quaero",
-    "dashboard": "https://matteocavo.github.io/quaero.html",
+    "dashboard": "https://github.com/matteocavo/Quaero",
     "dataset": "CSV, Parquet (local or direct URL) — domain-agnostic. Public demo: global_economic_indicators (World Bank GDP, inflation, unemployment).",
     "date": "2026-03-14",
-    "notes": "v0.2.1 — March 2026. Three entrypoints: CLI, importable module (run_pipeline), Streamlit UI. Optional LLM fallback via Claude 3 Haiku (deterministic-first). v0.2.1 patched CI/AppTest compatibility and is now the current stable public release. Public demo: global_economic_indicators (multi-dataset). Private BI projects live in separate repos.",
+    "notes": "v0.4.0 — current public version on GitHub (README verified 15/10/2026). v0.4.0: lineage HTML export (Mermaid) + Anomaly Framing v2 (impact, frequency, suggested action). v0.3: per-column DQ scoring, structured cleaning log, PostgreSQL DDL/INSERT export, Power BI schema with relationships and starter DAX, column-level lineage, dbt-style metrics YAML. v0.2.2: multi-dataset Streamlit UI + run_project_pipeline wrapper. Three entrypoints: CLI, importable module (run_pipeline / run_project_pipeline), Streamlit UI. Optional LLM fallback via Claude 3 Haiku, disabled by default, deterministic-first, recorded as llm_assisted. Public demo: global_economic_indicators (multi-dataset). Private BI projects live in separate repos. LINK CANONICO: solo GitHub (",
     "image": "https://matteocavo.github.io/images/quaero.png"
   },
   {
