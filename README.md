@@ -8,21 +8,21 @@
 
 Professionista multidisciplinare con oltre 15 anni di esperienza internazionale tra progetti digitali, content operations, processi data-driven, analytics e sviluppo web.
 
-Oggi opero come **Data & Business Intelligence Analyst**, con focus su Business Intelligence, data modeling, Databricks, ETL, automazione dei workflow, data quality e data visualization, estendendo il mio percorso verso Statistical Analysis, Advanced Analytics e Applied Machine Learning.
+Oggi opero come **Data & Business Intelligence Analyst**, con focus su Business Intelligence, Data Engineering, ETL/ELT, automazione dei workflow e data quality, estendendo il mio percorso verso Advanced Analytics, Applied Machine Learning e l'uso professionale di strumenti AI & GenAI a supporto dello sviluppo e delle decisioni analitiche.
 
-Negli ultimi anni ho lavorato in un contesto enterprise presso **Gracenote (Nielsen)**, occupandomi di content operations e qualità dei metadata su cataloghi multimediali di grandi dimensioni per piattaforme internazionali come Netflix, Amazon Prime Video, Disney+ e Sky. L'esperienza in un ambiente fortemente data-driven, tra qualità del dato, data visualization, metriche di performance e processi su larga scala, ha rafforzato il mio interesse per il modo in cui i dati possono guidare sviluppo e decisioni. Da qui il passaggio naturale verso ETL, automazione e Business Intelligence.
+Ho oltre 5 anni di esperienza in un contesto enterprise presso **Nielsen/Gracenote** (Amsterdam), occupandomi di content operations e qualità dei metadata su cataloghi multimediali di grandi dimensioni per piattaforme internazionali come Netflix, Amazon Prime Video, Disney+, Sky, Mediaset Infinity e RAI. Questa esperienza in un ambiente fortemente data-driven ha rafforzato il mio interesse per come i dati possano guidare sviluppo e decisioni, portandomi naturalmente verso ETL, automazione e Business Intelligence.
 
 ---
 
 *Multidisciplinary professional with 15+ years of international experience across digital projects, content operations, data-driven workflows, analytics, and web development.*
 
-*Today I work as a **Data & Business Intelligence Analyst**, focusing on Business Intelligence, data modeling, Databricks, ETL, workflow automation, data quality, and data visualization, while extending my analytical capabilities into Statistical Analysis, Advanced Analytics, and Applied Machine Learning.*
+*Today I work as a **Data & Business Intelligence Analyst**, focusing on Business Intelligence, Data Engineering, ETL/ELT, workflow automation, and data quality, while extending my analytical capabilities into Advanced Analytics, Applied Machine Learning, and the professional use of AI & GenAI tools to support development and analytical decision-making.*
 
-*In recent years, I worked in an enterprise environment at **Gracenote (Nielsen)**, focusing on content operations and metadata quality across large-scale media catalogs for international platforms including Netflix, Amazon Prime Video, Disney+, and Sky. Working in a strongly data-driven environment, where data quality, data visualization, performance metrics, and large-scale processes support ongoing development and operational decisions, strengthened my interest in how data can guide better decisions. This naturally led me toward ETL, workflow automation, and Business Intelligence.*
+*I have 5+ years of experience in an enterprise environment at **Nielsen/Gracenote** (Amsterdam), focusing on content operations and metadata quality across large-scale media catalogs for international platforms including Netflix, Amazon Prime Video, Disney+, Sky, Mediaset Infinity, and RAI. Working in a strongly data-driven environment strengthened my interest in how data can guide better decisions, naturally leading me toward ETL, workflow automation, and Business Intelligence.*
 
 ---
 
-## Competenze / Skills
+## Competenze / Core Competencies
 
 ### Business Intelligence
 
@@ -30,90 +30,131 @@ Negli ultimi anni ho lavorato in un contesto enterprise presso **Gracenote (Niel
 
 ### Data Engineering & Automation
 
-`Python` · `SQL` · `Databricks` · `Databricks SQL` · `Delta Lake` · `Apache Spark` · `PySpark` · `Lakehouse Architecture` · `Data Intelligence Platform` · `ETL` · `APIs` · `RAW → CLEAN → MART` · `Data Quality` · `DuckDB` · `YAML` · `Git / GitHub` · `Workflow Automation` · `Reproducible Workflows`
-
-### Statistical Analysis
-
-`EDA` · `Descriptive Statistics` · `Statistical Analysis` · `Statistical Inference` · `Correlation Analysis` · `Hypothesis Testing`
+`Python` · `SQL` · `Databricks` · `PySpark` · `Delta Lake (Bronze→Silver→Gold)` · `MLflow` · `ETL/ELT pipeline design` · `RAW → CLEAN → MART` · `Data Quality & Governance` · `DuckDB` · `YAML-driven configuration` · `Git / GitHub` · `Workflow Automation`
 
 ### Advanced Analytics & Applied Machine Learning
 
-`scikit-learn` · `Regression` · `Classification` · `Feature Engineering` · `Feature Selection` · `Cross-Validation` · `Model Evaluation` · `Decision Trees` · `Random Forest` · `Gradient Boosting / XGBoost` · `K-means`
+`scikit-learn` · `XGBoost` · `Regression` · `Classification` · `Decision Trees` · `Random Forest` · `Gradient Boosting` · `K-means` · `Feature Engineering` · `Statistical Inference & Hypothesis Testing` · `Cross-Validation` · `Model Evaluation (Precision, Recall, F1, ROC-AUC)`
+
+### AI & GenAI Workflows
+
+Structured prompting · Prompt refinement · LLM-assisted analytics · AI-assisted development · Workflow orchestration · Decision-support automation, applied hands-on with ChatGPT, Claude, Codex, Gemini, Google AI Studio, GitHub Copilot, Databricks Genie and Antigravity.
 
 ---
 
-## Certificazioni e badge / Certifications & badges
+## Certificazioni e badge / Certifications & Badges
 
 ### Completed
 
 - **Google Advanced Data Analytics Professional Certificate — 2026**
 - **Google AI Professional Certificate — 2026**
 - **[Databricks Fundamentals Accreditation — 2026](https://credentials.databricks.com/efe62f89-12ff-4802-bd0b-2eb18cb94734#acc.W6Cd2iUt)**
+- **Microsoft Power BI Desktop for Business Intelligence** — Udemy Business, 2026
+- **Microsoft Excel — Excel from Beginner to Advanced** — Udemy Business, 2025
 
-### In progress
+### In Preparation
 
-- **Microsoft PL-300 — Power BI Data Analyst**
+- **Microsoft Power BI Data Analyst Associate (PL-300)**
 - **Databricks Certified Data Engineer Associate**
 
 ---
 
-## Portfolio architecture
+## Portfolio Features
 
-Il portfolio è un sito statico in HTML/CSS/JavaScript vanilla, senza framework e con deploy diretto su GitHub Pages.
+- Progetti selezionati con business goal, strumenti, KPI e output reali, bilingue IT/EN.
+- Progetto flagship dinamico, selezionato automaticamente dal database Notion.
+- Snapshot "All Projects" alimentato dai repository GitHub pubblici (pinned + topic `portfolio`).
+- Anteprima e download del CV in italiano e inglese, in-page.
+- Assistente conversazionale (chatbot) per esplorare il portfolio.
+- Layout responsive, navigazione accessibile e SEO/structured data dinamici.
 
-I contenuti dei progetti sono gestiti attraverso una pipeline dinamica:
-
-**Notion → GitHub Actions → `data/projects.json` → Featured Projects**
-
-Il database Notion è la source of truth per:
-
-- project status;
-- Business Goal IT / EN;
-- Tools;
-- Key KPIs;
-- dataset;
-- GitHub repository;
-- dashboard / output;
-- project metadata.
-
-I progetti con `Status = Portfolio Ready` vengono sincronizzati automaticamente nel portfolio tramite il workflow `sync-notion.yml` (esecuzione oraria + trigger manuale).
-
-La sezione **All Projects** utilizza invece:
-
-**GitHub API → GitHub Actions → `data/github-repos.json` → All Projects**
-
-Lo snapshot include i repository con topic `portfolio` e i pinned repository configurati nel profilo. La pagina legge solo il JSON locale: in questo modo il rendering pubblico non dipende dal rate limit delle API GitHub.
-
-Il **Profile Snapshot / Project Stack Mix** viene calcolato dinamicamente dai Tools assegnati ai Featured Projects in Notion.
-
-Le categorie attuali sono:
-
-- Power BI
-- SQL
-- Python
-- Databricks
-- ETL / Automation
-- Statistical Analysis
-- Applied ML
-
-I conteggi non sono hard-coded: quando i Tools di un progetto vengono aggiornati in Notion, il portfolio si aggiorna automaticamente al successivo sync. Le categorie senza progetti associati non vengono mostrate.
+*Selected projects with real business goals, tools, KPIs and outputs, bilingual IT/EN. Dynamic flagship project automatically selected from the Notion database. "All Projects" snapshot powered by public GitHub repositories (pinned + `portfolio` topic). In-page CV preview and download in Italian and English. Conversational assistant (chatbot) to explore the portfolio. Responsive layout, accessible navigation, and dynamic SEO/structured data.*
 
 ---
 
-## Technical stack
+## Technical Stack
 
-- HTML5
-- CSS3
-- Vanilla JavaScript
-- GitHub Pages
-- GitHub API
-- GitHub Actions
-- Notion API
+- **React 19** · **TypeScript** · **Vite 8** · **Tailwind CSS 4**
+- GitHub Pages (static hosting)
+- GitHub Actions (CI/CD, scheduled sync, manual deploy)
+- Notion API (project content source of truth)
+- GitHub API (repository snapshot)
+- Runtime JSON fetching (no build-time data freezing)
 - Dynamic EN / IT localization
-- Responsive layout
-- Accessible navigation
-- Scroll progress and reveal animations
-- Dynamic SEO / structured data
+
+---
+
+## Architecture & Data Flow
+
+```
+Notion (projects)         GitHub (repositories)
+        │                          │
+        ▼                          ▼
+   GitHub Actions ─── sync-notion.yml ───
+        │                          │
+        ▼                          ▼
+data/projects.json         data/github-repos.json
+        │                          │
+        └───────────┬──────────────┘
+                     ▼
+        React app — runtime fetch (no build-time import)
+                     │
+                     ▼
+              GitHub Pages (live site)
+```
+
+Il database Notion resta la source of truth per lo stato dei progetti (`Status = Portfolio Ready`), business goal IT/EN, tools, KPI, dataset, repository GitHub e output/dashboard. Il workflow `sync-notion.yml` esegue `scripts/fetch-notion.js` e `scripts/fetch-github-repos.js` su schedulazione oraria (più trigger manuale), scrivendo `data/projects.json` e `data/github-repos.json` direttamente nel repository.
+
+L'applicazione React **non importa questi JSON a build time**: li recupera a runtime tramite `fetch()` a ogni caricamento di pagina. Questo significa che un aggiornamento Notion/GitHub diventa visibile ai visitatori al prossimo page load, senza richiedere un nuovo build o deploy del frontend. Un sync Notion da solo **non** attiva un deploy del frontend React: il deploy è un passo separato e manuale (vedi sotto).
+
+*The Notion database remains the source of truth for project status (`Status = Portfolio Ready`), business goal IT/EN, tools, KPIs, dataset, GitHub repository, and output/dashboard. The `sync-notion.yml` workflow runs `scripts/fetch-notion.js` and `scripts/fetch-github-repos.js` on an hourly schedule (plus manual trigger), writing `data/projects.json` and `data/github-repos.json` directly to the repository.*
+
+*The React app does **not** import these JSON files at build time — it fetches them at runtime on every page load. This means a Notion/GitHub update becomes visible to visitors on their next page load, with no React rebuild or redeploy required. A Notion sync alone does **not** trigger a frontend deploy: deployment is a separate, manual step (see below).*
+
+---
+
+## Dynamic Flagship Project
+
+Il database Notion include il checkbox **`Portfolio Flagship`**, esportato come campo `isFlagship` in `data/projects.json`. La selezione del progetto in evidenza segue questa logica:
+
+- esattamente un progetto idoneo (`Status = Portfolio Ready`) con `isFlagship = true` → viene usato come flagship;
+- zero progetti marcati → fallback deterministico su un progetto di riferimento fisso;
+- più di un progetto marcato → warning in console (visibile in sviluppo) e lo stesso fallback deterministico, finché il dato in Notion non viene corretto.
+
+*The Notion database includes the **`Portfolio Flagship`** checkbox, exported as an `isFlagship` field in `data/projects.json`. Flagship selection follows this logic: exactly one eligible project (`Status = Portfolio Ready`) with `isFlagship = true` is used as the flagship; zero marked projects fall back to a fixed deterministic reference project; more than one marked project triggers a console warning (visible in development) and the same deterministic fallback, until the Notion data is corrected.*
+
+---
+
+## Local Development
+
+```bash
+cd portfolio-v2-react
+npm install
+npm run dev
+```
+
+Build di produzione:
+
+```bash
+cd portfolio-v2-react
+npm run build
+npm run preview
+```
+
+---
+
+## Build & Deployment
+
+Il deploy del frontend React è **manuale** (`workflow_dispatch`), gestito da `.github/workflows/deploy-react.yml`:
+
+1. `npm ci` + `npm run build` genera `portfolio-v2-react/dist/`.
+2. L'output del build viene copiato nella root del repository (servita da GitHub Pages), **escludendo esplicitamente** `data/`, `assets/cv/`, `assets/quaero/`, `images/`, `components/`, i file di configurazione del repository (`package.json`, `.gitignore`, ecc.) e tutto ciò che appartiene alla pipeline di sync Notion/GitHub.
+3. I bundle JS/CSS compilati da Vite vengono pubblicati in `assets/`, mantenendo intatti `assets/cv/` e `assets/quaero/`.
+4. Se ci sono modifiche, il workflow esegue il commit e il push su `main` a nome di `github-actions[bot]`.
+
+Questo approccio "non distruttivo" garantisce che un deploy del frontend non sovrascriva mai i dati live di Notion/GitHub, i CV, le immagini dei progetti o gli asset della pagina Quaero.
+
+*The React frontend deploy is **manual** (`workflow_dispatch`), handled by `.github/workflows/deploy-react.yml`: `npm ci` + `npm run build` generates `portfolio-v2-react/dist/`; the build output is copied into the repository root (served by GitHub Pages), explicitly excluding `data/`, `assets/cv/`, `assets/quaero/`, `images/`, `components/`, repository configuration files, and anything owned by the Notion/GitHub sync pipeline; the compiled Vite JS/CSS bundles are published to `assets/`, keeping `assets/cv/` and `assets/quaero/` intact; if there are changes, the workflow commits and pushes to `main` as `github-actions[bot]`. This non-destructive approach ensures a frontend deploy never overwrites live Notion/GitHub data, CVs, project images, or the Quaero page assets.*
 
 ---
 
