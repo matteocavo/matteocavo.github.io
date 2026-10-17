@@ -115,7 +115,14 @@ function slugForGithubUrl(githubUrl: string): string {
 function inferDashboardType(dashboardUrl: string | null): 'pdf' | 'live_powerbi' | 'internal' | null {
   if (!dashboardUrl) return null;
   if (dashboardUrl.toLowerCase().endsWith('.pdf')) return 'pdf';
-  if (dashboardUrl.includes('app.powerbi.com')) return 'live_powerbi';
+  try {
+    const hostname = new URL(dashboardUrl).hostname.toLowerCase();
+    if (hostname === 'app.powerbi.com' || hostname.endsWith('.app.powerbi.com')) {
+      return 'live_powerbi';
+    }
+  } catch {
+    // Non-URL values are treated as non-Power BI dashboards.
+  }
   return 'internal';
 }
 
