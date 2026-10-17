@@ -186,7 +186,24 @@ function RevealCard({
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+
+    // Safety net: IntersectionObserver can fail to ever fire for an element
+    // (unsupported browser, a zero-size/hidden ancestor at mount, a section
+    // whose dimensions never let it cross the 0.1 threshold, etc.). Content
+    // gated behind `.reveal`'s opacity:0 must never stay permanently hidden
+    // because of that, so force it visible after a short grace period if the
+    // observer hasn't already done so.
+    const fallbackTimer = window.setTimeout(() => {
+      setIsInView((prev) => {
+        if (!prev) onInView?.();
+        return true;
+      });
+    }, 1500);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(fallbackTimer);
+    };
   }, [onInView]);
 
   return (
@@ -1191,7 +1208,7 @@ export default function App() {
                   <div className={`${isConstrainedSim ? 'w-full' : 'xl:col-span-7'} flex flex-col justify-between`}>
                     <div>
                       {/* Small uppercase eyebrow line */}
-                      <div className="reveal" style={{ '--reveal-delay': '0ms' } as React.CSSProperties}>
+                      <div style={{ '--reveal-delay': '0ms' } as React.CSSProperties}>
                         <p className="text-[11px] sm:text-xs font-bold text-[#2563EB] uppercase tracking-wider mb-3">
                           {LOCKED_PROFILE_TEXT[siteLang].heroTag}
                         </p>
@@ -1199,7 +1216,7 @@ export default function App() {
 
                       {/* Dominant oversized multi-line headline */}
                       <h1
-                        className="font-display text-4xl sm:text-5xl lg:text-[52px] font-bold tracking-tight text-[#111111] leading-[1.08] mb-6 reveal"
+                        className="font-display text-4xl sm:text-5xl lg:text-[52px] font-bold tracking-tight text-[#111111] leading-[1.08] mb-6"
                         style={{ '--reveal-delay': '70ms' } as React.CSSProperties}
                       >
                         {LOCKED_PROFILE_TEXT[siteLang].heroTitle}
@@ -1207,7 +1224,7 @@ export default function App() {
 
                       {/* Paragraph 1 */}
                       <p
-                        className="text-sm sm:text-base lg:text-[17px] text-[#334155] leading-relaxed mb-3.5 reveal"
+                        className="text-sm sm:text-base lg:text-[17px] text-[#334155] leading-relaxed mb-3.5"
                         style={{ '--reveal-delay': '130ms' } as React.CSSProperties}
                       >
                         {LOCKED_PROFILE_TEXT[siteLang].heroP1}
@@ -1215,7 +1232,7 @@ export default function App() {
 
                       {/* Paragraph 2 */}
                       <p
-                        className="text-sm sm:text-base text-[#475569] leading-relaxed mb-5 reveal"
+                        className="text-sm sm:text-base text-[#475569] leading-relaxed mb-5"
                         style={{ '--reveal-delay': '190ms' } as React.CSSProperties}
                       >
                         {LOCKED_PROFILE_TEXT[siteLang].heroP2}
@@ -1223,7 +1240,7 @@ export default function App() {
 
                       {/* Primary Actions (Phase 4.1: Servizi & Consulenze removed from public UI) */}
                       <div 
-                        className="flex flex-wrap items-center gap-3 pt-1 reveal"
+                        className="flex flex-wrap items-center gap-3 pt-1"
                         style={{ '--reveal-delay': '250ms' } as React.CSSProperties}
                       >
                         <a
@@ -1259,7 +1276,7 @@ export default function App() {
                     </div>
 
                     {/* Desktop Balanced Availability Note (Phase 4.1: Factual & Simple, No VAT references) */}
-                    <div className="pt-4 mt-5 border-t border-[#F1F5F9] flex items-center gap-2 text-xs text-[#475569] reveal" style={{ '--reveal-delay': '300ms' } as React.CSSProperties}>
+                    <div className="pt-4 mt-5 border-t border-[#F1F5F9] flex items-center gap-2 text-xs text-[#475569]" style={{ '--reveal-delay': '300ms' } as React.CSSProperties}>
                       <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse shrink-0" />
                       <span className="font-semibold text-[#111111] shrink-0">
                         {siteLang === 'it' ? 'Disponibilità:' : 'Availability:'}
@@ -2447,7 +2464,7 @@ export default function App() {
                   {/* Left Column: 4 Domain Skill Groups from data/profile.js */}
                   <div className={`${isMobileSim ? 'w-full' : 'lg:col-span-7'} space-y-4`}>
                     <div
-                      className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-5 shadow-2xs reveal panel-card"
+                      className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-5 shadow-2xs panel-card"
                       style={{ '--reveal-delay': '0ms' } as React.CSSProperties}
                     >
                       <h3 className="text-xs font-bold text-[#111111] uppercase tracking-wider mb-2">
@@ -2464,7 +2481,7 @@ export default function App() {
                     </div>
 
                     <div
-                      className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-5 shadow-2xs reveal panel-card"
+                      className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-5 shadow-2xs panel-card"
                       style={{ '--reveal-delay': '45ms' } as React.CSSProperties}
                     >
                       <h3 className="text-xs font-bold text-[#111111] uppercase tracking-wider mb-2">
@@ -2479,7 +2496,7 @@ export default function App() {
                     </div>
 
                     <div
-                      className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-5 shadow-2xs reveal panel-card"
+                      className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-5 shadow-2xs panel-card"
                       style={{ '--reveal-delay': '90ms' } as React.CSSProperties}
                     >
                       <h3 className="text-xs font-bold text-[#111111] uppercase tracking-wider mb-2">
@@ -2496,7 +2513,7 @@ export default function App() {
                     </div>
 
                     <div
-                      className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-5 shadow-2xs reveal panel-card"
+                      className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-5 shadow-2xs panel-card"
                       style={{ '--reveal-delay': '135ms' } as React.CSSProperties}
                     >
                       <h3 className="text-xs font-bold text-[#111111] uppercase tracking-wider mb-2">
@@ -2515,7 +2532,7 @@ export default function App() {
 
                   {/* Right Column: Verified Certifications from data/profile.js (Feature #13) */}
                   <div
-                    className={`${isMobileSim ? 'w-full' : 'lg:col-span-5'} bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-5 sm:p-6 shadow-2xs reveal panel-card`}
+                    className={`${isMobileSim ? 'w-full' : 'lg:col-span-5'} bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-5 sm:p-6 shadow-2xs panel-card`}
                     style={{ '--reveal-delay': '90ms' } as React.CSSProperties}
                   >
                     <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#E2E8F0]">
