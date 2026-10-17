@@ -84,11 +84,29 @@ jobs:
             --exclude 'portfolio-v2-react' \
             portfolio-v2-react/dist/ ./
 
+      - name: Publish compiled Vite JS/CSS bundles into assets/ (cv/ and quaero/ protected)
+        run: |
+          # HOTFIX: the step above deliberately excludes the whole top-level
+          # `assets/` directory, which correctly protects assets/cv/ and
+          # assets/quaero/ -- but it also means the compiled Vite bundle
+          # (portfolio-v2-react/dist/assets/index-*.js and index-*.css,
+          # referenced directly by the root index.html) never reached
+          # production, causing a blank white page. This second, narrower
+          # rsync targets only dist/assets/ -> ./assets/, with --delete
+          # scoped to that subtree so stale bundles from a previous build
+          # get cleaned up on redeploy, while --exclude keeps assets/cv/
+          # and assets/quaero/ completely untouched on both the source and
+          # destination side, exactly as before this hotfix.
+          rsync -a --delete \
+            --exclude 'cv' \
+            --exclude 'quaero' \
+            portfolio-v2-react/dist/assets/ ./assets/
+
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A -- . ':!data' ':!assets' ':!images' ':!components'
+          git add -A -- . ':!data' ':!assets/cv' ':!assets/quaero' ':!images' ':!components'
           if ! git diff --cached --quiet; then
             git commit -m "deploy: publish React portfolio build"
             git push origin HEAD:main
