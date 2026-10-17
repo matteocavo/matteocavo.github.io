@@ -39,7 +39,14 @@ async function fetchProjects() {
       dataset: p['Dataset']?.rich_text?.[0]?.plain_text ?? '',
       date: p['Date']?.date?.start ?? null,
       notes: p['Notes / Insights']?.rich_text?.[0]?.plain_text ?? '',
-      image: p['Cover URL']?.url ?? githubOgImage(p['GitHub']?.url ?? null)
+      image: p['Cover URL']?.url ?? githubOgImage(p['GitHub']?.url ?? null),
+      // Phase 3 Priority 2: Portfolio Flagship checkbox controls which single
+      // Portfolio Ready project the React frontend renders as the flagship
+      // case study. `?.checkbox` is undefined (not false) when the property
+      // is absent on a given page (e.g. a page that predates this checkbox
+      // being added to the database), so `?? false` makes 'absent' and
+      // 'unchecked' both resolve safely to false instead of to undefined.
+      isFlagship: p['Portfolio Flagship']?.checkbox ?? false
     };
   });
 
