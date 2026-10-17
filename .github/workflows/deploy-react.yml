@@ -1,0 +1,97 @@
+# Deploy React Portfolio to GitHub Pages
+#
+# Manual-only for now (workflow_dispatch). The automatic `push` trigger is
+# left commented out until this has been run and verified at least once —
+# see portfolio-v2-react/deploy-draft/README.md for the full reasoning and
+# the release sequence this fits into.
+
+name: Deploy React Portfolio to GitHub Pages
+
+on:
+  workflow_dispatch: {}
+  # push:
+  #   branches: [main]
+  #   paths:
+  #     - 'portfolio-v2-react/**'
+  #   paths-ignore:
+  #     - 'data/**'
+
+concurrency:
+  group: pages-deploy-react
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: portfolio-v2-react/package-lock.json
+
+      - name: Install dependencies
+        working-directory: portfolio-v2-react
+        run: npm ci
+
+      - name: Build
+        working-directory: portfolio-v2-react
+        run: npm run build
+
+      - name: Copy build output into Pages root (non-destructive)
+        run: |
+          # IMPORTANT: this excludes everything the sync-notion.yml job and
+          # repo-root tooling own, on both the source (dist/) and
+          # destination side of rsync --delete:
+          #   - data/, assets/, images/     -> live Notion/GitHub data and
+          #     real assets must never be overwritten by the dev fixture
+          #     copies Vite bundles into dist/ from public/.
+          #   - package.json, package-lock.json, .gitignore -> these belong
+          #     to sync-notion.yml's own `npm ci` step (@notionhq/client,
+          #     dotenv), NOT to the React app. Without these three
+          #     exclusions, --delete would remove them on first deploy and
+          #     break the next hourly Notion sync run.
+          #   - CNAME, README.md, .github, scripts, quaero.html,
+          #     favicon.svg, .git -> unrelated repo-root assets/config.
+          #   - components/ -> the live vanilla site's components/*.js are
+          #     NOT the same files as the dev-fixture copies Vite bundles
+          #     from public/components/ into dist/components/ (confirmed:
+          #     they have already diverged in practice). Without this
+          #     exclusion, --delete would silently overwrite the live,
+          #     currently-served components/repoCard.js with a stale copy.
+          rsync -a --delete \
+            --exclude 'data' \
+            --exclude 'assets' \
+            --exclude 'images' \
+            --exclude 'components' \
+            --exclude 'package.json' \
+            --exclude 'package-lock.json' \
+            --exclude '.gitignore' \
+            --exclude 'CNAME' \
+            --exclude 'README.md' \
+            --exclude '.github' \
+            --exclude 'scripts' \
+            --exclude 'quaero.html' \
+            --exclude 'favicon.svg' \
+            --exclude '.git' \
+            --exclude 'portfolio-v2-react' \
+            portfolio-v2-react/dist/ ./
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A -- . ':!data' ':!assets' ':!images' ':!components'
+          if ! git diff --cached --quiet; then
+            git commit -m "deploy: publish React portfolio build"
+            git push origin HEAD:main
+          else
+            echo "No build changes to deploy."
+          fi
