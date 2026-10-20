@@ -601,6 +601,49 @@ export const CHATBOT_KNOWLEDGE_BASE: ChatbotQAItem[] = [
       { labelIt: 'Consulta le Certificazioni', labelEn: 'View Certifications', href: '#preview-skills' }
     ],
     followUps: ['certifications_overview', 'profile_overview', 'cv_download']
+  },
+  {
+    id: 'services_pricing',
+    triggerIt: 'Quanto costa un progetto o come richiedo un preventivo?',
+    triggerEn: 'How much does a project cost, or how can I request a quote?',
+    category: 'services',
+    responseIt:
+      'I costi dipendono dall\'ambito del progetto (volume dati, complessit\u00e0 della pipeline, timeline), quindi non pubblico tariffe standard qui. Per un preventivo accurato, descrivi il tuo caso tramite il modulo contatti: Matteo ti risponder\u00e0 direttamente con una proposta su misura.',
+    responseEn:
+      'Pricing depends on project scope (data volume, pipeline complexity, timeline), so I don\'t publish fixed rates here. For an accurate quote, describe your use case through the contact form and Matteo will reply directly with a tailored proposal.',
+    actionLinks: [
+      { labelIt: 'Richiedi un preventivo', labelEn: 'Request a quote', href: '#preview-contact' }
+    ],
+    followUps: ['services_overview', 'availability_overview', 'contact_options']
+  },
+  {
+    id: 'services_collaboration',
+    triggerIt: 'Posso collaborare con Matteo su un progetto?',
+    triggerEn: 'Can I collaborate with Matteo on a project?',
+    category: 'services',
+    responseIt:
+      'S\u00ec, Matteo \u00e8 aperto a collaborazioni tecniche selezionate su Business Intelligence, Data Engineering e analytics, oltre a ruoli in-house. Il modo migliore per iniziare \u00e8 descrivere brevemente il progetto o l\'opportunit\u00e0 tramite il modulo contatti.',
+    responseEn:
+      'Yes, Matteo is open to selected technical collaborations in Business Intelligence, Data Engineering, and analytics, as well as in-house roles. The best way to start is a brief description of the project or opportunity through the contact form.',
+    actionLinks: [
+      { labelIt: 'Vai alla sezione contatti', labelEn: 'Go to contact section', href: '#preview-contact' },
+      { labelIt: 'Profilo LinkedIn', labelEn: 'LinkedIn Profile', href: 'https://www.linkedin.com/in/matteo-cavo/', isExternal: true }
+    ],
+    followUps: ['availability_overview', 'services_overview', 'contact_options']
+  },
+  {
+    id: 'projects_dataciviclab',
+    triggerIt: 'Cos\u2019\u00e8 DataCivicLab e quali progetti ne fanno parte?',
+    triggerEn: 'What is DataCivicLab and which projects are part of it?',
+    category: 'projects',
+    responseIt:
+      'DataCivicLab \u00e8 una community open-data e civic-tech italiana a cui Matteo contribuisce attivamente. Nel suo portfolio rientrano, tra gli altri, il progetto sui rifiuti urbani ISPRA (raccolta differenziata) e l\'analisi dei saldi storici di finanza pubblica OpenBDAP, entrambi costruiti su dati ufficiali italiani con Power BI e DAX.',
+    responseEn:
+      'DataCivicLab is an Italian open-data and civic-tech community Matteo actively contributes to. His portfolio within it includes the ISPRA municipal waste (recycling) project and the OpenBDAP public finance historical balances analysis, both built on official Italian open data with Power BI and DAX.',
+    actionLinks: [
+      { labelIt: 'Hub GitHub DataCivicLab', labelEn: 'DataCivicLab GitHub Hub', href: 'https://github.com/dataciviclab', isExternal: true }
+    ],
+    followUps: ['projects_ispra', 'projects_openbdap', 'services_overview']
   }
 ];
 

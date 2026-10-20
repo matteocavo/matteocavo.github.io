@@ -18,6 +18,7 @@ import {
   WORK_PROCESS_STEPS,
   WorkProcessStep
 } from './data/blueprintData';
+import { resolveChatbotAnswer } from './data/chatbotEngine';
 import {
   ExternalLink,
   MessageSquare,
@@ -248,6 +249,10 @@ export default function App() {
         : 'Portfolio Assistant: ask any question or select a case study or service below to explore pipelines, metrics, Power BI, and Databricks.'
     }
   ]);
+  // Lightweight session context (Task 2.E): id of the last matched
+  // ChatbotQAItem (or 'projects_overview_dynamic'), used to resolve short
+  // follow-up questions ("quali tecnologie usa?") against the previous topic.
+  const [lastChatTopicId, setLastChatTopicId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formSubmitting, setFormSubmitting] = useState(false);
@@ -602,6 +607,7 @@ export default function App() {
           : 'Language switched to English. You can type any question or choose a prompt below to learn about Matteo’s projects, skills, or services.'
       }
     ]);
+    setLastChatTopicId(null);
   };
 
   const handleChatTrigger = (item: ChatbotQAItem) => {
@@ -618,6 +624,7 @@ export default function App() {
       { sender: 'user', text: questionText },
       { sender: 'bot', text: answerText, links: actionLinks }
     ]);
+    setLastChatTopicId(item.id);
   };
 
   // Section 6a: Free-text question processing covering ALL case studies, CV, availability, education + zero raw email
@@ -626,307 +633,40 @@ export default function App() {
     const text = chatInputText.trim();
     if (!text) return;
 
-    // Normalize text: lowercase and strip diacritics/accents for robust matching
-    const normalized = text
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '');
-
     setChatInputText('');
     setChatMessages((prev) => [...prev, { sender: 'user', text }]);
 
-    let matchedItem: ChatbotQAItem | undefined;
-
-    // 1. CV, Resume, Download PDF
-    if (
-      normalized.includes('cv') ||
-      normalized.includes('curriculum') ||
-      normalized.includes('resume') ||
-      normalized.includes('scarica cv') ||
-      normalized.includes('download cv') ||
-      normalized.includes('anteprima cv')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'cv_download');
-    }
-    // 2. Availability, Hiring, Work type
-    else if (
-      normalized.includes('disponib') ||
-      normalized.includes('availab') ||
-      normalized.includes('assunzion') ||
-      normalized.includes('lavoro') ||
-      normalized.includes('full time') ||
-      normalized.includes('full-time') ||
-      normalized.includes('part-time') ||
-      normalized.includes('remoto') ||
-      normalized.includes('remote') ||
-      normalized.includes('in-house') ||
-      normalized.includes('hire') ||
-      normalized.includes('opportunit')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'availability_overview');
-    }
-    // 3. Education, Academic, University, DAMS
-    else if (
-      normalized.includes('laurea') ||
-      normalized.includes('universit') ||
-      normalized.includes('stud') ||
-      normalized.includes('dams') ||
-      normalized.includes('bologna') ||
-      normalized.includes('educat') ||
-      normalized.includes('accademi') ||
-      normalized.includes('formazion')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'education_overview');
-    }
-    // 4. Quaero v0.4.0 (Framework, Lineage, Mermaid, Profiling, Parquet, Streamlit, Anomaly)
-    else if (
-      normalized.includes('quaero') ||
-      normalized.includes('lineage') ||
-      normalized.includes('mermaid') ||
-      normalized.includes('profiling') ||
-      normalized.includes('dbt') ||
-      normalized.includes('streamlit') ||
-      normalized.includes('parquet') ||
-      normalized.includes('anomal') ||
-      normalized.includes('question-driven') ||
-      normalized.includes('question driven')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'projects_quaero');
-    }
-    // 5. Rome Public Transport & Databricks GTFS
-    else if (
-      normalized.includes('roma') ||
-      normalized.includes('rome') ||
-      normalized.includes('trasporto') ||
-      normalized.includes('transport') ||
-      normalized.includes('gtfs') ||
-      normalized.includes('ritard') ||
-      normalized.includes('delay') ||
-      normalized.includes('autobus') ||
-      normalized.includes('bus') ||
-      normalized.includes('atac') ||
-      normalized.includes('random forest')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'projects_rome');
-    }
-    // 6. ISPRA Municipal Waste & Recyclability
-    else if (
-      normalized.includes('ispra') ||
-      normalized.includes('rifiut') ||
-      normalized.includes('waste') ||
-      normalized.includes('differenziat') ||
-      normalized.includes('ricicl') ||
-      normalized.includes('virtuos') ||
-      normalized.includes('catasto')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'projects_ispra');
-    }
-    // 7. OpenBDAP Public Finance & Debt
-    else if (
-      normalized.includes('openbdap') ||
-      normalized.includes('bilancio') ||
-      normalized.includes('deficit') ||
-      normalized.includes('debito') ||
-      normalized.includes('finanza') ||
-      normalized.includes('spesa pubblica') ||
-      normalized.includes('ragioneria') ||
-      normalized.includes('saldi')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'projects_openbdap');
-    }
-    // 8. Streaming Competitive Benchmark & Overlap
-    else if (
-      normalized.includes('benchmark') ||
-      normalized.includes('netflix') ||
-      normalized.includes('disney') ||
-      normalized.includes('apple tv') ||
-      normalized.includes('prime video') ||
-      normalized.includes('jaccard') ||
-      normalized.includes('catalogo') ||
-      normalized.includes('catalog')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'projects_streaming_benchmark');
-    }
-    // 9. Streaming Metadata Analytics & KPIs
-    else if (
-      normalized.includes('metadata') ||
-      normalized.includes('metadati') ||
-      normalized.includes('rewatch') ||
-      normalized.includes('completion') ||
-      normalized.includes('telemetr') ||
-      normalized.includes('sessioni')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'projects_streaming_metadata');
-    }
-    // 10. Power BI & DAX
-    else if (
-      normalized.includes('power bi') ||
-      normalized.includes('dax') ||
-      normalized.includes('star schema') ||
-      normalized.includes('power query')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'services_power_bi') || CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'skills_overview');
-    }
-    // 11. Data Quality & Cleansing
-    else if (
-      normalized.includes('qualita') ||
-      normalized.includes('quality') ||
-      normalized.includes('pulizia') ||
-      normalized.includes('bonifica') ||
-      normalized.includes('deduplic') ||
-      normalized.includes('cleansing')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'services_data_quality');
-    }
-    // 12. Data Engineering & Pipelines
-    else if (
-      normalized.includes('databricks') ||
-      normalized.includes('pyspark') ||
-      normalized.includes('spark') ||
-      normalized.includes('etl') ||
-      normalized.includes('elt') ||
-      normalized.includes('lakehouse') ||
-      normalized.includes('medallion') ||
-      normalized.includes('delta lake')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'services_data_engineering') || CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'projects_rome');
-    }
-    // 13. Automation
-    else if (
-      normalized.includes('automat') ||
-      normalized.includes('ricorrent') ||
-      normalized.includes('flussi') ||
-      normalized.includes('script')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'services_automation');
-    }
-    // 14. KPI Strategy
-    else if (
-      normalized.includes('kpi') ||
-      normalized.includes('strategia') ||
-      normalized.includes('misuraz') ||
-      normalized.includes('metric')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'services_strategy_kpi');
-    }
-    // 15. Services Overview
-    else if (
-      normalized.includes('serviz') ||
-      normalized.includes('service') ||
-      normalized.includes('consulenz') ||
-      normalized.includes('collabor')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'services_overview');
-    }
-    // 16. Certifications & Credentials
-    else if (
-      normalized.includes('certifica') ||
-      normalized.includes('google') ||
-      normalized.includes('coursera') ||
-      normalized.includes('pl-300') ||
-      normalized.includes('accreditation') ||
-      normalized.includes('esami')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'certifications_overview');
-    }
-    // 17. Skills, Tools, Tech Stack, Python, SQL
-    else if (
-      normalized.includes('competenz') ||
-      normalized.includes('skill') ||
-      normalized.includes('tecnolog') ||
-      normalized.includes('strument') ||
-      normalized.includes('tool') ||
-      normalized.includes('stack') ||
-      normalized.includes('python') ||
-      normalized.includes('sql') ||
-      normalized.includes('pandas') ||
-      normalized.includes('polars') ||
-      normalized.includes('machine learning') ||
-      normalized.includes('eda')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'skills_overview');
-    }
-    // 18. Profile Overview & Background (Gracenote/Nielsen)
-    else if (
-      normalized.includes('chi e') ||
-      normalized.includes('chi sei') ||
-      normalized.includes('who is') ||
-      normalized.includes('matteo') ||
-      normalized.includes('gracenote') ||
-      normalized.includes('nielsen') ||
-      normalized.includes('esperienz') ||
-      normalized.includes('background') ||
-      normalized.includes('bio') ||
-      normalized.includes('presentat')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'profile_overview');
-    }
-    // 19. Contact & Social Channels
-    else if (
-      normalized.includes('contatt') ||
-      normalized.includes('contact') ||
-      normalized.includes('scrivi') ||
-      normalized.includes('email') ||
-      normalized.includes('messagg') ||
-      normalized.includes('linkedin') ||
-      normalized.includes('github') ||
-      normalized.includes('parlare')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'contact_options');
-    }
-    // 20. Projects in general
-    else if (
-      normalized.includes('progett') ||
-      normalized.includes('project') ||
-      normalized.includes('casi studio') ||
-      normalized.includes('case stud') ||
-      normalized.includes('portfolio') ||
-      normalized.includes('lavori')
-    ) {
-      matchedItem = CHATBOT_KNOWLEDGE_BASE.find((item) => item.id === 'projects_rome');
-    }
-
-    // Secondary scoring fallback: word overlap with triggers & categories
-    if (!matchedItem) {
-      const tokens = normalized.split(/\s+/).filter((t) => t.length >= 3);
-      let bestScore = 0;
-      let candidate: ChatbotQAItem | undefined;
-
-      for (const item of CHATBOT_KNOWLEDGE_BASE) {
-        const itemCorpus = `${item.triggerIt} ${item.triggerEn} ${item.category} ${item.responseIt} ${item.responseEn}`
-          .toLowerCase()
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '');
-
-        let score = 0;
-        for (const token of tokens) {
-          if (itemCorpus.includes(token)) score += 1;
-        }
-        if (score > bestScore) {
-          bestScore = score;
-          candidate = item;
-        }
-      }
-
-      if (bestScore >= 2 && candidate) {
-        matchedItem = candidate;
-      }
-    }
+    // All intent resolution (small talk, keyword-ranked FAQ matching, the
+    // live-data project overview, follow-up context, and the scoring
+    // fallback) lives in chatbotEngine.ts -- see Task 2.F in the PR
+    // description for why this was pulled out of App.tsx.
+    const result = resolveChatbotAnswer(text, siteLang, {
+      lastTopicId: lastChatTopicId,
+      liveProjects: VERIFIED_NOTION_PROJECTS
+    });
 
     setTimeout(() => {
-      if (matchedItem) {
-        const respText = siteLang === 'it' ? matchedItem.responseIt : matchedItem.responseEn;
-        const links = matchedItem.actionLinks?.map((l) => ({
+      if (result.kind === 'smalltalk') {
+        setChatMessages((prev) => [...prev, { sender: 'bot', text: result.text }]);
+        // Small talk doesn't change the active topic, so a follow-up right
+        // after a greeting can still resolve against whatever came before it.
+      } else if (result.kind === 'dynamicProjects') {
+        setChatMessages((prev) => [...prev, { sender: 'bot', text: result.text, links: result.links }]);
+        setLastChatTopicId('projects_overview_dynamic');
+      } else if (result.kind === 'kb') {
+        const respText = siteLang === 'it' ? result.item.responseIt : result.item.responseEn;
+        const links = result.item.actionLinks?.map((l) => ({
           label: siteLang === 'it' ? l.labelIt : l.labelEn,
           href: l.href,
           isExternal: l.isExternal
         }));
         setChatMessages((prev) => [...prev, { sender: 'bot', text: respText, links }]);
+        setLastChatTopicId(result.item.id);
       } else {
         const fallbackMsg =
           siteLang === 'it'
-            ? 'Posso fornirti informazioni dettagliate sulle competenze tecniche di Matteo, sui suoi 6 progetti in evidenza (incluso Quaero v0.4.0 e Databricks), sul suo percorso o sulle opzioni di contatto.'
-            : 'I can provide detailed information on Matteo’s technical skills, his 6 featured projects (including Quaero v0.4.0 and Databricks), his professional background, or direct contact options.';
+            ? 'Posso fornirti informazioni dettagliate sulle competenze tecniche di Matteo, sui suoi progetti in evidenza (incluso Quaero v0.4.0 e Databricks), sul suo percorso o sulle opzioni di contatto.'
+            : 'I can provide detailed information on Matteo\u2019s technical skills, his featured projects (including Quaero v0.4.0 and Databricks), his professional background, or direct contact options.';
         setChatMessages((prev) => [
           ...prev,
           {
@@ -951,6 +691,8 @@ export default function App() {
             ]
           }
         ]);
+        // Deliberately do not touch lastChatTopicId here: an unmatched
+        // message shouldn't erase a still-relevant previous topic.
       }
     }, 280);
   };
@@ -965,6 +707,7 @@ export default function App() {
             : 'Conversation reset. How can I assist you in exploring Matteo’s analytical projects and profile?'
       }
     ]);
+    setLastChatTopicId(null);
   };
 
   const renderServiceIcon = (iconName: string) => {
