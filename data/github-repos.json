@@ -1,30 +1,5 @@
 [
   {
-    "name": "Quaero",
-    "full_name": "matteocavo/Quaero",
-    "description": "Question-driven analytics pipeline: raw datasets → analytical marts, semantic metrics, and dashboard-ready outputs.",
-    "html_url": "https://github.com/matteocavo/Quaero",
-    "topics": [
-      "analytics",
-      "data-engineering",
-      "data-pipeline",
-      "kpi",
-      "pandas",
-      "parquet",
-      "portfolio",
-      "python",
-      "semantic-layer"
-    ],
-    "stargazers_count": 2,
-    "updated_at": "2026-10-23T13:47:07Z",
-    "pushed_at": "2026-04-29T12:06:10Z",
-    "archived": false,
-    "fork": false,
-    "owner": {
-      "login": "matteocavo"
-    }
-  },
-  {
     "name": "rome-public-transport-reliability",
     "full_name": "matteocavo/rome-public-transport-reliability",
     "description": "Analisi end-to-end su Databricks dell'affidabilità del trasporto pubblico di Roma e previsione del ritardo alla fermata successiva con dati GTFS e GTFS-Realtime.",
@@ -47,8 +22,33 @@
       "transport-analytics"
     ],
     "stargazers_count": 2,
-    "updated_at": "2026-10-20T23:26:04Z",
-    "pushed_at": "2026-10-07T15:16:49Z",
+    "updated_at": "2026-10-25T13:38:17Z",
+    "pushed_at": "2026-10-25T13:39:55Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "matteocavo"
+    }
+  },
+  {
+    "name": "Quaero",
+    "full_name": "matteocavo/Quaero",
+    "description": "Question-driven analytics pipeline: raw datasets → analytical marts, semantic metrics, and dashboard-ready outputs.",
+    "html_url": "https://github.com/matteocavo/Quaero",
+    "topics": [
+      "analytics",
+      "data-engineering",
+      "data-pipeline",
+      "kpi",
+      "pandas",
+      "parquet",
+      "portfolio",
+      "python",
+      "semantic-layer"
+    ],
+    "stargazers_count": 2,
+    "updated_at": "2026-10-23T13:47:07Z",
+    "pushed_at": "2026-04-29T12:06:10Z",
     "archived": false,
     "fork": false,
     "owner": {
