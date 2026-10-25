@@ -1,5 +1,61 @@
 [
   {
+    "name": "Quaero",
+    "full_name": "matteocavo/Quaero",
+    "description": "Question-driven analytics pipeline: raw datasets → analytical marts, semantic metrics, and dashboard-ready outputs.",
+    "html_url": "https://github.com/matteocavo/Quaero",
+    "topics": [
+      "analytics",
+      "data-engineering",
+      "data-pipeline",
+      "kpi",
+      "pandas",
+      "parquet",
+      "portfolio",
+      "python",
+      "semantic-layer"
+    ],
+    "stargazers_count": 2,
+    "updated_at": "2026-10-23T13:47:07Z",
+    "pushed_at": "2026-04-29T12:06:10Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "matteocavo"
+    }
+  },
+  {
+    "name": "rome-public-transport-reliability",
+    "full_name": "matteocavo/rome-public-transport-reliability",
+    "description": "Analisi end-to-end su Databricks dell'affidabilità del trasporto pubblico di Roma e previsione del ritardo alla fermata successiva con dati GTFS e GTFS-Realtime.",
+    "html_url": "https://github.com/matteocavo/rome-public-transport-reliability",
+    "topics": [
+      "data-analytics",
+      "data-engineering",
+      "databricks",
+      "delta-lake",
+      "gtfs",
+      "gtfs-realtime",
+      "machine-learning",
+      "mlflow",
+      "portfolio",
+      "public-transport",
+      "pyspark",
+      "python",
+      "spark",
+      "sql",
+      "transport-analytics"
+    ],
+    "stargazers_count": 2,
+    "updated_at": "2026-10-20T23:26:04Z",
+    "pushed_at": "2026-10-07T15:16:49Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "matteocavo"
+    }
+  },
+  {
     "name": "dataciviclab",
     "full_name": "dataciviclab/dataciviclab",
     "description": "Hub pubblico del DataCivicLab. Spieghiamo chi siamo, cosa facciamo e come partecipare.",
@@ -41,37 +97,6 @@
     }
   },
   {
-    "name": "rome-public-transport-reliability",
-    "full_name": "matteocavo/rome-public-transport-reliability",
-    "description": "Analisi end-to-end su Databricks dell'affidabilità del trasporto pubblico di Roma e previsione del ritardo alla fermata successiva con dati GTFS e GTFS-Realtime.",
-    "html_url": "https://github.com/matteocavo/rome-public-transport-reliability",
-    "topics": [
-      "data-analytics",
-      "data-engineering",
-      "databricks",
-      "delta-lake",
-      "gtfs",
-      "gtfs-realtime",
-      "machine-learning",
-      "mlflow",
-      "portfolio",
-      "public-transport",
-      "pyspark",
-      "python",
-      "spark",
-      "sql",
-      "transport-analytics"
-    ],
-    "stargazers_count": 1,
-    "updated_at": "2026-10-07T15:20:01Z",
-    "pushed_at": "2026-10-07T15:16:49Z",
-    "archived": false,
-    "fork": false,
-    "owner": {
-      "login": "matteocavo"
-    }
-  },
-  {
     "name": "progetto-pilota",
     "full_name": "dataciviclab/progetto-pilota",
     "description": "Prima analisi del Lab — rifiuti urbani, raccolta differenziata e performance ambientale nei comuni italiani.",
@@ -90,31 +115,6 @@
     "fork": false,
     "owner": {
       "login": "dataciviclab"
-    }
-  },
-  {
-    "name": "Quaero",
-    "full_name": "matteocavo/Quaero",
-    "description": "Question-driven analytics pipeline: raw datasets → analytical marts, semantic metrics, and dashboard-ready outputs.",
-    "html_url": "https://github.com/matteocavo/Quaero",
-    "topics": [
-      "analytics",
-      "data-engineering",
-      "data-pipeline",
-      "kpi",
-      "pandas",
-      "parquet",
-      "portfolio",
-      "python",
-      "semantic-layer"
-    ],
-    "stargazers_count": 1,
-    "updated_at": "2026-04-29T12:04:58Z",
-    "pushed_at": "2026-04-29T12:06:10Z",
-    "archived": false,
-    "fork": false,
-    "owner": {
-      "login": "matteocavo"
     }
   },
   {
