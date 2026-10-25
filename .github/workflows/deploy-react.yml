@@ -1,9 +1,6 @@
 # Deploy React Portfolio to GitHub Pages
 #
-# Manual-only for now (workflow_dispatch). The automatic `push` trigger is
-# left commented out until this has been run and verified at least once —
-# see portfolio-v2-react/deploy-draft/README.md for the full reasoning and
-# the release sequence this fits into.
+# Deploy manually after validating the frontend build.
 
 name: Deploy React Portfolio to GitHub Pages
 
@@ -60,17 +57,10 @@ jobs:
           #     break the next hourly Notion sync run.
           #   - CNAME, README.md, .github, scripts, quaero.html,
           #     favicon.svg, .git -> unrelated repo-root assets/config.
-          #   - components/ -> the live vanilla site's components/*.js are
-          #     NOT the same files as the dev-fixture copies Vite bundles
-          #     from public/components/ into dist/components/ (confirmed:
-          #     they have already diverged in practice). Without this
-          #     exclusion, --delete would silently overwrite the live,
-          #     currently-served components/repoCard.js with a stale copy.
           rsync -a --delete \
             --exclude 'data' \
             --exclude 'assets' \
             --exclude 'images' \
-            --exclude 'components' \
             --exclude 'package.json' \
             --exclude 'package-lock.json' \
             --exclude '.gitignore' \
@@ -106,7 +96,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A -- . ':!data' ':!assets/cv' ':!assets/quaero' ':!images' ':!components'
+          git add -A -- . ':!data' ':!assets/cv' ':!assets/quaero' ':!images'
           if ! git diff --cached --quiet; then
             git commit -m "deploy: publish React portfolio build"
             git push origin HEAD:main

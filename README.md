@@ -148,13 +148,13 @@ npm run preview
 Il deploy del frontend React è **manuale** (`workflow_dispatch`), gestito da `.github/workflows/deploy-react.yml`:
 
 1. `npm ci` + `npm run build` genera `portfolio-v2-react/dist/`.
-2. L'output del build viene copiato nella root del repository (servita da GitHub Pages), **escludendo esplicitamente** `data/`, `assets/cv/`, `assets/quaero/`, `images/`, `components/`, i file di configurazione del repository (`package.json`, `.gitignore`, ecc.) e tutto ciò che appartiene alla pipeline di sync Notion/GitHub.
+2. L'output del build viene copiato nella root del repository (servita da GitHub Pages), **escludendo esplicitamente** `data/`, `assets/cv/`, `assets/quaero/`, `images/`, i file di configurazione del repository (`package.json`, `.gitignore`, ecc.) e tutto ciò che appartiene alla pipeline di sync Notion/GitHub.
 3. I bundle JS/CSS compilati da Vite vengono pubblicati in `assets/`, mantenendo intatti `assets/cv/` e `assets/quaero/`.
 4. Se ci sono modifiche, il workflow esegue il commit e il push su `main` a nome di `github-actions[bot]`.
 
 Questo approccio "non distruttivo" garantisce che un deploy del frontend non sovrascriva mai i dati live di Notion/GitHub, i CV, le immagini dei progetti o gli asset della pagina Quaero.
 
-*The React frontend deploy is **manual** (`workflow_dispatch`), handled by `.github/workflows/deploy-react.yml`: `npm ci` + `npm run build` generates `portfolio-v2-react/dist/`; the build output is copied into the repository root (served by GitHub Pages), explicitly excluding `data/`, `assets/cv/`, `assets/quaero/`, `images/`, `components/`, repository configuration files, and anything owned by the Notion/GitHub sync pipeline; the compiled Vite JS/CSS bundles are published to `assets/`, keeping `assets/cv/` and `assets/quaero/` intact; if there are changes, the workflow commits and pushes to `main` as `github-actions[bot]`. This non-destructive approach ensures a frontend deploy never overwrites live Notion/GitHub data, CVs, project images, or the Quaero page assets.*
+*The React frontend deploy is **manual** (`workflow_dispatch`), handled by `.github/workflows/deploy-react.yml`: `npm ci` + `npm run build` generates `portfolio-v2-react/dist/`; the build output is copied into the repository root (served by GitHub Pages), explicitly excluding `data/`, `assets/cv/`, `assets/quaero/`, `images/`, repository configuration files, and anything owned by the Notion/GitHub sync pipeline; the compiled Vite JS/CSS bundles are published to `assets/`, keeping `assets/cv/` and `assets/quaero/` intact; if there are changes, the workflow commits and pushes to `main` as `github-actions[bot]`. This non-destructive approach ensures a frontend deploy never overwrites live Notion/GitHub data, CVs, project images, or the Quaero page assets.*
 
 ---
 

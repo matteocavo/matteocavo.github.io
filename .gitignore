@@ -1,4 +1,12 @@
-.env
+.env*
+!.env.example
 node_modules/
 .claude/
 *.code-workspace
+
+# Local credentials and generated files
+*.pem
+*.key
+*.p12
+*.pfx
+*.log
