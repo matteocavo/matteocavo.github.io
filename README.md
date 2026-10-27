@@ -1,4 +1,4 @@
-# Matteo Cavo — Data & Business Intelligence Analyst Portfolio
+# Matteo Cavo: Data & Business Intelligence Analyst Portfolio
 
 **Live:** https://matteocavo.github.io
 
