@@ -164,3 +164,50 @@ Questo approccio "non distruttivo" garantisce che un deploy del frontend non sov
 - **GitHub:** https://github.com/matteocavo
 - **LinkedIn:** https://www.linkedin.com/in/matteo-cavo/
 - **Notion Projects:** https://www.notion.so/Progetti-Data-Analysis-2cadbce01b3080249f63d8d47cb6e647
+
+## License
+
+Original website source code is licensed under the [MIT License](LICENSE),
+Copyright (c) 2026 Matteo Cavo. This covers original HTML, CSS, TypeScript,
+JavaScript, scripts and configuration, subject to the content exclusions below.
+A source file or generated bundle can contain both licensed code and excluded
+content; embedding content in code does not change its licensing.
+
+Personal content and identifying assets remain
+**Copyright (c) 2026 Matteo Cavo — All Rights Reserved**, to the extent owned by
+Matteo Cavo. Third-party rights remain with their respective owners.
+
+Curriculum vitae files are not licensed under the MIT License and remain Copyright Matteo Cavo, All Rights Reserved.
+This explicitly includes `assets/cv/Matteo_Cavo_CV_IT.pdf`,
+`assets/cv/Matteo_Cavo_CV_EN.pdf` and their copies under
+`portfolio-v2-react/public/assets/cv/`.
+
+Personal photographs, likeness, biographical material and personal branding are excluded from the MIT License and remain All Rights Reserved.
+This includes `images/matteo-profile.jpg` and its copy under
+`portfolio-v2-react/public/images/`, personal names/logos/signatures, `favicon.svg`,
+`images/favicon-*.png` and their public copies. Personal biography, CV text,
+career history, identifying copy and creative writing are excluded wherever
+embedded, including this README, `data/profile.js`, `data/*.json`,
+`portfolio-v2-react/public/data/`, `portfolio-v2-react/src/data/`, HTML, app
+components and generated bundles. The surrounding reusable code remains MIT.
+
+Music, audio, album artwork, original artwork, books, creative writing and
+material relating to Maztek or Aumaaz are excluded, whether stored, embedded or
+linked; no software license is granted to these works. No standalone audio or
+book files were found in the tracked repository during this audit.
+
+Project screenshots, dashboard images and presentation slides in `images/`,
+`assets/quaero/` and corresponding `portfolio-v2-react/public/` copies are also
+excluded from the software MIT grant. Original assets remain All Rights Reserved;
+third-party imagery, logos, data and other embedded material retain their own
+rights. Their presence does not establish permission to reuse them.
+
+Third-party libraries, icons, fonts and assets retain their upstream licenses;
+see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md), including the bundled-code
+notices. Keep those notices with redistributed bundles.
+
+This license applies to this portfolio's original code only, not every project
+showcased or linked here. Each project has its own repository license. Quaero's
+existing MIT / Open Source descriptions remain unchanged. A future project may
+use **PolyForm Noncommercial 1.0.0** or another license without changing the
+portfolio software license; consult that project's own LICENSE before reuse.
