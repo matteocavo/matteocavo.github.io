@@ -278,4 +278,3 @@ tooling or rebuilding on other platforms, and refresh this audit when upgrading.
 | lightningcss-linux-x64-musl | 1.33.0 | MPL-2.0 |
 | lightningcss-win32-arm64-msvc | 1.33.0 | MPL-2.0 |
 | lightningcss-win32-x64-msvc | 1.33.0 | MPL-2.0 |
-
