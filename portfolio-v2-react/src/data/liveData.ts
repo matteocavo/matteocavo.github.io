@@ -38,13 +38,19 @@
 // =============================================================================
 
 import { NotionProjectData, SecondaryRepoData, RawGithubRepo } from './portfolioData';
+import {
+  computeTechCategoryStats,
+  deriveHighlightCategory,
+  reportUnmappedTools,
+  TechCategoryStat
+} from './techCategories';
 
 // ---------------------------------------------------------------------------
 // Real schema shapes (as produced by scripts/fetch-notion.js and
 // scripts/fetch-github-repos.js in the production repo). Kept loose/partial
 // on purpose: we only read fields we actually use.
 // ---------------------------------------------------------------------------
-interface RealProjectRecord {
+export interface RealProjectRecord {
   id: string;
   title: string;
   businessGoal?: string;
@@ -89,6 +95,10 @@ interface RealGithubRepoRecord {
 // ---------------------------------------------------------------------------
 const CANONICAL_SLUG_BY_GITHUB_URL: Record<string, string> = {
   'https://github.com/matteocavo/rome-public-transport-reliability': 'rome-transport',
+  'https://github.com/matteocavo/rome-mobility-intelligence': 'rome-mobility-intelligence',
+  'https://github.com/matteocavo/interview-copilot': 'interview-copilot',
+  'https://github.com/matteocavo/fts-eu-grants': 'fts-eu-grants',
+  'https://github.com/matteocavo/audience-segmentation-growth-intelligence': 'audience-segmentation-growth-intelligence',
   'https://github.com/dataciviclab/progetto-pilota': 'ispra-waste',
   'https://github.com/matteocavo/Quaero': 'quaero',
   'https://github.com/dataciviclab/openbdap-saldi-storico-stato': 'openbdap',
@@ -126,19 +136,13 @@ function inferDashboardType(dashboardUrl: string | null): 'pdf' | 'live_powerbi'
   return 'internal';
 }
 
-/** Mechanical category label derived from the project's own real `tools`
- *  array (first two entries) — not an invented description. */
-function deriveHighlightCategory(tools: string[]): string {
-  if (tools.length === 0) return '';
-  if (tools.length === 1) return tools[0];
-  return `${tools[0]} & ${tools[1]}`;
-}
-
-function buildProjects(realProjects: RealProjectRecord[]): NotionProjectData[] {
+export function buildProjects(realProjects: RealProjectRecord[]): NotionProjectData[] {
   return realProjects
     .filter((p) => p.status === 'Portfolio Ready')
     .map((p) => {
       const dashboardUrl = p.dashboard || null;
+      const highlightCategoryIt = deriveHighlightCategory(p.tools, 'it');
+      const highlightCategoryEn = deriveHighlightCategory(p.tools, 'en');
       return {
         id: slugForGithubUrl(p.github),
         titleIt: p.title,
@@ -156,7 +160,9 @@ function buildProjects(realProjects: RealProjectRecord[]): NotionProjectData[] {
         dashboardUrl,
         dashboardType: inferDashboardType(dashboardUrl),
         image: p.image,
-        highlightCategory: deriveHighlightCategory(p.tools),
+        highlightCategory: highlightCategoryEn,
+        highlightCategoryIt,
+        highlightCategoryEn,
         isFlagship: p.isFlagship === true ? true : undefined
       };
     });
@@ -234,6 +240,8 @@ export interface LiveData {
   secondaryRepos: SecondaryRepoData[];
   rawRepos: RawGithubRepo[];
   flagship: NotionProjectData;
+  techStats: TechCategoryStat[];
+  unmappedTools: string[];
 }
 
 /**
@@ -265,6 +273,16 @@ export async function fetchLiveData(baseUrl: string = import.meta.env.BASE_URL):
   const secondaryRepos = buildSecondaryRepos(realGithubRepos, projectGithubUrls);
   const rawRepos = buildRawGithubRepos(realGithubRepos);
   const flagship = selectFlagship(projects);
+  const techStats = computeTechCategoryStats(projects);
+  const unmappedTools = reportUnmappedTools(projects);
 
-  return { projects, projectGithubUrls, secondaryRepos, rawRepos, flagship };
+  return {
+    projects,
+    projectGithubUrls,
+    secondaryRepos,
+    rawRepos,
+    flagship,
+    techStats,
+    unmappedTools
+  };
 }

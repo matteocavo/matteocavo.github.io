@@ -18,6 +18,8 @@ export interface NotionProjectData {
   lastUpdated?: string;
   image: string;
   highlightCategory: string;
+  highlightCategoryIt?: string;
+  highlightCategoryEn?: string;
   /** Notion "Portfolio Flagship" checkbox (Phase 3 Priority 2). Not yet in the
    *  production Notion schema, so real records will have this undefined until
    *  that schema change is separately authorized. */
@@ -112,6 +114,10 @@ export const BUSINESS_OBJECTIVES: BusinessObjectiveOption[] = [
 
 export const PROJECT_BUSINESS_OBJECTIVES_MAP: Record<string, BusinessObjectiveId[]> = {
   'rome-transport': ['data-engineering-automation', 'predictive-analytics-ml', 'decision-support-bi'],
+  'rome-mobility-intelligence': ['predictive-analytics-ml', 'data-engineering-automation'],
+  'interview-copilot': ['data-engineering-automation', 'predictive-analytics-ml'],
+  'fts-eu-grants': ['decision-support-bi', 'public-policy-open-data'],
+  'audience-segmentation-growth-intelligence': ['decision-support-bi', 'data-quality-metadata'],
   'ispra-waste': ['decision-support-bi', 'public-policy-open-data'],
   'quaero': ['data-engineering-automation', 'data-quality-metadata'],
   'openbdap': ['public-policy-open-data', 'decision-support-bi'],
@@ -152,7 +158,7 @@ export const VERIFIED_NOTION_PROJECTS: NotionProjectData[] = [
     titleEn: 'Rome Public Transport Reliability & Delay Prediction',
     businessGoalIt: "Analizzare l'affidabilità del trasporto pubblico romano e costruire una pipeline end-to-end capace di misurare i ritardi, individuare pattern operativi, studiare la propagazione dei ritardi e stimare il rischio di ritardo alla fermata successiva utilizzando dati GTFS e GTFS-Realtime.",
     businessGoalEn: 'Analyse Rome public transport reliability and build an end-to-end analytics and machine learning pipeline to measure delays, identify operational patterns, study delay propagation and estimate next-stop delay risk using GTFS and GTFS-Realtime data.',
-    tools: ['Databricks', 'PySpark', 'Delta Lake', 'SQL', 'Python', 'Applied ML', 'Statistical Analysis', 'ETL / Automation'],
+    tools: ['Python', 'SQL', 'Databricks', 'Applied ML', 'Statistical Analysis', 'Pipeline', 'Engineering', 'ETL / Automation', 'GitHub'],
     keyKPIs: [
       'Final Labeled Obs: 9,975,703',
       'Realtime Snapshots: 964',
@@ -182,7 +188,7 @@ export const VERIFIED_NOTION_PROJECTS: NotionProjectData[] = [
     titleEn: 'DataCivicLab: Municipal Recycling vs Urban Waste (ISPRA)',
     businessGoalIt: "Verificare se l'aumento della percentuale di raccolta differenziata nei comuni italiani si traduca davvero in meno rifiuti prodotti, o sia solo un miglioramento 'sulla carta' — per distinguere i comuni realmente virtuosi da quelli che migliorano solo l'indicatore principale.",
     businessGoalEn: 'Test whether a rising differentiated-collection rate in Italian municipalities actually translates into less total waste, or just looks better on paper — giving policymakers and citizens a way to tell "structurally virtuous" municipalities from ones improving only on the headline metric.',
-    tools: ['Power BI', 'DAX', 'Python (Pandas)', 'KPI Engineering', 'EDA', 'ETL / Automation'],
+    tools: ['Python (Pandas)', 'Power BI', 'DAX', 'Python', 'KPI engineering', 'Pipeline', 'GitHub', 'EDA', 'ETL / Automation'],
     keyKPIs: [
       'Copertura: Tutti i Comuni Italiani',
       'Serie Storica: 2019–2023',
@@ -209,7 +215,7 @@ export const VERIFIED_NOTION_PROJECTS: NotionProjectData[] = [
     titleEn: 'Quaero — Question-Driven Analytics Pipeline',
     businessGoalIt: "Offrire agli analisti un framework open-source di Data Engineering e Analytics Automation che trasforma qualsiasi dataset grezzo in mart analitici pronti per la BI — guidato da domande di business — con profiling automatico, schema Power BI e lineage a livello di colonna.",
     businessGoalEn: 'Provide analysts with an open-source, question-driven Data Engineering and Analytics Automation framework transforming raw datasets into BI-ready analytical marts — with automated profiling, Power BI schema generation, and column-level data lineage.',
-    tools: ['Python', 'Pandas', 'Parquet', 'SQL', 'Streamlit', 'Mermaid.js'],
+    tools: ['Python', 'Engineering', 'KPI', 'GitHub', 'Python (Pandas)', 'ETL / Automation', 'SQL', 'Pipeline', 'FastAPI'],
     keyKPIs: [
       'Release: v0.4.0 (Confermata)',
       'Data Lineage: Mermaid.js Column-Level',
@@ -236,7 +242,7 @@ export const VERIFIED_NOTION_PROJECTS: NotionProjectData[] = [
     titleEn: 'Streaming Competitive Benchmark',
     businessGoalIt: 'Costruire un modello di competitive intelligence multi-mercato per confrontare le piattaforme streaming su ampiezza del catalogo, strategia di recency, posizionamento per genere e diversificazione internazionale — individuando dove i provider si differenziano realmente.',
     businessGoalEn: 'Build a multi-market competitive intelligence model benchmarking streaming platforms on catalog scale, recency strategy, genre positioning, and international reach — surfacing where providers actually differentiate.',
-    tools: ['Power BI', 'DAX', 'Python (Pandas)', 'Numpy', 'Competitive Intelligence', 'EDA'],
+    tools: ['Python (Pandas)', 'Power BI', 'DAX', 'Numpy', 'KPI engineering', 'Pipeline', 'GitHub', 'EDA', 'ETL / Automation'],
     keyKPIs: [
       'Total Titles & Recency Intensity',
       'Catalog Overlap (Jaccard Index): <1%',
@@ -263,7 +269,7 @@ export const VERIFIED_NOTION_PROJECTS: NotionProjectData[] = [
     titleEn: 'OpenBDAP Italian Public Accounts & Structural Deficit',
     businessGoalIt: 'Usare oltre 20 anni di dati ufficiali di finanza pubblica per verificare se il deficit dello Stato italiano sia strutturale, spiegando in modo comprensibile anche a un pubblico non tecnico quanto pesano spesa corrente, ricorso al mercato e interessi sul debito.',
     businessGoalEn: "Use 20+ years of official Italian public accounts data to test whether the State's deficit is structural, explaining in plain terms how much of it stems from current spending, market borrowing, and debt interest costs.",
-    tools: ['Python', 'SQL', 'Pandas', 'KPI Engineering', 'EDA', 'Time Series'],
+    tools: ['Python', 'Python (Pandas)', 'GitHub', 'EDA', 'Pipeline', 'KPI engineering', 'ETL / Automation'],
     keyKPIs: [
       'Deficit Strutturale: 22/22 Anni',
       'Spesa Corrente Media: 64.0%',
@@ -290,7 +296,7 @@ export const VERIFIED_NOTION_PROJECTS: NotionProjectData[] = [
     titleEn: 'Streaming Metadata Analytics',
     businessGoalIt: 'Trasformare metadati streaming grezzi (titoli, utenti, sessioni) in una base solida guidata dai KPI, permettendo a team editoriali e di content strategy di confrontare provider e generi su engagement, completion rate e rewatch.',
     businessGoalEn: 'Turn synthetic streaming metadata (titles, users, sessions) into a clean, KPI-driven foundation letting content teams benchmark providers and genres on completion and rewatch metrics.',
-    tools: ['Power BI', 'DAX', 'Python (Pandas)', 'Excel', 'KPI Engineering', 'Data Modeling'],
+    tools: ['Python (Pandas)', 'Power BI', 'Excel', 'DAX', 'KPI engineering', 'Pipeline', 'GitHub', 'EDA', 'ETL / Automation'],
     keyKPIs: [
       'Total Views & Viewing Time',
       'Completion Rate & Dropoff Points',
