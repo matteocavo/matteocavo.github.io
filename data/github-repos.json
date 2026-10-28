@@ -16,8 +16,39 @@
       "semantic-layer"
     ],
     "stargazers_count": 1,
-    "updated_at": "2026-10-28T10:05:07Z",
-    "pushed_at": "2026-10-28T10:05:41Z",
+    "updated_at": "2026-10-28T14:33:45Z",
+    "pushed_at": "2026-10-28T14:33:37Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "matteocavo"
+    }
+  },
+  {
+    "name": "rome-public-transport-reliability",
+    "full_name": "matteocavo/rome-public-transport-reliability",
+    "description": "Analisi end-to-end su Databricks dell'affidabilità del trasporto pubblico di Roma e previsione del ritardo alla fermata successiva con dati GTFS e GTFS-Realtime.",
+    "html_url": "https://github.com/matteocavo/rome-public-transport-reliability",
+    "topics": [
+      "data-analytics",
+      "data-engineering",
+      "databricks",
+      "delta-lake",
+      "gtfs",
+      "gtfs-realtime",
+      "machine-learning",
+      "mlflow",
+      "portfolio",
+      "public-transport",
+      "pyspark",
+      "python",
+      "spark",
+      "sql",
+      "transport-analytics"
+    ],
+    "stargazers_count": 1,
+    "updated_at": "2026-10-28T13:10:56Z",
+    "pushed_at": "2026-10-28T13:11:03Z",
     "archived": false,
     "fork": false,
     "owner": {
@@ -48,37 +79,6 @@
     "stargazers_count": 0,
     "updated_at": "2026-10-28T07:13:13Z",
     "pushed_at": "2026-10-28T07:53:23Z",
-    "archived": false,
-    "fork": false,
-    "owner": {
-      "login": "matteocavo"
-    }
-  },
-  {
-    "name": "rome-public-transport-reliability",
-    "full_name": "matteocavo/rome-public-transport-reliability",
-    "description": "Analisi end-to-end su Databricks dell'affidabilità del trasporto pubblico di Roma e previsione del ritardo alla fermata successiva con dati GTFS e GTFS-Realtime.",
-    "html_url": "https://github.com/matteocavo/rome-public-transport-reliability",
-    "topics": [
-      "data-analytics",
-      "data-engineering",
-      "databricks",
-      "delta-lake",
-      "gtfs",
-      "gtfs-realtime",
-      "machine-learning",
-      "mlflow",
-      "portfolio",
-      "public-transport",
-      "pyspark",
-      "python",
-      "spark",
-      "sql",
-      "transport-analytics"
-    ],
-    "stargazers_count": 1,
-    "updated_at": "2026-10-27T20:04:32Z",
-    "pushed_at": "2026-10-27T20:04:35Z",
     "archived": false,
     "fork": false,
     "owner": {
