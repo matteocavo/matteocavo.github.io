@@ -33,8 +33,9 @@
     "dashboard": "https://github.com/matteocavo/rome-public-transport-reliability/blob/main/dashboard/databricks/pdf/Affidabilita_Trasporto_Pubblico_Roma.pdf",
     "dataset": "GTFS Static + GTFS-Realtime ufficiali di Roma Servizi per la Mobilità. Pipeline Bronze → Silver → Features → ML → Gold su Databricks. Dataset finale etichettato: 9.975.703 osservazioni, 964 snapshot realtime, 8 service date, 412 route, 82.936 trip e 2.157 vehicle.",
     "date": "2026-10-07",
-    "notes": "Pipeline Databricks completa dalla raccolta dei dati fino ai layer Gold e al dashboard AI/BI.\n\nRegressione: la persistence baseline è risultata il miglior approccio finale, con TEST MAE 136.98 s, RMSE 401.85 s e R² 0.694. Non presentare questo risultato come se un modello complesso avesse battuto la baseline.\n\nClassificazione: RandomForestClassifier con threshold > 0.45. TEST accuracy 0.9401, precision 0.8450, recall 0.8123, F1 0.8283, ROC-AUC 0.9690, PR-AUC 0.9063.\n\nInsight principali: maggiore criticità nelle fasce serali, con major-delay rate fino a circa 30.3% alle 20:00; tasso weekend superiore al weekday; forte persistenza descrittiva dei ritardi: quando current e previous state sono entrambi major, il next-stop major-delay rate è circa 88.7%; 354 route e 5.172 stop superano le soglie minime di osservazione.\n\nImportante distinzione metodologica: il target ML di classificazione è major delay >=300 secondi; nel dashboard operativo la severità 'Ritardo Grave' è >600 secondi. Le probabilità e le metriche del modello si riferiscono al target >=300 secondi, non al >600 secondi del dashboard.",
-    "image": "https://matteocavo.github.io/images/rome-transport.png"
+    "notes": "Pipeline Databricks completa dalla raccolta dei dati fino ai layer Gold e al dashboard AI/BI.\n\nRegressione: la persistence baseline è risultata il miglior approccio finale, con TEST MAE 136.98 s, RMSE 401.85 s e R² 0.694. Non presentare questo risultato come se un modello complesso avesse battuto la baseline.\n\nClassificazione: RandomForestClassifier con threshold > 0.45. TEST accuracy 0.9401, precision 0.8450, recall 0.8123, F1 0.8283, ROC-AUC 0.9690, PR-AUC 0.9063.\n\nInsight principali: maggiore criticità nelle fasce serali, con major-delay rate fino a circa 30.3% alle 20:00; nel campione di sole 8 date il tasso weekend è superiore al weekday, senza evidenza di un pattern strutturale; forte persistenza descrittiva dei ritardi: quando current e previous state sono entrambi major, il next-stop major-delay rate è circa 88.7%; 354 route e 5.172 stop superano le soglie minime di osservazione.\n\nContratto semantico PR1: dashboard e ML usano lo stesso evento proxy GTFS-Realtime alla fermata successiva >=300 secondi, visualizzato come 'Ritardo ≥ 5 min'. La precedente legenda >600 secondi era un errore di presentazione; dati, modelli e metriche non sono stati ricalcolati. Le fasce di probabilità sono Basso p<0.20, Medio 0.20≤p≤0.45, Alto 0.45<p<0.80, Critico p≥0.80; il flag positivo resta strettamente p>0.45.",
+    "image": "https://matteocavo.github.io/images/rome-transport.png",
+    "isFlagship": true
   },
   {
     "id": "323dbce0-1b30-81a6-87d5-da5f28be4a62",
@@ -49,15 +50,19 @@
       "KPI",
       "GitHub",
       "Python (Pandas)",
-      "ETL / Automation"
+      "ETL / Automation",
+      "SQL",
+      "Pipeline",
+      "FastAPI"
     ],
     "keyKPIs": [],
     "github": "https://github.com/matteocavo/Quaero",
-    "dashboard": "https://github.com/matteocavo/Quaero",
+    "dashboard": "https://matteocavo.github.io/Quaero/",
     "dataset": "CSV, Parquet (local or direct URL) — domain-agnostic. Public demo: global_economic_indicators (World Bank GDP, inflation, unemployment).",
     "date": "2026-03-14",
-    "notes": "v0.4.0 — current public version on GitHub (README verified 15/10/2026). v0.4.0: lineage HTML export (Mermaid) + Anomaly Framing v2 (impact, frequency, suggested action). v0.3: per-column DQ scoring, structured cleaning log, PostgreSQL DDL/INSERT export, Power BI schema with relationships and starter DAX, column-level lineage, dbt-style metrics YAML. v0.2.2: multi-dataset Streamlit UI + run_project_pipeline wrapper. Three entrypoints: CLI, importable module (run_pipeline / run_project_pipeline), Streamlit UI. Optional LLM fallback via Claude 3 Haiku, disabled by default, deterministic-first, recorded as llm_assisted. Public demo: global_economic_indicators (multi-dataset). Private BI projects live in separate repos. LINK CANONICO: solo GitHub (",
-    "image": "https://matteocavo.github.io/images/quaero.png"
+    "notes": "v0.6.0 — versione pubblica corrente (Operations Console).\n\nv0.6.0: Operations Console locale (Streamlit, console/): project explorer, pipeline runs con history, mart explorer, DQ e anomalie, lineage viewer. Client della FastAPI — non legge artefatti o DB direttamente. API read endpoints: GET /projects/{project}/overview, /data-quality, /anomalies, /lineage. React + TypeScript frontend (Vite) su GitHub Pages per public demo (",
+    "image": "https://matteocavo.github.io/images/quaero.png",
+    "isFlagship": false
   },
   {
     "id": "315dbce0-1b30-80a8-bc62-f13d508d1f13",
@@ -87,7 +92,8 @@
     "dataset": "OpenBDAP - Rendiconto Pubblicato, Serie storica Saldi (2003-2024); OpenBDAP - Spese per Missione, Programma e Macroaggregato (2008-2024). Livello: Stato centrale.",
     "date": "2026-03-13",
     "notes": "Al 13 marzo 2026 il repo e sostanzialmente chiuso come legacy-active / stable. Il filone più forte e quello dei saldi storici: 6 discussion mappate, 4 notebook importati, 2 follow-up lasciati aperti intenzionalmente.",
-    "image": "https://matteocavo.github.io/images/openbdap.png"
+    "image": "https://matteocavo.github.io/images/openbdap.png",
+    "isFlagship": false
   },
   {
     "id": "314dbce0-1b30-8075-bbaa-f648f7a7ce51",
@@ -121,7 +127,8 @@
     "dataset": "TMDB API (multi-market watch provider metadata)",
     "date": "2026-02-27",
     "notes": "  • Netflix leads in catalog scale but not necessarily recency intensity. \n  • Apple TV+ shows strongest recency focus with narrower catalog breadth.\n  • Cross-platform overlap remains structurally low (<1%), indicating strong differentiation.\n  • A significant portion of titles show limited voting activity, impacting absolute rating interpretation.",
-    "image": "https://matteocavo.github.io/images/streaming-benchmark.png"
+    "image": "https://matteocavo.github.io/images/streaming-benchmark.png",
+    "isFlagship": false
   },
   {
     "id": "305dbce0-1b30-80a0-9747-c261b6447822",
@@ -152,7 +159,8 @@
     "dataset": "ISPRA – Catasto Rifiuti 2019–2023 (dati comunali, provinciali e regionali)",
     "date": "2026-02-16",
     "notes": "L’analisi 2020–2023 evidenzia che: una quota rilevante di comuni registra un aumento della raccolta differenziata una parte di questi presenta però anche un aumento dei rifiuti urbani (pro capite o totali) esiste comunque un gruppo consistente di “virtuosi strutturali”, che migliorano la raccolta differenziata riducendo contemporaneamente i rifiuti pro capite.\n\nLa relazione tra RD e RU non è quindi automaticamente inversa: l’aumento della raccolta differenziata non implica necessariamente una riduzione dei rifiuti prodotti.",
-    "image": "https://matteocavo.github.io/images/ispra-waste.png"
+    "image": "https://matteocavo.github.io/images/ispra-waste.png",
+    "isFlagship": false
   },
   {
     "id": "2cadbce0-1b30-805e-adae-f86669f3d66b",
@@ -184,6 +192,7 @@
     "dataset": "Streaming catalog, users and viewing sessions (enriched metadata). Syntetic",
     "date": "2025-12-31",
     "notes": "End-to-end metadata analytics project with strong focus on KPI engineering and business interpretation.",
-    "image": "https://matteocavo.github.io/images/streaming-catalog.png"
+    "image": "https://matteocavo.github.io/images/streaming-catalog.png",
+    "isFlagship": false
   }
 ]

@@ -1,5 +1,145 @@
 [
   {
+    "name": "Quaero",
+    "full_name": "matteocavo/Quaero",
+    "description": "Question-driven analytics pipeline: raw datasets → analytical marts, semantic metrics, and dashboard-ready outputs.",
+    "html_url": "https://github.com/matteocavo/Quaero",
+    "topics": [
+      "analytics",
+      "data-engineering",
+      "data-pipeline",
+      "kpi",
+      "pandas",
+      "parquet",
+      "portfolio",
+      "python",
+      "semantic-layer"
+    ],
+    "stargazers_count": 1,
+    "updated_at": "2026-10-28T10:05:07Z",
+    "pushed_at": "2026-10-28T10:05:41Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "matteocavo"
+    }
+  },
+  {
+    "name": "rome-mobility-intelligence",
+    "full_name": "matteocavo/rome-mobility-intelligence",
+    "description": "Machine learning API for Rome public transport delay prediction with FastAPI, scikit-learn, read-only Databricks integration and optional PostgreSQL prediction history. Includes n8n orchestration workflows and OCI Always Free deployment tooling; public deployment pending.",
+    "html_url": "https://github.com/matteocavo/rome-mobility-intelligence",
+    "topics": [
+      "databricks",
+      "delay-prediction",
+      "docker",
+      "fastapi",
+      "machine-learning",
+      "mlops",
+      "n8n",
+      "oracle-cloud",
+      "portfolio",
+      "postgresql",
+      "public-transport",
+      "python",
+      "rome",
+      "scikit-learn"
+    ],
+    "stargazers_count": 0,
+    "updated_at": "2026-10-28T07:13:13Z",
+    "pushed_at": "2026-10-28T07:53:23Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "matteocavo"
+    }
+  },
+  {
+    "name": "rome-public-transport-reliability",
+    "full_name": "matteocavo/rome-public-transport-reliability",
+    "description": "Analisi end-to-end su Databricks dell'affidabilità del trasporto pubblico di Roma e previsione del ritardo alla fermata successiva con dati GTFS e GTFS-Realtime.",
+    "html_url": "https://github.com/matteocavo/rome-public-transport-reliability",
+    "topics": [
+      "data-analytics",
+      "data-engineering",
+      "databricks",
+      "delta-lake",
+      "gtfs",
+      "gtfs-realtime",
+      "machine-learning",
+      "mlflow",
+      "portfolio",
+      "public-transport",
+      "pyspark",
+      "python",
+      "spark",
+      "sql",
+      "transport-analytics"
+    ],
+    "stargazers_count": 1,
+    "updated_at": "2026-10-27T20:04:32Z",
+    "pushed_at": "2026-10-27T20:04:35Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "matteocavo"
+    }
+  },
+  {
+    "name": "Streaming_Competitive_Benchmark",
+    "full_name": "matteocavo/Streaming_Competitive_Benchmark",
+    "description": "Strategic benchmarking of streaming providers' catalogs across scale, recency, reach, genre strategy, quality, and overlap.",
+    "html_url": "https://github.com/matteocavo/Streaming_Competitive_Benchmark",
+    "topics": [
+      "amazon-prime-video",
+      "apple-tv-plus",
+      "competitive-analysis",
+      "content-strategy",
+      "data-analytics",
+      "disney-plus",
+      "netflix",
+      "pandas",
+      "portfolio",
+      "power-bi",
+      "python",
+      "streaming",
+      "tmdb",
+      "tmdb-api"
+    ],
+    "stargazers_count": 0,
+    "updated_at": "2026-10-26T13:14:29Z",
+    "pushed_at": "2026-02-27T14:44:19Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "matteocavo"
+    }
+  },
+  {
+    "name": "streaming-metadata-analytics",
+    "full_name": "matteocavo/streaming-metadata-analytics",
+    "description": "End-to-end streaming analytics project with Python, Plotly and Power BI",
+    "html_url": "https://github.com/matteocavo/streaming-metadata-analytics",
+    "topics": [
+      "data-visualization",
+      "metadata",
+      "pandas",
+      "plotly",
+      "portfolio",
+      "power-bi",
+      "python",
+      "streaming"
+    ],
+    "stargazers_count": 0,
+    "updated_at": "2026-10-26T13:14:26Z",
+    "pushed_at": "2026-02-27T14:27:39Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "matteocavo"
+    }
+  },
+  {
     "name": "dataciviclab",
     "full_name": "dataciviclab/dataciviclab",
     "description": "Hub pubblico del DataCivicLab. Spieghiamo chi siamo, cosa facciamo e come partecipare.",
@@ -11,8 +151,8 @@
       "open-data"
     ],
     "stargazers_count": 9,
-    "updated_at": "2026-10-16T22:29:55Z",
-    "pushed_at": "2026-10-16T22:30:09Z",
+    "updated_at": "2026-10-19T10:48:35Z",
+    "pushed_at": "2026-10-19T10:48:54Z",
     "archived": false,
     "fork": false,
     "owner": {
@@ -41,37 +181,6 @@
     }
   },
   {
-    "name": "rome-public-transport-reliability",
-    "full_name": "matteocavo/rome-public-transport-reliability",
-    "description": "Analisi end-to-end su Databricks dell'affidabilità del trasporto pubblico di Roma e previsione del ritardo alla fermata successiva con dati GTFS e GTFS-Realtime.",
-    "html_url": "https://github.com/matteocavo/rome-public-transport-reliability",
-    "topics": [
-      "data-analytics",
-      "data-engineering",
-      "databricks",
-      "delta-lake",
-      "gtfs",
-      "gtfs-realtime",
-      "machine-learning",
-      "mlflow",
-      "portfolio",
-      "public-transport",
-      "pyspark",
-      "python",
-      "spark",
-      "sql",
-      "transport-analytics"
-    ],
-    "stargazers_count": 1,
-    "updated_at": "2026-10-07T15:20:01Z",
-    "pushed_at": "2026-10-07T15:16:49Z",
-    "archived": false,
-    "fork": false,
-    "owner": {
-      "login": "matteocavo"
-    }
-  },
-  {
     "name": "progetto-pilota",
     "full_name": "dataciviclab/progetto-pilota",
     "description": "Prima analisi del Lab — rifiuti urbani, raccolta differenziata e performance ambientale nei comuni italiani.",
@@ -90,85 +199,6 @@
     "fork": false,
     "owner": {
       "login": "dataciviclab"
-    }
-  },
-  {
-    "name": "Quaero",
-    "full_name": "matteocavo/Quaero",
-    "description": "Question-driven analytics pipeline: raw datasets → analytical marts, semantic metrics, and dashboard-ready outputs.",
-    "html_url": "https://github.com/matteocavo/Quaero",
-    "topics": [
-      "analytics",
-      "data-engineering",
-      "data-pipeline",
-      "kpi",
-      "pandas",
-      "parquet",
-      "portfolio",
-      "python",
-      "semantic-layer"
-    ],
-    "stargazers_count": 1,
-    "updated_at": "2026-04-29T12:04:58Z",
-    "pushed_at": "2026-04-29T12:06:10Z",
-    "archived": false,
-    "fork": false,
-    "owner": {
-      "login": "matteocavo"
-    }
-  },
-  {
-    "name": "Streaming_Competitive_Benchmark",
-    "full_name": "matteocavo/Streaming_Competitive_Benchmark",
-    "description": "Strategic benchmarking of streaming providers' catalogs across scale, recency, reach, genre strategy, quality, and overlap.",
-    "html_url": "https://github.com/matteocavo/Streaming_Competitive_Benchmark",
-    "topics": [
-      "amazon-prime-video",
-      "apple-tv-plus",
-      "competitive-analysis",
-      "content-strategy",
-      "data-analytics",
-      "disney-plus",
-      "netflix",
-      "pandas",
-      "portfolio",
-      "power-bi",
-      "python",
-      "streaming",
-      "tmdb",
-      "tmdb-api"
-    ],
-    "stargazers_count": 1,
-    "updated_at": "2026-03-12T19:38:28Z",
-    "pushed_at": "2026-02-27T14:44:19Z",
-    "archived": false,
-    "fork": false,
-    "owner": {
-      "login": "matteocavo"
-    }
-  },
-  {
-    "name": "streaming-metadata-analytics",
-    "full_name": "matteocavo/streaming-metadata-analytics",
-    "description": "End-to-end streaming analytics project with Python, Plotly and Power BI",
-    "html_url": "https://github.com/matteocavo/streaming-metadata-analytics",
-    "topics": [
-      "data-visualization",
-      "metadata",
-      "pandas",
-      "plotly",
-      "portfolio",
-      "power-bi",
-      "python",
-      "streaming"
-    ],
-    "stargazers_count": 1,
-    "updated_at": "2026-03-10T16:25:31Z",
-    "pushed_at": "2026-02-27T14:27:39Z",
-    "archived": false,
-    "fork": false,
-    "owner": {
-      "login": "matteocavo"
     }
   }
 ]

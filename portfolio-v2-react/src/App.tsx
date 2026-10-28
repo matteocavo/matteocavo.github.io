@@ -10,6 +10,11 @@ import {
 } from './data/portfolioData';
 import { fetchLiveData, LiveData } from './data/liveData';
 import {
+  computeTechCategoryStats,
+  getConciseProjectBadges,
+  projectMatchesTechFilter
+} from './data/techCategories';
+import {
   SERVICES_CATALOG,
   CHATBOT_KNOWLEDGE_BASE,
   DESIGN_TOKENS,
@@ -455,91 +460,16 @@ export default function App() {
   // Section titles, eyebrow labels and introductory texts remain immediately visible and visually stable.
 
   // Section 5: Dynamic, honest technology presence across projects (NEVER skill rank or expert %)
-  // Enhanced for Phase 4.3 Feature #1: Contextual verifiable tooltips
+  // Derived dynamically from live Notion `Tools` via centralized rules in techCategories.ts.
   const dynamicTechStats = useMemo(() => {
-    const total = VERIFIED_NOTION_PROJECTS.length; // 6 verified projects
-    return [
-      {
-        name: 'Python & Pandas',
-        count: 5,
-        total,
-        label: `5 su ${total} progetti`,
-        contextNoteIt: 'Frequenza di utilizzo nei casi studio analitici (non indice di competenza personale).',
-        contextNoteEn: 'Usage frequency across analytical case studies (not a personal skill rating).',
-        projects: [
-          { id: 'rome-transport', name: 'Rome Public Transport (PySpark & ML)' },
-          { id: 'quaero', name: 'Quaero v0.4 (Question-Driven Engine)' },
-          { id: 'openbdap', name: 'OpenBDAP Saldi Storici (EDA & Series)' },
-          { id: 'streaming-benchmark', name: 'Streaming Competitive Benchmark' },
-          { id: 'streaming-metadata', name: 'Streaming Metadata Analytics' }
-        ]
-      },
-      {
-        name: 'Power BI & DAX',
-        count: 3,
-        total,
-        label: `3 su ${total} progetti`,
-        contextNoteIt: 'Casi studio con dashboard interattive e modellazione dimensionale Star Schema.',
-        contextNoteEn: 'Case studies featuring interactive dashboards and Star Schema data modeling.',
-        projects: [
-          { id: 'ispra-waste', name: 'ISPRA Rifiuti Urbani nei Comuni Italiani' },
-          { id: 'streaming-benchmark', name: 'Streaming Competitive Benchmark' },
-          { id: 'streaming-metadata', name: 'Streaming Metadata Analytics' }
-        ]
-      },
-      {
-        name: 'SQL & Data Modeling',
-        count: 2,
-        total,
-        label: `2 su ${total} progetti`,
-        contextNoteIt: 'Progetti con query SQL avanzate e modellazione architetturale per data mart.',
-        contextNoteEn: 'Projects with advanced SQL queries and architectural data mart modeling.',
-        projects: [
-          { id: 'rome-transport', name: 'Rome Public Transport (Databricks SQL)' },
-          { id: 'openbdap', name: 'OpenBDAP Saldi Storici (Analisi SQL)' }
-        ]
-      },
-      {
-        name: 'Databricks & Lakehouse',
-        count: 1,
-        total,
-        label: `1 su ${total} progetti`,
-        contextNoteIt: 'Architettura Medallion su larga scala (9.9M+ osservazioni etichettate).',
-        contextNoteEn: 'Large-scale Medallion architecture (9.9M+ labeled observations).',
-        projects: [
-          { id: 'rome-transport', name: 'Rome Public Transport Reliability (Databricks)' }
-        ]
-      },
-      {
-        name: 'KPI Engineering & EDA',
-        count: 4,
-        total,
-        label: `4 su ${total} progetti`,
-        contextNoteIt: 'Casi studio focalizzati su metriche composite, analisi esplorativa e outlier.',
-        contextNoteEn: 'Case studies focused on composite metrics, exploratory analysis, and outliers.',
-        projects: [
-          { id: 'rome-transport', name: 'Rome Public Transport (Propagazione ritardi)' },
-          { id: 'ispra-waste', name: 'ISPRA Rifiuti (Comuni virtuosi strutturali)' },
-          { id: 'streaming-benchmark', name: 'Streaming Benchmark (Indice Jaccard)' },
-          { id: 'streaming-metadata', name: 'Streaming Metadata (Engagement score)' }
-        ]
-      }
-    ];
-    // `liveData` is the real dependency: VERIFIED_NOTION_PROJECTS is derived
-    // from it and is `[]` on the very first render, before fetchLiveData()
-    // resolves. Without `liveData` listed here, this memo kept the stale
-    // total=0 snapshot forever once the real 6 projects loaded (regression
-    // fix: tech-stack tooltip totals/percentages were frozen at the
-    // pre-fetch empty state).
+    return liveData?.techStats ?? computeTechCategoryStats(VERIFIED_NOTION_PROJECTS);
   }, [liveData]);
 
   // Section 3: Dual Filter Projects by Technology AND Business Objective (Feature #6)
   const filteredProjects = useMemo(() => {
     return VERIFIED_NOTION_PROJECTS.filter((p) => {
-      // 1. Technology filter
-      const techMatch =
-        activeFilterTag === 'ALL' ||
-        p.tools.some((t) => t.toLowerCase().includes(activeFilterTag.toLowerCase()));
+      // 1. Technology filter (centralized matching in techCategories.ts)
+      const techMatch = projectMatchesTechFilter(p.tools, activeFilterTag);
 
       // 2. Business Objective filter
       const objectives = PROJECT_BUSINESS_OBJECTIVES_MAP[p.id] || [];
@@ -548,13 +478,6 @@ export default function App() {
 
       return techMatch && objMatch;
     });
-    // Regression fix: `liveData` must be a dependency. VERIFIED_NOTION_PROJECTS
-    // is `[]` on the initial render (before the runtime fetch resolves); this
-    // memo was keyed only on the filter state, so once fetchLiveData() loaded
-    // the real 6 projects and triggered a re-render, React reused the cached
-    // empty-array result from the first render instead of recomputing —
-    // producing "Tutti (6)" (read directly, unmemoized) alongside "Nessun
-    // caso studio corrisponde ai filtri selezionati" (from this stale memo).
   }, [liveData, activeFilterTag, activeObjectiveFilter]);
 
   // Flagship project (Phase 3 Priority 2): already selected by fetchLiveData()
@@ -1105,26 +1028,27 @@ export default function App() {
                       {/* Phase 4.3 Feature #1: Interactive technology presence with verifiable tooltips */}
                       <div className="space-y-2.5 text-xs relative">
                         {dynamicTechStats.map((item, idx) => {
-                          const pct = item.total > 0 ? Math.round((item.count / item.total) * 100) : 0;
-                          const isTooltipActive = activeTechTooltip === item.name;
+                          const pct = item.percentage;
+                          const categoryName = siteLang === 'it' ? item.nameIt : item.nameEn;
+                          const isTooltipActive = activeTechTooltip === item.id;
                           return (
                             <div
-                              key={item.name}
+                              key={item.id}
                               className="space-y-1 relative group"
                               tabIndex={0}
                               role="button"
                               aria-haspopup="dialog"
                               aria-expanded={isTooltipActive}
-                              aria-label={siteLang === 'it' ? `Dettagli progetti per ${item.name}` : `Project details for ${item.name}`}
-                              onMouseEnter={() => setActiveTechTooltip(item.name)}
+                              aria-label={siteLang === 'it' ? `Dettagli progetti per ${categoryName}` : `Project details for ${categoryName}`}
+                              onMouseEnter={() => setActiveTechTooltip(item.id)}
                               onMouseLeave={() => setActiveTechTooltip(null)}
-                              onFocus={() => setActiveTechTooltip(item.name)}
+                              onFocus={() => setActiveTechTooltip(item.id)}
                               onBlur={() => setActiveTechTooltip(null)}
-                              onClick={() => setActiveTechTooltip(isTooltipActive ? null : item.name)}
+                              onClick={() => setActiveTechTooltip(isTooltipActive ? null : item.id)}
                               onKeyDown={(e) => {
                                 if (e.key === 'Enter' || e.key === ' ') {
                                   e.preventDefault();
-                                  setActiveTechTooltip(isTooltipActive ? null : item.name);
+                                  setActiveTechTooltip(isTooltipActive ? null : item.id);
                                 }
                                 if (e.key === 'Escape') {
                                   setActiveTechTooltip(null);
@@ -1133,7 +1057,7 @@ export default function App() {
                             >
                               <div className="flex items-center justify-between text-[11px] cursor-pointer">
                                 <span className="font-medium text-[#111111] group-hover:text-[#2563EB] transition-colors flex items-center gap-1.5">
-                                  <span>{item.name}</span>
+                                  <span>{categoryName}</span>
                                   <Info className="w-3 h-3 text-[#94A3B8] group-hover:text-[#2563EB] transition-colors" />
                                 </span>
                                 <span className="font-mono text-[11px] text-[#2563EB] font-semibold tabular-nums">
@@ -1160,8 +1084,8 @@ export default function App() {
                                 >
                                   <div className="flex items-start justify-between gap-2 pb-2 mb-2 border-b border-[#E2E8F0]">
                                     <div>
-                                      <h4 className="font-display font-bold text-xs text-[#111111] flex items-center gap-1.5">
-                                        <span>{item.name}</span>
+                                      <h4 className="font-display font-bold text-xs text-[#111111] flex items-center gap-1.5 flex-wrap">
+                                        <span>{categoryName}</span>
                                         <span className="text-[10px] font-mono font-semibold text-[#2563EB] bg-[#EFF6FF] px-1.5 py-0.5 rounded border border-[#BFDBFE]">
                                           {item.count}/{item.total} {siteLang === 'it' ? 'casi studio' : 'case studies'}
                                         </span>
@@ -1184,21 +1108,24 @@ export default function App() {
                                     <p className="text-[10px] font-mono font-semibold text-[#475569] uppercase tracking-wider">
                                       {siteLang === 'it' ? 'Casi studio verificati:' : 'Verified case studies:'}
                                     </p>
-                                    {item.projects.map((proj) => (
-                                      <a
-                                        key={proj.id}
-                                        href={`#${proj.id}`}
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          setActiveTechTooltip(null);
-                                          scrollToProject(proj.id);
-                                        }}
-                                        className="flex items-center justify-between text-[11px] text-[#2563EB] hover:text-[#1D4ED8] p-1 rounded-md hover:bg-[#EFF6FF] transition-colors group/link"
-                                      >
-                                        <span className="truncate">• {proj.name}</span>
-                                        <ArrowRight className="w-3 h-3 shrink-0 ml-1 text-[#93C5FD] group-hover/link:text-[#2563EB] transition-colors" />
-                                      </a>
-                                    ))}
+                                    {item.projects.map((proj) => {
+                                      const projTitle = siteLang === 'it' ? proj.titleIt : proj.titleEn;
+                                      return (
+                                        <a
+                                          key={proj.id}
+                                          href={`#${proj.id}`}
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setActiveTechTooltip(null);
+                                            scrollToProject(proj.id);
+                                          }}
+                                          className="flex items-center justify-between text-[11px] text-[#2563EB] hover:text-[#1D4ED8] p-1 rounded-md hover:bg-[#EFF6FF] transition-colors group/link"
+                                        >
+                                          <span className="truncate">• {projTitle}</span>
+                                          <ArrowRight className="w-3 h-3 shrink-0 ml-1 text-[#93C5FD] group-hover/link:text-[#2563EB] transition-colors" />
+                                        </a>
+                                      );
+                                    })}
                                   </div>
                                 </div>
                               )}
@@ -1269,8 +1196,8 @@ export default function App() {
                     </h2>
                     <p className="text-xs sm:text-sm text-[#475569] mt-2 leading-relaxed w-full">
                       {siteLang === 'it'
-                        ? 'Tutti i 6 progetti con classificazione "Portfolio Ready" dal database Notion, con dataset reali, metriche analitiche non ritagliate e documentazione metodologica.'
-                        : 'All 6 projects with "Portfolio Ready" status from Notion database, featuring real datasets, uncropped analytical views, and methodological notes.'}
+                        ? `Tutti i ${VERIFIED_NOTION_PROJECTS.length} progetti con classificazione "Portfolio Ready" dal database Notion, con dataset reali, metriche analitiche non ritagliate e documentazione metodologica.`
+                        : `All ${VERIFIED_NOTION_PROJECTS.length} projects with "Portfolio Ready" status from Notion database, featuring real datasets, uncropped analytical views, and methodological notes.`}
                     </p>
                   </div>
 
@@ -1289,7 +1216,7 @@ export default function App() {
                             onChange={(e) => setActiveFilterTag(e.target.value)}
                             className="w-full text-xs font-semibold px-3.5 py-2.5 bg-[#FFFFFF] border border-[#CBD5E1] rounded-xl text-[#111111] focus:border-[#2563EB] focus:outline-none appearance-none pr-8 cursor-pointer shadow-2xs"
                           >
-                            <option value="ALL">{siteLang === 'it' ? 'Tutte le tecnologie (6)' : 'All technologies (6)'}</option>
+                            <option value="ALL">{siteLang === 'it' ? `Tutte le tecnologie (${VERIFIED_NOTION_PROJECTS.length})` : `All technologies (${VERIFIED_NOTION_PROJECTS.length})`}</option>
                             <option value="Databricks">Databricks (Lakehouse)</option>
                             <option value="Power BI">Power BI &amp; DAX</option>
                             <option value="Python">Python &amp; ML</option>
@@ -1353,7 +1280,11 @@ export default function App() {
                                 : 'text-[#64748B] hover:text-[#111111] hover:bg-[#F1F5F9]'
                             }`}
                           >
-                            {tag === 'ALL' ? (siteLang === 'it' ? 'Tutti (6)' : 'All (6)') : tag}
+                            {tag === 'ALL'
+                              ? siteLang === 'it'
+                                ? `Tutti (${VERIFIED_NOTION_PROJECTS.length})`
+                                : `All (${VERIFIED_NOTION_PROJECTS.length})`
+                              : tag}
                           </button>
                         ))}
                       </div>
@@ -1372,7 +1303,13 @@ export default function App() {
                         >
                           {BUSINESS_OBJECTIVES.map((obj) => (
                             <option key={obj.id} value={obj.id}>
-                              {siteLang === 'it' ? obj.shortLabelIt : obj.shortLabelEn}
+                              {obj.id === 'ALL'
+                                ? siteLang === 'it'
+                                  ? `Tutti gli Obiettivi (${VERIFIED_NOTION_PROJECTS.length})`
+                                  : `All Objectives (${VERIFIED_NOTION_PROJECTS.length})`
+                                : siteLang === 'it'
+                                ? obj.shortLabelIt
+                                : obj.shortLabelEn}
                             </option>
                           ))}
                         </select>
@@ -1454,7 +1391,9 @@ export default function App() {
                       <div className="flex items-center gap-2">
                         <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]" />
                         <span className="text-xs font-bold text-[#111111] uppercase tracking-wider font-mono">
-                          {flagshipProject.highlightCategory}
+                          {siteLang === 'it'
+                            ? flagshipProject.highlightCategoryIt ?? flagshipProject.highlightCategory
+                            : flagshipProject.highlightCategoryEn ?? flagshipProject.highlightCategory}
                         </span>
                         <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE]">
                           {siteLang === 'it' ? 'Case Study in Evidenza' : 'Featured Case Study'}
@@ -1556,7 +1495,7 @@ export default function App() {
                         {/* Direct Links */}
                         <div className="pt-3 border-t border-[#E2E8F0] flex flex-wrap items-center justify-between gap-2">
                           <div className="flex flex-wrap gap-1 text-[10px] font-mono text-[#64748B]">
-                            {flagshipProject.tools.slice(0, 3).map((tool) => (
+                            {getConciseProjectBadges(flagshipProject.tools, 3).map((tool) => (
                               <span key={tool} className="bg-[#F8FAFC] border border-[#E2E8F0] px-1.5 py-0.5 rounded">
                                 {tool}
                               </span>
@@ -1646,7 +1585,9 @@ export default function App() {
                                 )}
                               </button>
                               <span className="text-[#2563EB] text-[9px] bg-[#EFF6FF] px-1.5 py-0.5 rounded border border-[#BFDBFE] truncate">
-                                {project.highlightCategory}
+                                {siteLang === 'it'
+                                  ? project.highlightCategoryIt ?? project.highlightCategory
+                                  : project.highlightCategoryEn ?? project.highlightCategory}
                               </span>
                             </div>
                           </div>
@@ -1682,7 +1623,11 @@ export default function App() {
                         <div className="p-5 flex-1 flex flex-col justify-between">
                           <div>
                             <div className="flex items-center justify-between gap-2 text-xs text-[#64748B] mb-2">
-                              <span className="font-semibold text-[#2563EB] text-[11px] truncate">{project.highlightCategory}</span>
+                              <span className="font-semibold text-[#2563EB] text-[11px] truncate">
+                                {siteLang === 'it'
+                                  ? project.highlightCategoryIt ?? project.highlightCategory
+                                  : project.highlightCategoryEn ?? project.highlightCategory}
+                              </span>
                               <span className="font-mono text-[11px] tabular-nums shrink-0">{project.date}</span>
                             </div>
 
@@ -1777,7 +1722,7 @@ export default function App() {
                           {/* Action Buttons */}
                           <div className="pt-3 border-t border-[#E2E8F0] flex items-center justify-between gap-2">
                             <div className="flex flex-wrap gap-1 font-mono text-[10px] text-[#475569] truncate">
-                              {project.tools.slice(0, 2).map((tool) => (
+                              {getConciseProjectBadges(project.tools, 2).map((tool) => (
                                 <span key={tool} className="bg-[#F8FAFC] border border-[#E2E8F0] px-1.5 py-0.5 rounded">
                                   {tool}
                                 </span>
@@ -3009,7 +2954,10 @@ export default function App() {
                       {siteLang === 'it' ? lightboxProject.titleIt : lightboxProject.titleEn}
                     </h3>
                     <p className="text-[11px] text-[#7AA7FF] font-mono truncate">
-                      {lightboxProject.highlightCategory} · {lightboxProject.date}
+                      {(siteLang === 'it'
+                        ? lightboxProject.highlightCategoryIt ?? lightboxProject.highlightCategory
+                        : lightboxProject.highlightCategoryEn ?? lightboxProject.highlightCategory)}{' '}
+                      · {lightboxProject.date}
                     </p>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
@@ -3076,7 +3024,7 @@ export default function App() {
                 {/* Lightbox Footer Bar with Tools & Resource Links */}
                 <div className="px-5 py-3 bg-[#1C1C1C] border-t border-[#2E2E2E] flex flex-wrap items-center justify-between gap-3 text-xs shrink-0">
                   <div className="flex flex-wrap gap-1 font-mono text-[10px] text-[#94A3B8]">
-                    {lightboxProject.tools.map((t) => (
+                    {getConciseProjectBadges(lightboxProject.tools, 5).map((t) => (
                       <span key={t} className="bg-[#111111] px-2 py-0.5 rounded text-white border border-[#2E2E2E]">
                         {t}
                       </span>
