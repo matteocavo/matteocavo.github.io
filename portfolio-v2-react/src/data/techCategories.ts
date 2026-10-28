@@ -56,13 +56,95 @@ export const NON_CATEGORY_META_TOOLS: readonly string[] = [
 ];
 
 /**
+ * Lakehouse & distributed compute technologies (subset of `data-engineering-lakehouse`).
+ * Separated from general ETL/pipeline tools so non-Databricks pipeline projects are
+ * never mislabeled as Lakehouse architectures on project cards.
+ */
+export const LAKEHOUSE_ARCHITECTURE_TOOLS: readonly string[] = [
+  'Databricks',
+  'PySpark',
+  'Delta Lake',
+  'Apache Spark',
+  'Spark',
+  'Lakehouse',
+  'Lakehouse Architecture',
+  'Unity Catalog'
+];
+
+/**
+ * Reproducible ETL/ELT pipelines, analytical marts, data APIs, and service infrastructure
+ * (subset of `data-engineering-lakehouse`).
+ */
+export const DATA_PIPELINE_ENGINEERING_TOOLS: readonly string[] = [
+  'ETL / Automation',
+  'Pipeline',
+  'Engineering',
+  'FastAPI',
+  'Docker',
+  'Caddy',
+  'GitHub Actions',
+  'Parquet',
+  'Data Engineering',
+  'ETL',
+  'ELT',
+  'Data Pipeline',
+  'Streamlit'
+];
+
+/**
+ * Classical supervised/unsupervised machine learning & predictive modeling tools
+ * (subset of `ai-ml`). Distinguished from LLM/RAG application engineering.
+ */
+export const TRADITIONAL_ML_TOOLS: readonly string[] = [
+  'Applied ML',
+  'scikit-learn',
+  'Machine Learning',
+  'ML',
+  'MLflow',
+  'Spark ML',
+  'Random Forest',
+  'Gradient Boosting',
+  'XGBoost',
+  'HistGradientBoosting',
+  'Classification',
+  'Regression',
+  'Feature Engineering'
+];
+
+/**
+ * LLM, Retrieval-Augmented Generation (RAG), speech-to-text, and vector search
+ * application engineering tools (subset of `ai-ml`). Distinguished from classical ML.
+ */
+export const LLM_RAG_AI_ENGINEERING_TOOLS: readonly string[] = [
+  'AI Engineering',
+  'RAG',
+  'LLM',
+  'FAISS',
+  'sentence-transformers',
+  'faster-whisper',
+  'Whisper',
+  'Claude',
+  'Claude API',
+  'Anthropic',
+  'Anthropic API',
+  'OpenAI',
+  'Embeddings',
+  'Vector Search',
+  'GenAI'
+];
+
+/**
  * Centralized, bilingual Tech Mix category definitions.
  *
  * Design principles:
  * - Category membership is derived strictly from a project's Notion `Tools` tags
  *   (never from project names, slugs, or hardcoded project ID lists).
  * - Overlapping categories (`Databricks & Lakehouse` and `Data Engineering & ETL`)
- *   are consolidated into `Data Engineering & Lakehouse`.
+ *   are consolidated into `Data Engineering & Lakehouse`, combining
+ *   `DATA_PIPELINE_ENGINEERING_TOOLS` and `LAKEHOUSE_ARCHITECTURE_TOOLS` without
+ *   implying that every pipeline project uses Databricks.
+ * - `AI Engineering & Applied ML` combines `TRADITIONAL_ML_TOOLS` and
+ *   `LLM_RAG_AI_ENGINEERING_TOOLS` while preserving their semantic distinction.
  * - `Automation & Low-Code / No-Code Platforms` strictly matches genuine
  *   low-code/no-code workflow tools (`n8n`, `Power Automate`, `Make`, `Zapier`, etc.)
  *   rather than general code-based ETL pipelines (`ETL / Automation`, `Pipeline`)
@@ -106,32 +188,10 @@ export const TECH_CATEGORIES: readonly TechCategoryDefinition[] = [
     shortLabelIt: 'Ingegneria Dati & Lakehouse',
     shortLabelEn: 'Data Engineering & Lakehouse',
     contextNoteIt:
-      'Pipeline ETL/ELT end-to-end, architetture Medallion su Databricks Lakehouse, API dati e servizi containerizzati.',
+      'Pipeline ETL/ELT riproducibili, data mart analitici e API dati nei casi studio; include architetture Medallion su Databricks Lakehouse nei progetti dedicati.',
     contextNoteEn:
-      'End-to-end ETL/ELT pipelines, Medallion architectures on Databricks Lakehouse, data APIs, and containerized services.',
-    tools: [
-      'Databricks',
-      'ETL / Automation',
-      'Pipeline',
-      'Engineering',
-      'FastAPI',
-      'Docker',
-      'Caddy',
-      'GitHub Actions',
-      'PySpark',
-      'Delta Lake',
-      'Apache Spark',
-      'Spark',
-      'Lakehouse',
-      'Lakehouse Architecture',
-      'Unity Catalog',
-      'Parquet',
-      'Data Engineering',
-      'ETL',
-      'ELT',
-      'Data Pipeline',
-      'Streamlit'
-    ]
+      'Reproducible ETL/ELT pipelines, analytical data marts, and data APIs across case studies; includes Medallion architectures on Databricks Lakehouse where applicable.',
+    tools: [...LAKEHOUSE_ARCHITECTURE_TOOLS, ...DATA_PIPELINE_ENGINEERING_TOOLS]
   },
   {
     id: 'kpi-eda',
@@ -210,37 +270,10 @@ export const TECH_CATEGORIES: readonly TechCategoryDefinition[] = [
     shortLabelIt: 'AI & ML Applicato',
     shortLabelEn: 'AI & Applied ML',
     contextNoteIt:
-      'Modelli predittivi supervisionati (scikit-learn, Random Forest, Gradient Boosting), validazione temporale e sistemi AI/RAG.',
+      'Distinto tra Machine Learning supervisionato (classificazione/regressione con scikit-learn, Random Forest e validazione temporale) e ingegneria di applicazioni LLM/RAG (FAISS, Whisper e API LLM).',
     contextNoteEn:
-      'Supervised predictive modeling (scikit-learn, Random Forest, Gradient Boosting), temporal validation, and AI/RAG systems.',
-    tools: [
-      'Applied ML',
-      'scikit-learn',
-      'Machine Learning',
-      'ML',
-      'MLflow',
-      'Spark ML',
-      'Random Forest',
-      'Gradient Boosting',
-      'XGBoost',
-      'HistGradientBoosting',
-      'Classification',
-      'Regression',
-      'Feature Engineering',
-      'AI Engineering',
-      'RAG',
-      'LLM',
-      'FAISS',
-      'sentence-transformers',
-      'faster-whisper',
-      'Whisper',
-      'Claude',
-      'Anthropic',
-      'OpenAI',
-      'Embeddings',
-      'Vector Search',
-      'GenAI'
-    ]
+      'Distinguishes classical supervised Machine Learning (scikit-learn classification/regression and temporal validation) from LLM/RAG application engineering (FAISS, Whisper, and LLM APIs).',
+    tools: [...TRADITIONAL_ML_TOOLS, ...LLM_RAG_AI_ENGINEERING_TOOLS]
   },
   {
     id: 'low-code-automation',
@@ -420,26 +453,61 @@ export function computeTechCategoryStats(
   return stats;
 }
 
-const LAKEHOUSE_INFRA_TOOLS: ReadonlySet<string> = new Set(
-  ['Databricks', 'PySpark', 'Delta Lake', 'Apache Spark', 'FastAPI', 'Docker', 'Caddy'].map(
-    normalizeToolName
-  )
+const LAKEHOUSE_ARCHITECTURE_SET: ReadonlySet<string> = new Set(
+  LAKEHOUSE_ARCHITECTURE_TOOLS.map(normalizeToolName)
 );
+
+const TRADITIONAL_ML_SET: ReadonlySet<string> = new Set(
+  TRADITIONAL_ML_TOOLS.map(normalizeToolName)
+);
+
+const LLM_RAG_SET: ReadonlySet<string> = new Set(
+  LLM_RAG_AI_ENGINEERING_TOOLS.map(normalizeToolName)
+);
+
+function resolveProjectCategoryShortLabel(
+  cat: TechCategoryDefinition,
+  tools: readonly string[],
+  lang: 'it' | 'en',
+  hasLakehouseArchitecture: boolean
+): string {
+  if (cat.id === 'data-engineering-lakehouse') {
+    if (hasLakehouseArchitecture) {
+      return lang === 'it' ? 'Ingegneria Dati & Lakehouse' : 'Data Engineering & Lakehouse';
+    }
+    return lang === 'it' ? 'Ingegneria Dati & Pipeline' : 'Data Engineering & Pipelines';
+  }
+
+  if (cat.id === 'ai-ml') {
+    const hasTraditionalMl = tools.some((t) => TRADITIONAL_ML_SET.has(normalizeToolName(t)));
+    const hasLlmRag = tools.some((t) => LLM_RAG_SET.has(normalizeToolName(t)));
+    if (hasTraditionalMl && !hasLlmRag) {
+      return lang === 'it' ? 'Machine Learning Applicato' : 'Applied Machine Learning';
+    }
+    if (hasLlmRag && !hasTraditionalMl) {
+      return lang === 'it' ? 'Ingegneria AI & RAG' : 'AI Engineering & RAG';
+    }
+  }
+
+  return lang === 'it' ? cat.shortLabelIt : cat.shortLabelEn;
+}
 
 /**
  * Derives a concise, bilingual highlight category label for a project card
  * strictly from its `tools` array, independent of Notion's tool order.
- * Includes a deterministic alphabetical fallback for unknown tools.
+ * Distinguishes Lakehouse vs. pipeline-only data engineering and classical ML
+ * vs. LLM/RAG application engineering. Includes a deterministic alphabetical
+ * fallback for unknown tools.
  */
 export function deriveHighlightCategory(
   tools: readonly string[],
   lang: 'it' | 'en' = 'en'
 ): string {
-  const hasLakehouseOrServiceInfra = tools.some((t) =>
-    LAKEHOUSE_INFRA_TOOLS.has(normalizeToolName(t))
+  const hasLakehouseArchitecture = tools.some((t) =>
+    LAKEHOUSE_ARCHITECTURE_SET.has(normalizeToolName(t))
   );
 
-  const priorityOrder: TechCategoryId[] = hasLakehouseOrServiceInfra
+  const priorityOrder: TechCategoryId[] = hasLakehouseArchitecture
     ? [
         'ai-ml',
         'low-code-automation',
@@ -464,13 +532,28 @@ export function deriveHighlightCategory(
     .filter((cat) => projectMatchesCategory(tools, cat));
 
   if (matched.length >= 2) {
-    const first = lang === 'it' ? matched[0].shortLabelIt : matched[0].shortLabelEn;
-    const second = lang === 'it' ? matched[1].shortLabelIt : matched[1].shortLabelEn;
+    const first = resolveProjectCategoryShortLabel(
+      matched[0],
+      tools,
+      lang,
+      hasLakehouseArchitecture
+    );
+    const second = resolveProjectCategoryShortLabel(
+      matched[1],
+      tools,
+      lang,
+      hasLakehouseArchitecture
+    );
     return `${first} · ${second}`;
   }
 
   if (matched.length === 1) {
-    return lang === 'it' ? matched[0].nameIt : matched[0].nameEn;
+    return resolveProjectCategoryShortLabel(
+      matched[0],
+      tools,
+      lang,
+      hasLakehouseArchitecture
+    );
   }
 
   // Safe, order-independent fallback when a project has only unknown/meta tools
