@@ -52,7 +52,8 @@
       "Python (Pandas)",
       "ETL / Automation",
       "SQL",
-      "Pipeline"
+      "Pipeline",
+      "FastAPI"
     ],
     "keyKPIs": [],
     "github": "https://github.com/matteocavo/Quaero",
