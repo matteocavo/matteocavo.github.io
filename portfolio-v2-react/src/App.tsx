@@ -5,11 +5,10 @@ import {
   SecondaryRepoData,
   BUSINESS_OBJECTIVES,
   BusinessObjectiveId,
-  PROJECT_BUSINESS_OBJECTIVES_MAP
+  PROJECT_BUSINESS_OBJECTIVES_MAP,
+  VERIFIED_PROJECT_METRICS
 } from './data/portfolioData';
 import { fetchLiveData, LiveData } from './data/liveData';
-import { ProjectCardContent } from './components/ProjectCardContent';
-import { copyText } from './data/clipboard';
 import {
   computeTechCategoryStats,
   getConciseProjectBadges,
@@ -33,6 +32,7 @@ import {
   Send,
   ChevronRight,
   ChevronDown,
+  ChevronUp,
   Layers,
   BarChart3,
   Code2,
@@ -50,9 +50,11 @@ import {
   Check,
   Activity,
   Maximize2,
+  Terminal,
   CheckCircle2,
   AlertCircle,
   Copy,
+  Link,
   ZoomIn,
   ZoomOut,
   ArrowRight,
@@ -231,6 +233,8 @@ function RevealCard({
 export default function App() {
   const [siteLang, setSiteLang] = useState<'it' | 'en'>('it');
 
+  // Section 3: Methodology drawer is collapsed by default
+  const [expandedProjectId, setExpandedProjectId] = useState<string | null>(null);
   
   // Section 3: Uncropped dashboard lightbox modal
   const [lightboxProject, setLightboxProject] = useState<NotionProjectData | null>(null);
@@ -258,15 +262,15 @@ export default function App() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
   const [repoFilterMode, setRepoFilterMode] = useState<'secondary' | 'all'>('secondary');
   const [techBarsInView, setTechBarsInView] = useState(false);
 
   // Phase 4.3 Feature State Extensions
   const [activeObjectiveFilter, setActiveObjectiveFilter] = useState<BusinessObjectiveId | 'ALL'>('ALL');
   const [activeTechTooltip, setActiveTechTooltip] = useState<string | null>(null);
-  const [pendingProjectId, setPendingProjectId] = useState<string | null>(null);
-  const [copyFailedId, setCopyFailedId] = useState<string | null>(null);
   const [copiedProjectId, setCopiedProjectId] = useState<string | null>(null);
+  const [copiedSnippetId, setCopiedSnippetId] = useState<string | null>(null);
   const [lightboxZoomed, setLightboxZoomed] = useState(false);
   // Phase 4 §3: In-page CV PDF preview modal (replaces "open in new tab" as the
   // primary interaction). The URL is derived from siteLang at click time, not
@@ -320,61 +324,79 @@ export default function App() {
   // dashboards, not PDF exports or plain repository links. Never hand-typed.
   const liveDashboardsCount = VERIFIED_NOTION_PROJECTS.filter((p) => p.dashboardType === 'live_powerbi').length;
 
-  const handleCopyProjectDeepLink = async (projectId: string) => {
-    if (!liveData?.projects.some(p => p.id === projectId) || !document.getElementById(projectId)) return;
-    setCopiedProjectId(null);
-    setCopyFailedId(null);
-    const copied = await copyText(`https://matteocavo.github.io/#${projectId}`);
-    if (!copied) {
-      setCopyFailedId(projectId);
-      return;
+  const fallbackCopyText = (text: string) => {
+    try {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+    } catch (e) {
+      console.warn('Fallback copy failed', e);
+    }
+  };
+
+  const handleCopyProjectDeepLink = (projectId: string) => {
+    const url = `https://matteocavo.github.io/#${projectId}`;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).catch(() => {
+        fallbackCopyText(url);
+      });
+    } else {
+      fallbackCopyText(url);
     }
     setCopiedProjectId(projectId);
-    setTimeout(() => setCopiedProjectId(prev => prev === projectId ? null : prev), 2200);
+    setTimeout(() => {
+      setCopiedProjectId((prev) => (prev === projectId ? null : prev));
+    }, 2200);
+  };
+
+  const handleCopySnippet = (snippet: string, snippetId: string) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(snippet).catch(() => {
+        fallbackCopyText(snippet);
+      });
+    } else {
+      fallbackCopyText(snippet);
+    }
+    setCopiedSnippetId(snippetId);
+    setTimeout(() => {
+      setCopiedSnippetId((prev) => (prev === snippetId ? null : prev));
+    }, 2200);
   };
 
   const scrollToProject = (projectId: string) => {
-    if (!liveData?.projects.some(p => p.id === projectId)) return;
     setActiveFilterTag('ALL');
     setActiveObjectiveFilter('ALL');
-    setPendingProjectId(projectId);
-    if (window.location.hash !== `#${projectId}`) window.location.hash = projectId;
+    setTimeout(() => {
+      const el = document.getElementById(projectId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 150);
   };
 
-  // Resolve against live data only after the runtime fetch. Listen for direct
-  // URLs, refresh and history navigation; filters are cleared only on navigation.
+  // Deep-link initial handler: Check window.location.hash on mount
   useEffect(() => {
-    if (!liveData) return;
-    const navigate = () => {
-      let id: string;
-      try { id = decodeURIComponent(window.location.hash.slice(1)); }
-      catch { return; }
-      if (!liveData.projects.some(p => p.id === id)) return;
-      setActiveFilterTag('ALL');
-      setActiveObjectiveFilter('ALL');
-      setPendingProjectId(id);
-    };
-    navigate();
-    window.addEventListener('hashchange', navigate);
-    window.addEventListener('popstate', navigate);
-    return () => {
-      window.removeEventListener('hashchange', navigate);
-      window.removeEventListener('popstate', navigate);
-    };
-  }, [liveData]);
-
-  // Run after React has rendered the unfiltered flagship/secondary target.
-  useEffect(() => {
-    if (!pendingProjectId || activeFilterTag !== 'ALL' || activeObjectiveFilter !== 'ALL') return;
-    const frame = requestAnimationFrame(() => {
-      const target = document.getElementById(pendingProjectId);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        setPendingProjectId(null);
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      const isProject = VERIFIED_NOTION_PROJECTS.some((p) => p.id === hash);
+      if (isProject) {
+        setActiveFilterTag('ALL');
+        setActiveObjectiveFilter('ALL');
+        setTimeout(() => {
+          const el = document.getElementById(hash);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 300);
       }
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [pendingProjectId, activeFilterTag, activeObjectiveFilter, liveData]);
+    }
+  }, []);
 
   const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -1357,24 +1379,411 @@ export default function App() {
                   </div>
                 )}
 
-                {/* Notion-selected flagship and remaining projects share the same concise presentation. */}
+                {/* 3A. FEATURED CASE STUDY: Rome Public Transport (Largest Visual Weight, Editorial Asymmetric Layout) */}
                 {flagshipProject && isFlagshipMatched && (
-                  <RevealCard as="article" id={flagshipProject.id} delay={60}
-                    className="mb-8 bg-white border border-[#CBD5E1] rounded-2xl overflow-hidden shadow-sm featured-card scroll-mt-24">
-                    <ProjectCardContent project={flagshipProject} lang={siteLang} featured
-                      copyStatus={copyFailedId === flagshipProject.id ? 'failed' : copiedProjectId === flagshipProject.id ? 'copied' : null}
-                      onCopy={() => handleCopyProjectDeepLink(flagshipProject.id)} onPreview={() => setLightboxProject(flagshipProject)} />
+                  <RevealCard
+                    as="article"
+                    id={flagshipProject.id}
+                    delay={60}
+                    className="mb-10 bg-[#FFFFFF] border border-[#CBD5E1] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow featured-card scroll-mt-24"
+                  >
+                    <div className="px-5 py-3.5 sm:px-6 sm:py-4 border-b border-[#E2E8F0] bg-[#FFFFFF] flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]" />
+                        <span className="text-xs font-bold text-[#111111] uppercase tracking-wider font-mono">
+                          {siteLang === 'it'
+                            ? flagshipProject.highlightCategoryIt ?? flagshipProject.highlightCategory
+                            : flagshipProject.highlightCategoryEn ?? flagshipProject.highlightCategory}
+                        </span>
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE]">
+                          {siteLang === 'it' ? 'Case Study in Evidenza' : 'Featured Case Study'}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {/* Shareable Project Deep Link (Feature #12) */}
+                        <button
+                          type="button"
+                          onClick={() => handleCopyProjectDeepLink(flagshipProject.id)}
+                          title={siteLang === 'it' ? 'Copia link diretto a questo progetto' : 'Copy direct link to this project'}
+                          aria-label={siteLang === 'it' ? 'Copia link diretto' : 'Copy direct link'}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold text-[#475569] hover:text-[#2563EB] bg-[#F8FAFC] hover:bg-[#EFF6FF] border border-[#E2E8F0] hover:border-[#BFDBFE] rounded-lg transition-colors cursor-pointer shadow-2xs"
+                        >
+                          {copiedProjectId === flagshipProject.id ? (
+                            <>
+                              <Check className="w-3 h-3 text-[#10B981]" />
+                              <span className="text-[#10B981] font-bold">{siteLang === 'it' ? 'Copiato!' : 'Copied!'}</span>
+                            </>
+                          ) : (
+                            <>
+                              <Link className="w-3 h-3 text-[#2563EB]" />
+                              <span>{siteLang === 'it' ? 'Copia link' : 'Copy link'}</span>
+                            </>
+                          )}
+                        </button>
+                        <span className="font-mono text-xs text-[#64748B] bg-[#F8FAFC] px-2.5 py-1 rounded-md border border-[#E2E8F0]">{flagshipProject.date}</span>
+                      </div>
+                    </div>
+
+                    <div className={isMobileSim ? 'flex flex-col' : 'grid grid-cols-1 lg:grid-cols-12 gap-0'}>
+                      {/* Left: Uncropped Real Screenshot in Light Neutral Container */}
+                      <div className={`${isMobileSim ? 'w-full' : 'lg:col-span-7'} bg-[#F8FAFC] p-4 sm:p-6 flex items-center justify-center relative group border-b lg:border-b-0 lg:border-r border-[#E2E8F0]`}>
+                        <img
+                          src={flagshipProject.image}
+                          alt={`${flagshipProject.titleEn} uncropped dashboard preview`}
+                          loading="lazy"
+                          className="w-full h-auto max-h-[420px] object-contain rounded-xl border border-[#CBD5E1] cursor-pointer shadow-sm hover:shadow-md transition-shadow bg-[#FFFFFF]"
+                          onClick={() => setLightboxProject(flagshipProject)}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setLightboxProject(flagshipProject)}
+                          className="absolute bottom-6 right-6 px-3 py-1.5 rounded-lg bg-[#FFFFFF]/95 hover:bg-[#FFFFFF] text-[#111111] text-[11px] font-semibold border border-[#CBD5E1] hover:border-[#2563EB] flex items-center gap-1.5 cursor-pointer shadow-sm transition-all"
+                        >
+                          <Maximize2 className="w-3.5 h-3.5 text-[#2563EB]" />
+                          <span>{siteLang === 'it' ? 'Schermo intero' : 'Zoom Fullscreen'}</span>
+                        </button>
+                      </div>
+
+                      {/* Right: Narrative, Real KPIs & Direct Actions */}
+                      <div className={`${isMobileSim ? 'w-full' : 'lg:col-span-5'} p-5 sm:p-6 flex flex-col justify-between bg-[#FFFFFF]`}>
+                        <div>
+                          <h3 className="font-display text-xl sm:text-2xl font-bold text-[#111111] leading-tight mb-3">
+                            {siteLang === 'it' ? flagshipProject.titleIt : flagshipProject.titleEn}
+                          </h3>
+                          <p className="text-xs sm:text-sm text-[#475569] leading-relaxed mb-4">
+                            {siteLang === 'it' ? flagshipProject.businessGoalIt : flagshipProject.businessGoalEn}
+                          </p>
+
+                          {/* Real KPIs Grid: verified pre-formatted metrics when this project has
+                              them (see VERIFIED_PROJECT_METRICS), otherwise the real bare keyKPIs
+                              labels from Notion — never Rome Transport's numbers on another project. */}
+                          <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-3 mb-4 space-y-1.5">
+                            <span className="text-[10px] font-semibold text-[#64748B] uppercase tracking-wider block">
+                              {siteLang === 'it' ? 'Metriche Verificate dal Dataset:' : 'Verified Dataset Metrics:'}
+                            </span>
+                            <div className="grid grid-cols-2 gap-2 text-[11px] font-mono text-[#111111]">
+                              {(VERIFIED_PROJECT_METRICS[flagshipProject.id] ?? flagshipProject.keyKPIs).map((metric, mIdx) => (
+                                <span key={`${metric}-${mIdx}`} className="bg-[#FFFFFF] p-1.5 rounded border border-[#CBD5E1]">{metric}</span>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Collapsible Methodology Drawer */}
+                          <div className="mb-4">
+                            <button
+                              type="button"
+                              onClick={() => setExpandedProjectId(expandedProjectId === flagshipProject.id ? null : flagshipProject.id)}
+                              className="text-xs font-semibold text-[#2563EB] hover:text-[#1D4ED8] inline-flex items-center gap-1 cursor-pointer"
+                            >
+                              <span>
+                                {expandedProjectId === flagshipProject.id
+                                  ? siteLang === 'it' ? 'Nascondi dettagli' : 'Hide details'
+                                  : siteLang === 'it' ? 'Mostra metodologia & note' : 'Show methodology & notes'}
+                              </span>
+                              {expandedProjectId === flagshipProject.id ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                            </button>
+
+                            {expandedProjectId === flagshipProject.id && (
+                              <div className="mt-2.5 p-3 bg-[#EFF6FF] border border-[#BFDBFE] rounded-xl text-xs text-[#334155] space-y-2 leading-relaxed">
+                                <p><strong>{siteLang === 'it' ? 'Dataset:' : 'Dataset:'}</strong> {siteLang === 'it' ? flagshipProject.datasetIt : flagshipProject.datasetEn}</p>
+                                <p className="whitespace-pre-line text-[11px]">{siteLang === 'it' ? flagshipProject.notesIt : flagshipProject.notesEn}</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Direct Links */}
+                        <div className="pt-3 border-t border-[#E2E8F0] flex flex-wrap items-center justify-between gap-2">
+                          <div className="flex flex-wrap gap-1 text-[10px] font-mono text-[#64748B]">
+                            {getConciseProjectBadges(flagshipProject.tools, 3).map((tool) => (
+                              <span key={tool} className="bg-[#F8FAFC] border border-[#E2E8F0] px-1.5 py-0.5 rounded">
+                                {tool}
+                              </span>
+                            ))}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {flagshipProject.dashboardUrl && (
+                              <a
+                                href={flagshipProject.dashboardUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-white bg-[#2563EB] hover:bg-[#1D4ED8] rounded-lg transition-colors shadow-2xs"
+                              >
+                                <span>
+                                  {flagshipProject.dashboardType === 'pdf'
+                                    ? (siteLang === 'it' ? 'Dashboard PDF' : 'PDF Dashboard')
+                                    : flagshipProject.dashboardType === 'live_powerbi'
+                                    ? (siteLang === 'it' ? 'Dashboard Live' : 'Live Dashboard')
+                                    : (siteLang === 'it' ? 'Vedi Output' : 'View Output')}
+                                </span>
+                                <ExternalLink className="w-3 h-3" />
+                              </a>
+                            )}
+                            <a
+                              href={flagshipProject.githubUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-[#111111] bg-[#F8FAFC] border border-[#CBD5E1] hover:bg-[#EFF6FF] rounded-lg transition-colors"
+                            >
+                              <Github className="w-3.5 h-3.5" />
+                              <span>GitHub</span>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </RevealCard>
                 )}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {otherFeaturedProjects.map((project, index) => (
-                    <RevealCard as="article" id={project.id} key={project.id} delay={(index % 3) * 90}
-                      className="bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden shadow-2xs flex flex-col min-w-0 featured-card scroll-mt-24">
-                      <ProjectCardContent project={project} lang={siteLang}
-                        copyStatus={copyFailedId === project.id ? 'failed' : copiedProjectId === project.id ? 'copied' : null}
-                        onCopy={() => handleCopyProjectDeepLink(project.id)} onPreview={() => setLightboxProject(project)} />
-                    </RevealCard>
-                  ))}
+
+                {/* 3B. REMAINING FEATURED PROJECTS: 2-3 Column Grid (Quaero, ISPRA, Streaming Benchmark, OpenBDAP, Streaming Metadata) */}
+                <div
+                  className={
+                    isMobileSim
+                      ? 'grid grid-cols-1 gap-6'
+                      : isTabletSim
+                      ? 'grid grid-cols-2 gap-6'
+                      : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+                  }
+                >
+                  {otherFeaturedProjects.map((project, pIdx) => {
+                    const isExpanded = expandedProjectId === project.id;
+                    const isImgFailed = imageErrors[project.id];
+
+                    return (
+                      <RevealCard
+                        as="article"
+                        id={project.id}
+                        key={project.id}
+                        delay={(pIdx % 3) * 90}
+                        className="bg-[#FFFFFF] border border-[#E2E8F0] hover:border-[#CBD5E1] rounded-2xl overflow-hidden shadow-2xs hover:shadow-md transition-all flex flex-col justify-between w-full min-w-0 featured-card scroll-mt-24"
+                      >
+                        {/* Chrome bar + uncropped screenshot container */}
+                        <div className="border-b border-[#E2E8F0] bg-[#FFFFFF]">
+                          <div className="px-3.5 py-2 flex items-center justify-between border-b border-[#E2E8F0] text-[11px] font-mono text-[#64748B] bg-[#FFFFFF]">
+                            <span className="text-[#111111] font-semibold text-[10px] truncate max-w-[170px]">
+                              {project.id}.view
+                            </span>
+                            <div className="flex items-center gap-1.5 shrink-0">
+                              {/* Shareable Project Deep Link (Feature #12) */}
+                              <button
+                                type="button"
+                                onClick={() => handleCopyProjectDeepLink(project.id)}
+                                title={siteLang === 'it' ? 'Copia link diretto a questo progetto' : 'Copy direct link to this project'}
+                                aria-label={siteLang === 'it' ? `Copia link diretto a ${project.titleIt}` : `Copy direct link to ${project.titleEn}`}
+                                className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-sans font-medium text-[#475569] hover:text-[#2563EB] bg-[#F8FAFC] hover:bg-[#EFF6FF] border border-[#CBD5E1] hover:border-[#BFDBFE] rounded transition-colors cursor-pointer"
+                              >
+                                {copiedProjectId === project.id ? (
+                                  <>
+                                    <Check className="w-2.5 h-2.5 text-[#10B981]" />
+                                    <span className="text-[#10B981] font-bold">{siteLang === 'it' ? 'Copiato!' : 'Copied!'}</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Link className="w-2.5 h-2.5 text-[#2563EB]" />
+                                    <span>{siteLang === 'it' ? 'Link' : 'Link'}</span>
+                                  </>
+                                )}
+                              </button>
+                              <span className="text-[#2563EB] text-[9px] bg-[#EFF6FF] px-1.5 py-0.5 rounded border border-[#BFDBFE] truncate">
+                                {siteLang === 'it'
+                                  ? project.highlightCategoryIt ?? project.highlightCategory
+                                  : project.highlightCategoryEn ?? project.highlightCategory}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="w-full aspect-[16/10] bg-[#F8FAFC] flex items-center justify-center p-2 relative group overflow-hidden">
+                            {!isImgFailed ? (
+                              <img
+                                src={project.image}
+                                alt={`${project.titleEn} uncropped dashboard preview`}
+                                loading="lazy"
+                                onError={() => setImageErrors((prev) => ({ ...prev, [project.id]: true }))}
+                                className="w-full h-full object-contain cursor-pointer transition-transform duration-200 group-hover:scale-101"
+                                onClick={() => setLightboxProject(project)}
+                              />
+                            ) : (
+                              <div className="text-[#64748B] text-xs font-mono p-4 text-center">
+                                {project.titleEn}
+                              </div>
+                            )}
+
+                            <button
+                              type="button"
+                              onClick={() => setLightboxProject(project)}
+                              className="absolute bottom-2 right-2 px-2 py-1 rounded-lg bg-[#FFFFFF]/90 hover:bg-[#FFFFFF] text-[#111111] text-[10px] font-medium border border-[#CBD5E1] hover:border-[#2563EB] flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity cursor-pointer shadow-xs"
+                            >
+                              <Maximize2 className="w-3 h-3 text-[#2563EB]" />
+                              <span>{siteLang === 'it' ? 'Ingrandisci' : 'Zoom'}</span>
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Card Content */}
+                        <div className="p-5 flex-1 flex flex-col justify-between">
+                          <div>
+                            <div className="flex items-center justify-between gap-2 text-xs text-[#64748B] mb-2">
+                              <span className="font-semibold text-[#2563EB] text-[11px] truncate">
+                                {siteLang === 'it'
+                                  ? project.highlightCategoryIt ?? project.highlightCategory
+                                  : project.highlightCategoryEn ?? project.highlightCategory}
+                              </span>
+                              <span className="font-mono text-[11px] tabular-nums shrink-0">{project.date}</span>
+                            </div>
+
+                            <h3 className="font-display text-base font-bold text-[#111111] mb-2 leading-snug line-clamp-2">
+                              {siteLang === 'it' ? project.titleIt : project.titleEn}
+                            </h3>
+
+                            <p className="text-xs text-[#475569] leading-relaxed mb-3 line-clamp-3">
+                              {siteLang === 'it' ? project.businessGoalIt : project.businessGoalEn}
+                            </p>
+
+                            {/* Key KPIs strip */}
+                            <div className="flex flex-wrap gap-1.5 mb-3 text-[10px] font-mono">
+                              {project.keyKPIs.slice(0, 2).map((kpi, kIdx) => (
+                                <span key={kIdx} className="bg-[#F8FAFC] border border-[#CBD5E1] text-[#111111] px-2 py-0.5 rounded-md">
+                                  {kpi}
+                                </span>
+                              ))}
+                            </div>
+
+                            {/* Feature #14: Quaero Quick Copy Installation/Clone Snippet (v0.4 verified) */}
+                            {project.id === 'quaero' && (
+                              <div className="mb-3 space-y-2">
+                                <div className="p-2.5 bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl flex items-center justify-between gap-2 text-[11px] font-mono">
+                                  <div className="flex items-center gap-1.5 overflow-hidden text-ellipsis whitespace-nowrap min-w-0">
+                                    <Terminal className="w-3.5 h-3.5 text-[#2563EB] shrink-0" />
+                                    <span className="text-[#64748B] select-none text-[10px]">$</span>
+                                    <code className="text-[#111111] text-[10px] truncate">
+                                      git clone https://github.com/matteocavo/Quaero.git
+                                    </code>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleCopySnippet('git clone https://github.com/matteocavo/Quaero.git', 'quaero-clone')}
+                                    aria-label={siteLang === 'it' ? 'Copia comando git clone per Quaero' : 'Copy git clone command for Quaero'}
+                                    className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-sans font-semibold rounded bg-[#FFFFFF] hover:bg-[#EFF6FF] border border-[#CBD5E1] hover:border-[#2563EB] text-[#2563EB] transition-colors shrink-0 cursor-pointer shadow-2xs"
+                                  >
+                                    {copiedSnippetId === 'quaero-clone' ? (
+                                      <>
+                                        <Check className="w-3 h-3 text-[#10B981]" />
+                                        <span className="text-[#10B981] font-bold">{siteLang === 'it' ? 'Copiato!' : 'Copied!'}</span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <Copy className="w-3 h-3" />
+                                        <span>{siteLang === 'it' ? 'Clona (v0.4)' : 'Clone (v0.4)'}</span>
+                                      </>
+                                    )}
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Collapsible Methodology Drawer */}
+                            <div className="mb-3">
+                              <button
+                                type="button"
+                                onClick={() => setExpandedProjectId(isExpanded ? null : project.id)}
+                                className="text-xs font-semibold text-[#2563EB] hover:text-[#1D4ED8] inline-flex items-center gap-1 cursor-pointer"
+                              >
+                                <span>
+                                  {isExpanded
+                                    ? siteLang === 'it' ? 'Nascondi dettagli' : 'Hide details'
+                                    : siteLang === 'it' ? 'Mostra metodologia & note' : 'Show methodology & notes'}
+                                </span>
+                                {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                              </button>
+
+                              {isExpanded && (
+                                <div className="mt-2 bg-[#EFF6FF] border border-[#BFDBFE] rounded-xl p-3 text-xs text-[#111111] space-y-2 leading-relaxed animate-in fade-in duration-200">
+                                  <div>
+                                    <strong className="block text-[11px] text-[#1E3A8A] font-semibold mb-0.5">
+                                      {siteLang === 'it' ? 'Dataset:' : 'Dataset:'}
+                                    </strong>
+                                    <p className="text-[11px] text-[#334155]">
+                                      {siteLang === 'it' ? project.datasetIt : project.datasetEn}
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <strong className="block text-[11px] text-[#1E3A8A] font-semibold mb-0.5">
+                                      {siteLang === 'it' ? 'Note Metodologiche:' : 'Methodology Notes:'}
+                                    </strong>
+                                    <p className="whitespace-pre-line text-[11px] text-[#334155]">
+                                      {siteLang === 'it' ? project.notesIt : project.notesEn}
+                                    </p>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Action Buttons */}
+                          <div className="pt-3 border-t border-[#E2E8F0] flex items-center justify-between gap-2">
+                            <div className="flex flex-wrap gap-1 font-mono text-[10px] text-[#475569] truncate">
+                              {getConciseProjectBadges(project.tools, 2).map((tool) => (
+                                <span key={tool} className="bg-[#F8FAFC] border border-[#E2E8F0] px-1.5 py-0.5 rounded">
+                                  {tool}
+                                </span>
+                              ))}
+                            </div>
+
+                            <div className="flex items-center gap-1.5 shrink-0">
+                              {project.id === 'quaero' ? (
+                                <div className="flex items-center gap-1.5">
+                                  <a
+                                    href={project.githubUrl}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold text-white bg-[#2563EB] hover:bg-[#1D4ED8] rounded-lg transition-colors shadow-2xs whitespace-nowrap"
+                                  >
+                                    <Github className="w-3.5 h-3.5" />
+                                    <span>{siteLang === 'it' ? 'Vedi su GitHub' : 'View on GitHub'}</span>
+                                    <ExternalLink className="w-3 h-3 opacity-80" />
+                                  </a>
+                                </div>
+                              ) : (
+                                <>
+                                  {project.dashboardUrl && (
+                                    <a
+                                      href={project.dashboardUrl}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-white bg-[#2563EB] hover:bg-[#1D4ED8] rounded-lg transition-colors shadow-2xs whitespace-nowrap"
+                                    >
+                                      <span>
+                                        {project.dashboardType === 'pdf'
+                                          ? 'PDF'
+                                          : (siteLang === 'it' ? 'BI Live' : 'Live BI')}
+                                      </span>
+                                      <ExternalLink className="w-3 h-3" />
+                                    </a>
+                                  )}
+
+                                  {project.githubUrl && (
+                                    <a
+                                      href={project.githubUrl}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap ${
+                                        !project.dashboardUrl
+                                          ? 'text-white bg-[#2563EB] hover:bg-[#1D4ED8] shadow-2xs'
+                                          : 'text-[#111111] bg-[#F8FAFC] border border-[#CBD5E1] hover:bg-[#EFF6FF]'
+                                      }`}
+                                    >
+                                      <Github className="w-3.5 h-3.5" />
+                                      <span>{project.dashboardUrl ? 'Repo' : (siteLang === 'it' ? 'Vedi Repo' : 'View Repo')}</span>
+                                    </a>
+                                  )}
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </RevealCard>
+                    );
+                  })}
                 </div>
 
                 {/* ===============================================================
@@ -2590,6 +2999,27 @@ export default function App() {
                     }`}
                   />
                 </div>
+
+                {/* Contextual Verifiable Caption & KPIs Strip */}
+                {((siteLang === 'it' ? lightboxProject.datasetIt : lightboxProject.datasetEn) || lightboxProject.keyKPIs.length > 0) && (
+                  <div className="px-5 py-2.5 bg-[#141414] border-t border-[#252525] flex flex-wrap items-center justify-between gap-2 text-xs shrink-0">
+                    {(siteLang === 'it' ? lightboxProject.datasetIt : lightboxProject.datasetEn) && (
+                      <div className="text-[11px] text-[#CBD5E1] flex items-center gap-1.5">
+                        <span className="font-mono text-[#7AA7FF] font-semibold">DATASET:</span>
+                        <span>{siteLang === 'it' ? lightboxProject.datasetIt : lightboxProject.datasetEn}</span>
+                      </div>
+                    )}
+                    {lightboxProject.keyKPIs.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 text-[10px] font-mono text-[#A1A1AA]">
+                        {lightboxProject.keyKPIs.slice(0, 3).map((kpi, kIdx) => (
+                          <span key={kIdx} className="bg-[#222222] px-2 py-0.5 rounded border border-[#333333] text-[#E4E4E7]">
+                            {kpi}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Lightbox Footer Bar with Tools & Resource Links */}
                 <div className="px-5 py-3 bg-[#1C1C1C] border-t border-[#2E2E2E] flex flex-wrap items-center justify-between gap-3 text-xs shrink-0">
