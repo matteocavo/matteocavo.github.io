@@ -271,10 +271,11 @@ export default function App() {
   // Phase 4.3 Feature State Extensions
   const [activeObjectiveFilter, setActiveObjectiveFilter] = useState<BusinessObjectiveId | 'ALL'>('ALL');
   const [activeTechTooltip, setActiveTechTooltip] = useState<string | null>(null);
-  const [pendingProjectId, setPendingProjectId] = useState<string | null>(null);
-  const [copyFailedId, setCopyFailedId] = useState<string | null>(null);
   const [copiedProjectId, setCopiedProjectId] = useState<string | null>(null);
   const [copiedSnippetId, setCopiedSnippetId] = useState<string | null>(null);
+  const [pendingProjectId, setPendingProjectId] = useState<string | null>(null);
+
+
   const [lightboxZoomed, setLightboxZoomed] = useState(false);
   // Phase 4 §3: In-page CV PDF preview modal (replaces "open in new tab" as the
   // primary interaction). The URL is derived from siteLang at click time, not
@@ -328,35 +329,63 @@ export default function App() {
   // dashboards, not PDF exports or plain repository links. Never hand-typed.
   const liveDashboardsCount = VERIFIED_NOTION_PROJECTS.filter((p) => p.dashboardType === 'live_powerbi').length;
 
-  const handleCopyProjectDeepLink = async (projectId: string) => {
-    if (!liveData?.projects.some(p => p.id === projectId) || !document.getElementById(projectId)) return;
-    setCopiedProjectId(null);
-    setCopyFailedId(null);
-    const copied = await copyText(`https://matteocavo.github.io/#${projectId}`);
-    if (!copied) {
-      setCopyFailedId(projectId);
-      return;
+  const fallbackCopyText = (text: string) => {
+    try {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+    } catch (e) {
+      console.warn('Fallback copy failed', e);
     }
-    setCopiedProjectId(projectId);
-    setTimeout(() => setCopiedProjectId(prev => prev === projectId ? null : prev), 2200);
   };
 
-  const handleCopySnippet = async (snippet: string, snippetId: string) => {
-    if (!(await copyText(snippet))) return;
+  const handleCopyProjectDeepLink = (projectId: string) => {
+    const url = `https://matteocavo.github.io/#${projectId}`;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).catch(() => {
+        fallbackCopyText(url);
+      });
+    } else {
+      fallbackCopyText(url);
+    }
+    setCopiedProjectId(projectId);
+    setTimeout(() => {
+      setCopiedProjectId((prev) => (prev === projectId ? null : prev));
+    }, 2200);
+  };
+
+  const handleCopySnippet = (snippet: string, snippetId: string) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(snippet).catch(() => {
+        fallbackCopyText(snippet);
+      });
+    } else {
+      fallbackCopyText(snippet);
+    }
     setCopiedSnippetId(snippetId);
-    setTimeout(() => setCopiedSnippetId(prev => prev === snippetId ? null : prev), 2200);
+    setTimeout(() => {
+      setCopiedSnippetId((prev) => (prev === snippetId ? null : prev));
+    }, 2200);
   };
 
   const scrollToProject = (projectId: string) => {
-    if (!liveData?.projects.some(p => p.id === projectId)) return;
     setActiveFilterTag('ALL');
     setActiveObjectiveFilter('ALL');
-    setPendingProjectId(projectId);
-    if (window.location.hash !== `#${projectId}`) window.location.hash = projectId;
+    setTimeout(() => {
+      const el = document.getElementById(projectId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 150);
   };
 
-  // Resolve against live data only after the runtime fetch. Listen for direct
-  // URLs, refresh and history navigation; filters are cleared only on navigation.
+  // Deep-link initial handler: Check window.location.hash on mount
   useEffect(() => {
     if (!liveData) return;
     const navigate = () => {
@@ -396,6 +425,7 @@ export default function App() {
       setPendingProjectId(current => current === pendingProjectId ? null : current);
     });
   }, [pendingProjectId, activeFilterTag, activeObjectiveFilter, liveData, siteLang]);
+
 
   const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -1399,6 +1429,7 @@ export default function App() {
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
+
                         <span className="font-mono text-xs text-[#64748B] bg-[#F8FAFC] px-2.5 py-1 rounded-md border border-[#E2E8F0]">{flagshipProject.date}</span>
                       </div>
                     </div>
@@ -1493,7 +1524,7 @@ export default function App() {
                                     ? (siteLang === 'it' ? 'Dashboard PDF' : 'PDF Dashboard')
                                     : flagshipProject.dashboardType === 'live_powerbi'
                                     ? (siteLang === 'it' ? 'Dashboard Live' : 'Live Dashboard')
-                                    : (siteLang === 'it' ? 'Apri applicazione / output' : 'Open application / output')}
+                                    : (siteLang === 'it' ? 'Vedi Output' : 'View Output')}
                                 </span>
                                 <ExternalLink className="w-3 h-3" />
                               </a>
@@ -1540,6 +1571,7 @@ export default function App() {
                         <div className="border-b border-[#E2E8F0] bg-[#FFFFFF]">
                           <div className="px-3.5 py-2 flex items-center justify-between border-b border-[#E2E8F0] text-[11px] font-mono text-[#64748B] bg-[#FFFFFF]">
                             <div className="flex items-center gap-1.5 shrink-0">
+
                               <span className="text-[#2563EB] text-[9px] bg-[#EFF6FF] px-1.5 py-0.5 rounded border border-[#BFDBFE] truncate">
                                 {siteLang === 'it'
                                   ? project.highlightCategoryIt ?? project.highlightCategory
@@ -1711,9 +1743,7 @@ export default function App() {
                                       <span>
                                         {project.dashboardType === 'pdf'
                                           ? 'PDF'
-                                          : project.dashboardType === 'live_powerbi'
-                                            ? (siteLang === 'it' ? 'BI Live' : 'Live BI')
-                                            : (siteLang === 'it' ? 'Apri applicazione / output' : 'Open application / output')}
+                                          : (siteLang === 'it' ? 'BI Live' : 'Live BI')}
                                       </span>
                                       <ExternalLink className="w-3 h-3" />
                                     </a>

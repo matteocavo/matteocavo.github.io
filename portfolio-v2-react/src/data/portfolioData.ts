@@ -149,7 +149,6 @@ export const VERIFIED_PROJECT_METRICS: Record<string, string[]> = {
   'rome-transport': ['9.97M Observ.', '964 Snapshots', 'F1: 0.8283', 'MAE: 136.98s']
 };
 
-
 export const VERIFIED_NOTION_PROJECTS: NotionProjectData[] = [
   {
     id: 'rome-transport',
