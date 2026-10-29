@@ -1466,7 +1466,9 @@ export default function App() {
                               <span>
                                 {expandedProjectId === flagshipProject.id
                                   ? siteLang === 'it' ? 'Nascondi dettagli' : 'Hide details'
-                                  : siteLang === 'it' ? 'Mostra metodologia & note' : 'Show methodology & notes'}
+                                  : PROJECT_EVIDENCE[flagshipProject.githubUrl]
+                                    ? (siteLang === 'it' ? 'Mostra dettagli' : 'Show details')
+                                    : (siteLang === 'it' ? 'Mostra metodologia & note' : 'Show methodology & notes')}
                               </span>
                               {expandedProjectId === flagshipProject.id ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                             </button>
@@ -1474,7 +1476,11 @@ export default function App() {
                             {expandedProjectId === flagshipProject.id && (
                               <div className="mt-2.5 p-3 bg-[#EFF6FF] border border-[#BFDBFE] rounded-xl text-xs text-[#334155] space-y-2 leading-relaxed">
                                 <p><strong>{siteLang === 'it' ? 'Dataset:' : 'Dataset:'}</strong> {siteLang === 'it' ? flagshipProject.datasetIt : flagshipProject.datasetEn}</p>
-                                <p className="whitespace-pre-line text-[11px]">{siteLang === 'it' ? flagshipProject.notesIt : flagshipProject.notesEn}</p>
+                                <ProjectEvidence project={flagshipProject} lang={siteLang} projects={VERIFIED_NOTION_PROJECTS} onNavigate={scrollToProject} expanded />
+                                <div>
+                                  {PROJECT_EVIDENCE[flagshipProject.githubUrl] && <strong className="block text-[11px] mb-1">{siteLang === 'it' ? 'Note del progetto' : 'Project notes'}</strong>}
+                                  <p className="whitespace-pre-line text-[11px]">{siteLang === 'it' ? flagshipProject.notesIt : flagshipProject.notesEn}</p>
+                                </div>
                               </div>
                             )}
                           </div>
@@ -1681,7 +1687,9 @@ export default function App() {
                                 <span>
                                   {isExpanded
                                     ? siteLang === 'it' ? 'Nascondi dettagli' : 'Hide details'
-                                    : siteLang === 'it' ? 'Mostra metodologia & note' : 'Show methodology & notes'}
+                                    : PROJECT_EVIDENCE[project.githubUrl]
+                                    ? (siteLang === 'it' ? 'Mostra dettagli' : 'Show details')
+                                    : (siteLang === 'it' ? 'Mostra metodologia & note' : 'Show methodology & notes')}
                                 </span>
                                 {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                               </button>
@@ -1696,9 +1704,12 @@ export default function App() {
                                       {siteLang === 'it' ? project.datasetIt : project.datasetEn}
                                     </p>
                                   </div>
+                                  <ProjectEvidence project={project} lang={siteLang} projects={VERIFIED_NOTION_PROJECTS} onNavigate={scrollToProject} expanded />
                                   <div>
                                     <strong className="block text-[11px] text-[#1E3A8A] font-semibold mb-0.5">
-                                      {siteLang === 'it' ? 'Note Metodologiche:' : 'Methodology Notes:'}
+                                      {PROJECT_EVIDENCE[project.githubUrl]
+                                        ? (siteLang === 'it' ? 'Note del progetto' : 'Project notes')
+                                        : (siteLang === 'it' ? 'Note Metodologiche:' : 'Methodology Notes:')}
                                     </strong>
                                     <p className="whitespace-pre-line text-[11px] text-[#334155]">
                                       {siteLang === 'it' ? project.notesIt : project.notesEn}
