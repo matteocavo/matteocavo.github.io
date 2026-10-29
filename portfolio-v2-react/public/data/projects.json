@@ -1,5 +1,72 @@
 [
   {
+    "id": "406dbce0-1b30-81e4-a7a8-e7b2a87310ea",
+    "title": "FTS EU Grants — Dashboard Executive Power BI",
+    "businessGoal": "Trasformare i record granulari dei finanziamenti diretti UE a beneficiari italiani (Financial Transparency System) in una dashboard executive Power BI che spiega come si distribuiscono i fondi per programma, beneficiario, territorio dichiarato e anno.",
+    "businessGoalIt": "Trasformare i record granulari dei finanziamenti diretti UE a beneficiari italiani, pubblicati dal Financial Transparency System della Commissione europea e puliti da DataCivicLab, in una dashboard executive Power BI che risponde a domande decisionali: quanti fondi arrivano, quali programmi concentrano le risorse, chi li riceve e quanto è concentrata la distribuzione, dove sono localizzati i beneficiari, come è cambiato il profilo dei finanziamenti tra 2020 e 2024.",
+    "businessGoalEn": "Turn granular EU direct-funding records to Italian beneficiaries (Financial Transparency System, cleaned by DataCivicLab) into an executive Power BI dashboard answering decision-relevant questions: how much funding flows in, which programmes concentrate it, who receives it and how concentrated that distribution is, where beneficiaries are located, and how the funding profile changed between 2020 and 2024.",
+    "status": "Portfolio Ready",
+    "tools": [
+      "Power BI",
+      "DAX",
+      "KPI engineering",
+      "ETL / Automation",
+      "EDA",
+      "KPI"
+    ],
+    "keyKPIs": [
+      "Importo Contrattato Totale",
+      "Beneficiari Univoci",
+      "HHI Funding Concentration"
+    ],
+    "github": "https://github.com/dataciviclab/dataset-incubator/tree/main/candidates/fts-eu-grants",
+    "dashboard": "https://app.powerbi.com/view?r=eyJrIjoiNjNjMDVkOWQtNTllNS00MmUzLWI4OGEtN2IwNTdjYjNiYWNkIiwidCI6IjgwNjZmMmRlLTgxZDctNGVjNC04Y2E5LTgzNzVjOTA4NjViNSJ9",
+    "dataset": "Financial Transparency System (Commissione europea): XLSX ufficiale annuale (2020-2024, 38 colonne), scaricato ed ingerito dal toolkit community DataCivicLab dataset-incubator (DuckDB SQL, step raw -> clean -> mart, filtro paese_beneficiario = Italy) e pubblicato come parquet puliti su Google Cloud Storage. Beneficiari italiani 2020-2024: 40.444 grant, 6.120 beneficiari univoci, €108,6 mld contrattati, 140 programmi, HHI operativo (escluso Stati membri/agenzie nazionali) ≈ 0,0361. FTS copre solo la gestione diretta UE (~20% del budget UE); i fondi strutturali (80%, gestione concorrente) restano fuori perimetro e sono coperti da OpenCoesione/RNA. FTS prevede l'oscuramento di alcuni beneficiari ('*****') per privacy: il modello include un controllo dedicato, che nell'estrazione attuale risulta allo 0%. Modello Power BI a star schema (Fact_Grants + dimensioni Programma/TipoBeneficiario/Geografia/Anno), misure DAX deployate via Tabular Editor 2.",
+    "date": "2026-10-27",
+    "notes": "Progetto completato: modello dati, Power Query, misure DAX e documentazione (Architecture, Data Dictionary, Methodology, QA_Data_Validation) sono completi. Il report (7 pagine) è pubblicato online e sono pronti screenshot ed export PDF. Il repository GitHub del progetto non è ancora collegato; il file .pbix non è versionato.\n\nCaso di validazione documentato: l'HHI iniziale risultava anomalo (~0,73). Invece di correggere subito la formula, sono stati verificati DAX, pipeline ETL e dati sorgente, individuando che 507 record 'REPUBBLICA ITALIANA' (allocazioni Recovery and Resilience Facility, €92,57 mld, di cui 6 grant RRF = €91,58 mld) sono classificati come Member States/agenzie nazionali pass-through. L'HHI raw è risultato matematicamente corretto e fedele alla fonte; il modello mantiene quindi due misure distinte: 'Funding Concentration HHI' (raw, fedele a FTS) e 'Funding Concentration HHI Excl Member States' (KPI operativo usato nell'Executive Summary).\n\nNota sul conteggio righe: una validazione precedente aveva registrato 40.449 righe; la sorgente live attualmente caricata conta 40.444 righe al primo step Power Query, prima di qualunque trasformazione — il numero corrente autorevole è 40.444 grant.\n\nLessons learned: i dataset amministrativi richiedono conoscenza di dominio prima di interpretare i KPI; la validazione dati deve precedere il design della dashboard; meglio preservare la fact originale e aggiungere misure alternative che modificare i dati per far tornare un indicatore; ETL, modello semantico e visualizzazione devono avere responsabilità separate.",
+    "image": "https://raw.githubusercontent.com/matteocavo/matteocavo.github.io/refs/heads/main/images/FTS_EU_GRANTS_executive-summary.png",
+    "isFlagship": false
+  },
+  {
+    "id": "406dbce0-1b30-817a-a75f-d9945fc3a16e",
+    "title": "Rome Mobility Intelligence",
+    "businessGoal": "Rendere utilizzabili via API le previsioni del rischio di un ritardo di almeno cinque minuti alla prossima fermata del trasporto pubblico romano, collegando dati Databricks, modello ML e storico delle previsioni per applicazioni e workflow di monitoraggio.",
+    "businessGoalIt": "Rendere utilizzabili via API le previsioni del rischio di un ritardo di almeno cinque minuti alla prossima fermata del trasporto pubblico romano, collegando dati Databricks, modello ML e storico delle previsioni per applicazioni e workflow di monitoraggio.",
+    "businessGoalEn": "Make predictions of a delay of at least five minutes at the next stop available through an API, connecting Rome public transport data, a machine learning model and prediction history for applications and monitoring workflows.",
+    "status": "Portfolio Ready",
+    "tools": [
+      "Python",
+      "SQL",
+      "FastAPI",
+      "scikit-learn",
+      "Databricks",
+      "PostgreSQL",
+      "SQLAlchemy",
+      "Alembic",
+      "n8n",
+      "Docker",
+      "Caddy",
+      "GitHub Actions",
+      "Engineering"
+    ],
+    "keyKPIs": [
+      "Final Labeled Observations",
+      "Accuracy",
+      "Precision",
+      "Recall",
+      "Classification F1",
+      "ROC-AUC",
+      "PR-AUC"
+    ],
+    "github": "https://github.com/matteocavo/rome-mobility-intelligence",
+    "dashboard": "https://matteocavo.github.io/rome-mobility-intelligence/",
+    "dataset": "Labeled dataset Databricks Delta v12: 9.975.703 osservazioni, 964 snapshot e 8 service date. 47 feature grezze (42 numeriche e 5 categoriche); target proxy next_stop_delay_ge_300s, ritardo di almeno 300 secondi alla prossima fermata. Split temporali TRAIN/VALIDATION/TEST con campionamento per capacità. Dati provenienti dal progetto Rome Public Transport Reliability & Delay Prediction.",
+    "date": "2026-10-26",
+    "notes": "Il progetto porta il machine learning dal dataset a un servizio applicativo: inference FastAPI, accesso read-only agli input Databricks, prediction history PostgreSQL/Neon e workflow low-code n8n.\n\nModello selezionato: HistGradientBoosting con pesi di inclusione, soglia 0.35 scelta sul validation set per massimizzare F1. TEST finale valutato una sola volta: accuracy 0.9565, precision 0.7842, recall 0.7991, F1 0.7916, ROC-AUC 0.9717, PR-AUC 0.8742. Confusion matrix [[21849,568],[519,2064]].\n\nPunti centrali: feature contract riproducibile, artifact trusted, service authentication, lineage dei risultati e persistenza idempotente. Il repository Data/ML gestisce ingestion, trasformazioni e dashboard; questo repository contiene il runtime applicativo.\n\nLe metriche sklearn non sono direttamente confrontabili con il modello Spark storico. La copertura di otto service date limita la generalizzazione temporale; servono nuove date TEST indipendenti e validazione end-to-end. Applicazione v1.0.0 rilasciata e live: frontend GitHub Pages, backend Render Free, scoring corrente Databricks, storico Neon e geografia GTFS statica. Audit live finale superato. Aggiornamento best-effort all’ultimo snapshot disponibile, senza SLA real-time garantito; cold start Render possibili. I workflow n8n restano opzionali.\n\nVersione: v1.0.0. Stato: Portfolio Ready. Applicazione pubblica: ",
+    "image": "https://raw.githubusercontent.com/matteocavo/matteocavo.github.io/refs/heads/main/images/rome-mobility-intelligence-cover-panoramica.png",
+    "isFlagship": true
+  },
+  {
     "id": "3f2dbce0-1b30-8161-89c3-d6b201ffa418",
     "title": "Rome Public Transport Reliability & Delay Prediction",
     "businessGoal": "Analizzare l’affidabilità del trasporto pubblico romano e prevedere il rischio di ritardo alla fermata successiva tramite una pipeline end-to-end su dati GTFS e GTFS-Realtime.",
@@ -35,7 +102,7 @@
     "date": "2026-10-07",
     "notes": "Pipeline Databricks completa dalla raccolta dei dati fino ai layer Gold e al dashboard AI/BI.\n\nRegressione: la persistence baseline è risultata il miglior approccio finale, con TEST MAE 136.98 s, RMSE 401.85 s e R² 0.694. Non presentare questo risultato come se un modello complesso avesse battuto la baseline.\n\nClassificazione: RandomForestClassifier con threshold > 0.45. TEST accuracy 0.9401, precision 0.8450, recall 0.8123, F1 0.8283, ROC-AUC 0.9690, PR-AUC 0.9063.\n\nInsight principali: maggiore criticità nelle fasce serali, con major-delay rate fino a circa 30.3% alle 20:00; nel campione di sole 8 date il tasso weekend è superiore al weekday, senza evidenza di un pattern strutturale; forte persistenza descrittiva dei ritardi: quando current e previous state sono entrambi major, il next-stop major-delay rate è circa 88.7%; 354 route e 5.172 stop superano le soglie minime di osservazione.\n\nContratto semantico PR1: dashboard e ML usano lo stesso evento proxy GTFS-Realtime alla fermata successiva >=300 secondi, visualizzato come 'Ritardo ≥ 5 min'. La precedente legenda >600 secondi era un errore di presentazione; dati, modelli e metriche non sono stati ricalcolati. Le fasce di probabilità sono Basso p<0.20, Medio 0.20≤p≤0.45, Alto 0.45<p<0.80, Critico p≥0.80; il flag positivo resta strettamente p>0.45.",
     "image": "https://matteocavo.github.io/images/rome-transport.png",
-    "isFlagship": true
+    "isFlagship": false
   },
   {
     "id": "323dbce0-1b30-81a6-87d5-da5f28be4a62",
