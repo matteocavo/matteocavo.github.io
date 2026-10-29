@@ -36,7 +36,7 @@
     "date": "2026-10-29",
     "notes": "Il progetto porta il machine learning dal dataset a un servizio applicativo: inference FastAPI, accesso read-only agli input Databricks, prediction history PostgreSQL/Neon e workflow low-code n8n.\n\nModello selezionato: HistGradientBoosting con pesi di inclusione, soglia 0.35 scelta sul validation set per massimizzare F1. TEST finale valutato una sola volta: accuracy 0.9565, precision 0.7842, recall 0.7991, F1 0.7916, ROC-AUC 0.9717, PR-AUC 0.8742. Confusion matrix [[21849,568],[519,2064]].\n\nPunti centrali: feature contract riproducibile, artifact trusted, service authentication, lineage dei risultati e persistenza idempotente. Il repository Data/ML gestisce ingestion, trasformazioni e dashboard; questo repository contiene il runtime applicativo.\n\nLe metriche sklearn non sono direttamente confrontabili con il modello Spark storico. La copertura di otto service date limita la generalizzazione temporale; servono nuove date TEST indipendenti e validazione end-to-end. Applicazione v1.0.0 rilasciata e live: frontend GitHub Pages, backend Render Free, scoring corrente Databricks, storico Neon e geografia GTFS statica. Audit live finale superato. Aggiornamento best-effort all’ultimo snapshot disponibile, senza SLA real-time garantito; cold start Render possibili. I workflow n8n restano opzionali.\n\nVersione: v1.0.0. Stato: Portfolio Ready. Applicazione pubblica: ",
     "image": "https://raw.githubusercontent.com/matteocavo/matteocavo.github.io/refs/heads/main/images/rome-mobility-intelligence-cover-panoramica.png",
-    "isFlagship": true
+    "isFlagship": false
   },
   {
     "id": "406dbce0-1b30-81e4-a7a8-e7b2a87310ea",
@@ -102,7 +102,7 @@
     "date": "2026-10-07",
     "notes": "Pipeline Databricks completa dalla raccolta dei dati fino ai layer Gold e al dashboard AI/BI.\n\nRegressione: la persistence baseline è risultata il miglior approccio finale, con TEST MAE 136.98 s, RMSE 401.85 s e R² 0.694. Non presentare questo risultato come se un modello complesso avesse battuto la baseline.\n\nClassificazione: RandomForestClassifier con threshold > 0.45. TEST accuracy 0.9401, precision 0.8450, recall 0.8123, F1 0.8283, ROC-AUC 0.9690, PR-AUC 0.9063.\n\nInsight principali: maggiore criticità nelle fasce serali, con major-delay rate fino a circa 30.3% alle 20:00; nel campione di sole 8 date il tasso weekend è superiore al weekday, senza evidenza di un pattern strutturale; forte persistenza descrittiva dei ritardi: quando current e previous state sono entrambi major, il next-stop major-delay rate è circa 88.7%; 354 route e 5.172 stop superano le soglie minime di osservazione.\n\nContratto semantico PR1: dashboard e ML usano lo stesso evento proxy GTFS-Realtime alla fermata successiva >=300 secondi, visualizzato come 'Ritardo ≥ 5 min'. La precedente legenda >600 secondi era un errore di presentazione; dati, modelli e metriche non sono stati ricalcolati. Le fasce di probabilità sono Basso p<0.20, Medio 0.20≤p≤0.45, Alto 0.45<p<0.80, Critico p≥0.80; il flag positivo resta strettamente p>0.45.",
     "image": "https://matteocavo.github.io/images/rome-transport.png",
-    "isFlagship": false
+    "isFlagship": true
   },
   {
     "id": "323dbce0-1b30-81a6-87d5-da5f28be4a62",
