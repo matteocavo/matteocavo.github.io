@@ -102,7 +102,7 @@
     "date": "2026-10-07",
     "notes": "Pipeline Databricks completa dalla raccolta dei dati fino ai layer Gold e al dashboard AI/BI.\n\nRegressione: la persistence baseline è risultata il miglior approccio finale, con TEST MAE 136.98 s, RMSE 401.85 s e R² 0.694. Non presentare questo risultato come se un modello complesso avesse battuto la baseline.\n\nClassificazione: RandomForestClassifier con threshold > 0.45. TEST accuracy 0.9401, precision 0.8450, recall 0.8123, F1 0.8283, ROC-AUC 0.9690, PR-AUC 0.9063.\n\nInsight principali: maggiore criticità nelle fasce serali, con major-delay rate fino a circa 30.3% alle 20:00; nel campione di sole 8 date il tasso weekend è superiore al weekday, senza evidenza di un pattern strutturale; forte persistenza descrittiva dei ritardi: quando current e previous state sono entrambi major, il next-stop major-delay rate è circa 88.7%; 354 route e 5.172 stop superano le soglie minime di osservazione.\n\nContratto semantico PR1: dashboard e ML usano lo stesso evento proxy GTFS-Realtime alla fermata successiva >=300 secondi, visualizzato come 'Ritardo ≥ 5 min'. La precedente legenda >600 secondi era un errore di presentazione; dati, modelli e metriche non sono stati ricalcolati. Le fasce di probabilità sono Basso p<0.20, Medio 0.20≤p≤0.45, Alto 0.45<p<0.80, Critico p≥0.80; il flag positivo resta strettamente p>0.45.",
     "image": "https://matteocavo.github.io/images/rome-transport.png",
-    "isFlagship": true
+    "isFlagship": false
   },
   {
     "id": "323dbce0-1b30-81a6-87d5-da5f28be4a62",
