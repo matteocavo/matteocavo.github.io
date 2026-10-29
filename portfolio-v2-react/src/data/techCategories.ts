@@ -52,7 +52,10 @@ export interface TechCategoryStat {
 export const NON_CATEGORY_META_TOOLS: readonly string[] = [
   'GitHub',
   'Git',
-  'Git / GitHub'
+  'Git / GitHub',
+  'Render',
+  'Render Free',
+  'GitHub Pages'
 ];
 
 /**
@@ -251,6 +254,8 @@ export const TECH_CATEGORIES: readonly TechCategoryDefinition[] = [
     tools: [
       'SQL',
       'PostgreSQL',
+      'Neon',
+      'PostgreSQL / Neon',
       'SQLAlchemy',
       'Alembic',
       'Data Modeling',

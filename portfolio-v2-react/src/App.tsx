@@ -5,10 +5,12 @@ import {
   SecondaryRepoData,
   BUSINESS_OBJECTIVES,
   BusinessObjectiveId,
-  PROJECT_BUSINESS_OBJECTIVES_MAP,
-  VERIFIED_PROJECT_METRICS
+  PROJECT_BUSINESS_OBJECTIVES_MAP
 } from './data/portfolioData';
 import { fetchLiveData, LiveData } from './data/liveData';
+import { ProjectEvidence } from './components/ProjectEvidence';
+import { PROJECT_EVIDENCE } from './data/projectEvidence';
+import { copyText } from './data/clipboard';
 import {
   computeTechCategoryStats,
   getConciseProjectBadges,
@@ -269,6 +271,8 @@ export default function App() {
   // Phase 4.3 Feature State Extensions
   const [activeObjectiveFilter, setActiveObjectiveFilter] = useState<BusinessObjectiveId | 'ALL'>('ALL');
   const [activeTechTooltip, setActiveTechTooltip] = useState<string | null>(null);
+  const [pendingProjectId, setPendingProjectId] = useState<string | null>(null);
+  const [copyFailedId, setCopyFailedId] = useState<string | null>(null);
   const [copiedProjectId, setCopiedProjectId] = useState<string | null>(null);
   const [copiedSnippetId, setCopiedSnippetId] = useState<string | null>(null);
   const [lightboxZoomed, setLightboxZoomed] = useState(false);
@@ -324,79 +328,67 @@ export default function App() {
   // dashboards, not PDF exports or plain repository links. Never hand-typed.
   const liveDashboardsCount = VERIFIED_NOTION_PROJECTS.filter((p) => p.dashboardType === 'live_powerbi').length;
 
-  const fallbackCopyText = (text: string) => {
-    try {
-      const textArea = document.createElement('textarea');
-      textArea.value = text;
-      textArea.style.position = 'fixed';
-      textArea.style.opacity = '0';
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-    } catch (e) {
-      console.warn('Fallback copy failed', e);
-    }
-  };
-
-  const handleCopyProjectDeepLink = (projectId: string) => {
-    const url = `https://matteocavo.github.io/#${projectId}`;
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(url).catch(() => {
-        fallbackCopyText(url);
-      });
-    } else {
-      fallbackCopyText(url);
+  const handleCopyProjectDeepLink = async (projectId: string) => {
+    if (!liveData?.projects.some(p => p.id === projectId) || !document.getElementById(projectId)) return;
+    setCopiedProjectId(null);
+    setCopyFailedId(null);
+    const copied = await copyText(`https://matteocavo.github.io/#${projectId}`);
+    if (!copied) {
+      setCopyFailedId(projectId);
+      return;
     }
     setCopiedProjectId(projectId);
-    setTimeout(() => {
-      setCopiedProjectId((prev) => (prev === projectId ? null : prev));
-    }, 2200);
+    setTimeout(() => setCopiedProjectId(prev => prev === projectId ? null : prev), 2200);
   };
 
-  const handleCopySnippet = (snippet: string, snippetId: string) => {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(snippet).catch(() => {
-        fallbackCopyText(snippet);
-      });
-    } else {
-      fallbackCopyText(snippet);
-    }
+  const handleCopySnippet = async (snippet: string, snippetId: string) => {
+    if (!(await copyText(snippet))) return;
     setCopiedSnippetId(snippetId);
-    setTimeout(() => {
-      setCopiedSnippetId((prev) => (prev === snippetId ? null : prev));
-    }, 2200);
+    setTimeout(() => setCopiedSnippetId(prev => prev === snippetId ? null : prev), 2200);
   };
 
   const scrollToProject = (projectId: string) => {
+    if (!liveData?.projects.some(p => p.id === projectId)) return;
     setActiveFilterTag('ALL');
     setActiveObjectiveFilter('ALL');
-    setTimeout(() => {
-      const el = document.getElementById(projectId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 150);
+    setPendingProjectId(projectId);
+    if (window.location.hash !== `#${projectId}`) window.location.hash = projectId;
   };
 
-  // Deep-link initial handler: Check window.location.hash on mount
+  // Resolve against live data only after the runtime fetch. Listen for direct
+  // URLs, refresh and history navigation; filters are cleared only on navigation.
   useEffect(() => {
-    const hash = window.location.hash.replace('#', '');
-    if (hash) {
-      const isProject = VERIFIED_NOTION_PROJECTS.some((p) => p.id === hash);
-      if (isProject) {
-        setActiveFilterTag('ALL');
-        setActiveObjectiveFilter('ALL');
-        setTimeout(() => {
-          const el = document.getElementById(hash);
-          if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        }, 300);
+    if (!liveData) return;
+    const navigate = () => {
+      let id: string;
+      try { id = decodeURIComponent(window.location.hash.slice(1)); }
+      catch { return; }
+      if (!liveData.projects.some(p => p.id === id)) return;
+      setActiveFilterTag('ALL');
+      setActiveObjectiveFilter('ALL');
+      setPendingProjectId(id);
+    };
+    navigate();
+    window.addEventListener('hashchange', navigate);
+    window.addEventListener('popstate', navigate);
+    return () => {
+      window.removeEventListener('hashchange', navigate);
+      window.removeEventListener('popstate', navigate);
+    };
+  }, [liveData]);
+
+  // Run after React has rendered the unfiltered flagship/secondary target.
+  useEffect(() => {
+    if (!pendingProjectId || activeFilterTag !== 'ALL' || activeObjectiveFilter !== 'ALL') return;
+    const frame = requestAnimationFrame(() => {
+      const target = document.getElementById(pendingProjectId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setPendingProjectId(null);
       }
-    }
-  }, []);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [pendingProjectId, activeFilterTag, activeObjectiveFilter, liveData]);
 
   const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -1404,11 +1396,13 @@ export default function App() {
                         <button
                           type="button"
                           onClick={() => handleCopyProjectDeepLink(flagshipProject.id)}
-                          title={siteLang === 'it' ? 'Copia link diretto a questo progetto' : 'Copy direct link to this project'}
-                          aria-label={siteLang === 'it' ? 'Copia link diretto' : 'Copy direct link'}
+                          title={siteLang === 'it' ? 'Copia URL del caso studio nel portfolio' : 'Copy portfolio case-study URL'}
+                          aria-label={siteLang === 'it' ? 'Copia URL del caso studio nel portfolio' : 'Copy portfolio case-study URL'}
                           className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold text-[#475569] hover:text-[#2563EB] bg-[#F8FAFC] hover:bg-[#EFF6FF] border border-[#E2E8F0] hover:border-[#BFDBFE] rounded-lg transition-colors cursor-pointer shadow-2xs"
                         >
-                          {copiedProjectId === flagshipProject.id ? (
+                          {copyFailedId === flagshipProject.id ? (
+                            <span role="status">{siteLang === 'it' ? 'Copia non riuscita' : 'Copy failed'}</span>
+                          ) : copiedProjectId === flagshipProject.id ? (
                             <>
                               <Check className="w-3 h-3 text-[#10B981]" />
                               <span className="text-[#10B981] font-bold">{siteLang === 'it' ? 'Copiato!' : 'Copied!'}</span>
@@ -1454,19 +1448,13 @@ export default function App() {
                             {siteLang === 'it' ? flagshipProject.businessGoalIt : flagshipProject.businessGoalEn}
                           </p>
 
-                          {/* Real KPIs Grid: verified pre-formatted metrics when this project has
-                              them (see VERIFIED_PROJECT_METRICS), otherwise the real bare keyKPIs
-                              labels from Notion — never Rome Transport's numbers on another project. */}
-                          <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-3 mb-4 space-y-1.5">
-                            <span className="text-[10px] font-semibold text-[#64748B] uppercase tracking-wider block">
-                              {siteLang === 'it' ? 'Metriche Verificate dal Dataset:' : 'Verified Dataset Metrics:'}
-                            </span>
-                            <div className="grid grid-cols-2 gap-2 text-[11px] font-mono text-[#111111]">
-                              {(VERIFIED_PROJECT_METRICS[flagshipProject.id] ?? flagshipProject.keyKPIs).map((metric, mIdx) => (
-                                <span key={`${metric}-${mIdx}`} className="bg-[#FFFFFF] p-1.5 rounded border border-[#CBD5E1]">{metric}</span>
-                              ))}
+                          <ProjectEvidence project={flagshipProject} lang={siteLang} projects={VERIFIED_NOTION_PROJECTS} onNavigate={scrollToProject} />
+                          {!PROJECT_EVIDENCE[flagshipProject.githubUrl] && flagshipProject.keyKPIs.length > 0 && (
+                            <div className="mb-4 text-xs text-[#475569]">
+                              <span className="font-semibold">{siteLang === 'it' ? 'Indicatori monitorati (senza valori verificati): ' : 'Tracked indicators (no verified values): '}</span>
+                              {flagshipProject.keyKPIs.join(' · ')}
                             </div>
-                          </div>
+                          )}
 
                           {/* Collapsible Methodology Drawer */}
                           <div className="mb-4">
@@ -1514,7 +1502,7 @@ export default function App() {
                                     ? (siteLang === 'it' ? 'Dashboard PDF' : 'PDF Dashboard')
                                     : flagshipProject.dashboardType === 'live_powerbi'
                                     ? (siteLang === 'it' ? 'Dashboard Live' : 'Live Dashboard')
-                                    : (siteLang === 'it' ? 'Vedi Output' : 'View Output')}
+                                    : (siteLang === 'it' ? 'Apri applicazione / output' : 'Open application / output')}
                                 </span>
                                 <ExternalLink className="w-3 h-3" />
                               </a>
@@ -1568,11 +1556,13 @@ export default function App() {
                               <button
                                 type="button"
                                 onClick={() => handleCopyProjectDeepLink(project.id)}
-                                title={siteLang === 'it' ? 'Copia link diretto a questo progetto' : 'Copy direct link to this project'}
-                                aria-label={siteLang === 'it' ? `Copia link diretto a ${project.titleIt}` : `Copy direct link to ${project.titleEn}`}
+                                title={siteLang === 'it' ? 'Copia URL del caso studio nel portfolio' : 'Copy portfolio case-study URL'}
+                                aria-label={siteLang === 'it' ? `Copia URL del caso studio nel portfolio: ${project.titleIt}` : `Copy portfolio case-study URL: ${project.titleEn}`}
                                 className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-sans font-medium text-[#475569] hover:text-[#2563EB] bg-[#F8FAFC] hover:bg-[#EFF6FF] border border-[#CBD5E1] hover:border-[#BFDBFE] rounded transition-colors cursor-pointer"
                               >
-                                {copiedProjectId === project.id ? (
+                                {copyFailedId === project.id ? (
+                                  <span role="status">{siteLang === 'it' ? 'Copia non riuscita' : 'Copy failed'}</span>
+                                ) : copiedProjectId === project.id ? (
                                   <>
                                     <Check className="w-2.5 h-2.5 text-[#10B981]" />
                                     <span className="text-[#10B981] font-bold">{siteLang === 'it' ? 'Copiato!' : 'Copied!'}</span>
@@ -1639,14 +1629,14 @@ export default function App() {
                               {siteLang === 'it' ? project.businessGoalIt : project.businessGoalEn}
                             </p>
 
-                            {/* Key KPIs strip */}
-                            <div className="flex flex-wrap gap-1.5 mb-3 text-[10px] font-mono">
-                              {project.keyKPIs.slice(0, 2).map((kpi, kIdx) => (
-                                <span key={kIdx} className="bg-[#F8FAFC] border border-[#CBD5E1] text-[#111111] px-2 py-0.5 rounded-md">
-                                  {kpi}
-                                </span>
-                              ))}
-                            </div>
+                            <ProjectEvidence project={project} lang={siteLang} projects={VERIFIED_NOTION_PROJECTS} onNavigate={scrollToProject} />
+                            {!PROJECT_EVIDENCE[project.githubUrl] && (
+                              <div className="flex flex-wrap gap-1.5 mb-3 text-[10px] font-mono text-[#475569]">
+                                {project.keyKPIs.slice(0, 2).map((kpi, kIdx) => (
+                                  <span key={kIdx} className="px-2 py-1 bg-[#F8FAFC] border border-[#E2E8F0] rounded">{kpi}</span>
+                                ))}
+                              </div>
+                            )}
 
                             {/* Feature #14: Quaero Quick Copy Installation/Clone Snippet (v0.4 verified) */}
                             {project.id === 'quaero' && (
@@ -1755,7 +1745,9 @@ export default function App() {
                                       <span>
                                         {project.dashboardType === 'pdf'
                                           ? 'PDF'
-                                          : (siteLang === 'it' ? 'BI Live' : 'Live BI')}
+                                          : project.dashboardType === 'live_powerbi'
+                                            ? (siteLang === 'it' ? 'BI Live' : 'Live BI')
+                                            : (siteLang === 'it' ? 'Apri applicazione / output' : 'Open application / output')}
                                       </span>
                                       <ExternalLink className="w-3 h-3" />
                                     </a>

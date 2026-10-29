@@ -20,9 +20,7 @@ export interface NotionProjectData {
   highlightCategory: string;
   highlightCategoryIt?: string;
   highlightCategoryEn?: string;
-  /** Notion "Portfolio Flagship" checkbox (Phase 3 Priority 2). Not yet in the
-   *  production Notion schema, so real records will have this undefined until
-   *  that schema change is separately authorized. */
+  /** Notion "Portfolio Flagship" checkbox; eligibility/selection are runtime-driven. */
   isFlagship?: boolean;
 }
 
@@ -123,32 +121,6 @@ export const PROJECT_BUSINESS_OBJECTIVES_MAP: Record<string, BusinessObjectiveId
   'openbdap': ['public-policy-open-data', 'decision-support-bi'],
   'streaming-benchmark': ['decision-support-bi', 'data-quality-metadata'],
   'streaming-metadata': ['decision-support-bi', 'data-quality-metadata']
-};
-
-// ---------------------------------------------------------------------------
-// Phase 3 Priority 2 (flagship card correctness): the flagship case study
-// shows a small "Verified Dataset Metrics" grid of pre-formatted numeric
-// chips (e.g. "9.97M Observ.", "F1: 0.8283"). These specific figures come
-// from Rome Public Transport's verified Notion `Notes / Insights` text, not
-// from a structured field real_projects.json carries for every project — so
-// they cannot be read generically for whichever project happens to be
-// flagged as flagship.
-//
-// Rather than let Rome's numbers silently bleed onto a different flagship
-// project (the bug this map fixes), this is a maintainable, keyed-by-stable-
-// canonical-slug lookup: a project present here shows its own verified,
-// hand-transcribed metrics; a project NOT present here (every current
-// project except Rome) falls back to rendering its real, bare `keyKPIs`
-// labels in the flagship card instead — never an invented number.
-//
-// To light this up for another project, add its slug here with metrics
-// transcribed verbatim from that project's own verified Notion notes/output
-// (never invented), or — better long-term — add a structured "Key KPI
-// Values" property in Notion and extend scripts/fetch-notion.js to export
-// it, so this map can eventually be retired in favor of real structured data.
-// ---------------------------------------------------------------------------
-export const VERIFIED_PROJECT_METRICS: Record<string, string[]> = {
-  'rome-transport': ['9.97M Observ.', '964 Snapshots', 'F1: 0.8283', 'MAE: 136.98s']
 };
 
 export const VERIFIED_NOTION_PROJECTS: NotionProjectData[] = [

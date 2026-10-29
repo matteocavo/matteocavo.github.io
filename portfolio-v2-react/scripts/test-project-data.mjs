@@ -1,0 +1,47 @@
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { createServer } from 'vite';
+import { fileURLToPath } from 'node:url';
+const server = await createServer({ root: fileURLToPath(new URL('../', import.meta.url)), server: { middlewareMode: true }, appType: 'custom' });
+try {
+  const { buildProjects, selectFlagship, slugForGithubUrl } = await server.ssrLoadModule('/src/data/liveData.ts');
+  const { PROJECT_EVIDENCE, formatVerifiedMetric } = await server.ssrLoadModule('/src/data/projectEvidence.ts');
+  const { getCategoriesForTool, reportUnmappedTools } = await server.ssrLoadModule('/src/data/techCategories.ts');
+  const records = JSON.parse(await readFile(new URL('../../data/projects.json', import.meta.url), 'utf8'));
+  const fixture = JSON.parse(await readFile(new URL('../public/data/projects.json', import.meta.url), 'utf8'));
+  assert.deepEqual(fixture, records);
+  const projects = buildProjects(records);
+  assert.equal(projects.length, 8);
+  assert.equal(new Set(projects.map(p => p.id)).size, 8);
+  assert.deepEqual(buildProjects([...records].reverse()).map(p => p.id).sort(), projects.map(p => p.id).sort());
+  assert.equal(selectFlagship(projects).id, 'rome-mobility-intelligence');
+  const unflagged = projects.map(p => ({ ...p, isFlagship: false }));
+  assert.equal(selectFlagship(unflagged).id, 'rome-transport');
+  assert.equal(selectFlagship(unflagged.map(p => ({ ...p, isFlagship: true }))).id, 'rome-transport');
+  assert.equal(selectFlagship(projects.map(p => ({ ...p, isFlagship: p.id === 'quaero' }))).id, 'quaero');
+  assert.equal(selectFlagship([]), null);
+  assert.equal(selectFlagship(unflagged.filter(p => p.id !== 'rome-transport')).id,
+    selectFlagship([...unflagged].reverse().filter(p => p.id !== 'rome-transport')).id);
+  assert.equal(slugForGithubUrl('https://github.com/MatteoCavo/ROME-MOBILITY-INTELLIGENCE.git/'), 'rome-mobility-intelligence');
+  assert.notEqual(slugForGithubUrl('https://github.com/a/demo'), slugForGithubUrl('https://github.com/b/demo'));
+  assert.equal(projects.find(p => p.id === 'fts-eu-grants').githubUrl, 'https://github.com/dataciviclab/dataset-incubator/tree/main/candidates/fts-eu-grants');
+  const rmi = PROJECT_EVIDENCE['https://github.com/matteocavo/rome-mobility-intelligence'];
+  const core = PROJECT_EVIDENCE['https://github.com/matteocavo/rome-public-transport-reliability'];
+  assert.deepEqual(rmi.metrics.map(m => formatVerifiedMetric(m, 'en')), ['9,975,703', '0.9565', '0.7842', '0.7991', '0.7916', '0.9717', '0.8742']);
+  assert.equal(formatVerifiedMetric(rmi.metrics[0], 'it'), '9.975.703');
+  assert.equal(rmi.metrics.filter(m => m.scope === 'dataset').length, 1);
+  assert.equal(rmi.metrics.filter(m => m.scope === 'test-classification').length, 6);
+  assert.equal(core.metrics.find(m => m.id === 'f1').value, 0.8283);
+  assert(rmi.contextIt.includes('p ≥ 0,35'));
+  assert(rmi.stackIt.includes('può'));
+  assert(rmi.metrics[1].labelIt.includes('TEST · Accuratezza'));
+  assert.equal(rmi.evaluation.testRows, 25000);
+  assert.equal(rmi.evaluation.threshold, 0.35);
+  assert.equal(core.relatedGithubUrl, projects.find(p => p.id === 'rome-mobility-intelligence').githubUrl);
+  assert.equal(rmi.relatedGithubUrl, projects.find(p => p.id === 'rome-transport').githubUrl);
+  assert.match(rmi.sourceUrl, /blob\/[a-f0-9]{40}\/docs\/REAL_MODEL_EVALUATION.md$/);
+  for (const tool of ['Render', 'Render Free', 'GitHub Pages']) assert.deepEqual(getCategoriesForTool(tool), []);
+  assert.deepEqual(reportUnmappedTools([{ tools: ['Render', 'Render Free', 'GitHub Pages', 'Neon'] }]), []);
+  assert.equal(getCategoriesForTool('Neon')[0].id, 'sql-modeling');
+  console.log('PASS: 8 projects, stable identity/order, flagship scenarios, metrics/scopes/locales, provenance, Rome relationships, hosting categories');
+} finally { await server.close(); }

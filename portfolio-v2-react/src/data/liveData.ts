@@ -9,9 +9,9 @@
 // from real fields already present (a slug from a GitHub URL, a category
 // label from the real `tools` array). Fields the real data simply doesn't
 // have (per-language title/dataset/notes, true-numeric keyKPI values) are
-// NOT fabricated — the single real string is reused for both IT/EN, and
-// keyKPIs render as the bare labels Notion provides (no invented ": value"
-// suffix).
+// NOT fabricated — the single real string is reused for both IT/EN.
+// Unstructured keyKPIs remain labels. Reviewed numeric evidence is supplied
+// separately by projectEvidence.ts, with pinned sources and evaluation scope.
 //
 // DATA LOADING STRATEGY (Phase 3 Priority 1 finalization):
 // This module performs a RUNTIME FETCH of data/projects.json and
@@ -98,6 +98,7 @@ const CANONICAL_SLUG_BY_GITHUB_URL: Record<string, string> = {
   'https://github.com/matteocavo/rome-mobility-intelligence': 'rome-mobility-intelligence',
   'https://github.com/matteocavo/interview-copilot': 'interview-copilot',
   'https://github.com/matteocavo/fts-eu-grants': 'fts-eu-grants',
+  'https://github.com/dataciviclab/dataset-incubator/tree/main/candidates/fts-eu-grants': 'fts-eu-grants',
   'https://github.com/matteocavo/audience-segmentation-growth-intelligence': 'audience-segmentation-growth-intelligence',
   'https://github.com/dataciviclab/progetto-pilota': 'ispra-waste',
   'https://github.com/matteocavo/Quaero': 'quaero',
@@ -110,16 +111,15 @@ const CANONICAL_SLUG_BY_GITHUB_URL: Record<string, string> = {
  *  repository URL (Phase 3 Priority 2 requirement), not a hardcoded Notion id. */
 const FALLBACK_FLAGSHIP_GITHUB_URL = 'https://github.com/matteocavo/rome-public-transport-reliability';
 
-function slugForGithubUrl(githubUrl: string): string {
-  const known = CANONICAL_SLUG_BY_GITHUB_URL[githubUrl];
-  if (known) return known;
-  // Unseen project (added in Notion after this adapter was written): derive a
-  // readable slug from the repo path rather than exposing the raw UUID.
-  const repoName = githubUrl.split('/').filter(Boolean).pop() || githubUrl;
-  return repoName
-    .replace(/[_\s]+/g, '-')
-    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-    .toLowerCase();
+export function slugForGithubUrl(githubUrl: string): string {
+  const url = new URL(githubUrl);
+  const path = url.pathname.replace(/\/+$/, '').replace(/\.git$/i, '');
+  const canonical = `https://github.com${path}`;
+  const known = Object.entries(CANONICAL_SLUG_BY_GITHUB_URL)
+    .find(([key]) => key.toLowerCase() === canonical.toLowerCase());
+  if (known) return known[1];
+  // Include owner and path to avoid collisions between identically named repos.
+  return `project-${path.slice(1).toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 }
 
 function inferDashboardType(dashboardUrl: string | null): 'pdf' | 'live_powerbi' | 'internal' | null {
@@ -216,10 +216,11 @@ function buildRawGithubRepos(realGithubRepos: RealGithubRepoRecord[]): RawGithub
 //  - More than one -> console.warn (dev-visible signal, never a silent pick)
 //    and apply the same deterministic fallback.
 // ---------------------------------------------------------------------------
-export function selectFlagship(projects: NotionProjectData[]): NotionProjectData {
+export function selectFlagship(projects: NotionProjectData[]): NotionProjectData | null {
+  if (projects.length === 0) return null;
   const flagged = projects.filter((p) => p.isFlagship === true);
   const fallback =
-    projects.find((p) => p.githubUrl === FALLBACK_FLAGSHIP_GITHUB_URL) || projects[0];
+    projects.find((p) => p.githubUrl === FALLBACK_FLAGSHIP_GITHUB_URL) || [...projects].sort((a, b) => a.id.localeCompare(b.id))[0];
 
   if (flagged.length === 1) {
     return flagged[0];
@@ -239,7 +240,7 @@ export interface LiveData {
   projectGithubUrls: Set<string>;
   secondaryRepos: SecondaryRepoData[];
   rawRepos: RawGithubRepo[];
-  flagship: NotionProjectData;
+  flagship: NotionProjectData | null;
   techStats: TechCategoryStat[];
   unmappedTools: string[];
 }
