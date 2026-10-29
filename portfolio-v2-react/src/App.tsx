@@ -2129,7 +2129,7 @@ export default function App() {
                 =================================================================== */}
             <section
               id="preview-skills"
-              className={`border-b border-[#E2E8F0] bg-[#F8FAFC] ${
+              className={`scroll-mt-24 border-b border-[#E2E8F0] bg-[#F8FAFC] ${
                 isMobileSim ? 'px-4 py-8' : 'px-6 lg:px-12 py-12 lg:py-16'
               }`}
             >

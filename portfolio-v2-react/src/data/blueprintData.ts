@@ -281,8 +281,8 @@ export const CHATBOT_KNOWLEDGE_BASE: ChatbotQAItem[] = [
     responseEn:
       'Matteo Cavo is a Data & Business Intelligence Analyst with over 15 years of international experience across analytics, enterprise metadata operations, and complex data processes. His background includes work at Gracenote (Nielsen) ensuring metadata quality across large-scale media catalogs for Netflix, Amazon Prime Video, Disney+, and Sky, leading into advanced Lakehouse pipelines on Databricks, Power BI data modeling, SQL, and Python.',
     actionLinks: [
-      { labelIt: 'Leggi il profilo completo', labelEn: 'Read full profile', href: '#about' },
-      { labelIt: 'Scarica il CV', labelEn: 'Download CV', href: '#contact' }
+      { labelIt: 'Leggi il profilo completo', labelEn: 'Read full profile', href: '#preview-about' },
+      { labelIt: 'Scarica il CV', labelEn: 'Download CV', href: '#preview-contact' }
     ],
     followUps: ['skills_overview', 'projects_rome', 'services_overview']
   },
@@ -296,7 +296,7 @@ export const CHATBOT_KNOWLEDGE_BASE: ChatbotQAItem[] = [
     responseEn:
       'His core toolkit is organized into 4 pillars: (1) Business Intelligence: Power BI, advanced DAX, Power Query, Star Schema data modeling; (2) Data Engineering: Databricks, PySpark, Delta Lake, advanced SQL, Python (Pandas/Polars), automated ETL; (3) Statistical Analysis: EDA, statistical inference, hypothesis testing; (4) Applied ML: classification, regression (scikit-learn, Random Forest), feature engineering.',
     actionLinks: [
-      { labelIt: 'Esplora le competenze', labelEn: 'Explore skills', href: '#skills-section' }
+      { labelIt: 'Esplora le competenze', labelEn: 'Explore skills', href: '#preview-skills' }
     ],
     followUps: ['projects_rome', 'certifications_overview', 'services_overview']
   },
