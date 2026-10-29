@@ -51,12 +51,15 @@ async function settled(page, id) {
       await page.evaluate(()=>{location.hash='rome-transport';}); await settled(page,'rome-transport');
       await page.goBack(); await settled(page,'rome-mobility-intelligence');
       await page.goForward(); await settled(page,'rome-transport');
+      await page.locator('#rome-transport').getByRole('button',{name:'Show details',exact:true}).click();
       await page.locator('#rome-transport').getByRole('link',{name:/Related case study/}).click(); await settled(page,'rome-mobility-intelligence');
       const rmi=page.locator('#rome-mobility-intelligence');
       for(const value of ['9,975,703','0.9565','0.7842','0.7991','0.7916','0.9717','0.8742']) assert(await rmi.innerText().then(t=>t.includes(value)));
       assert(await rmi.innerText().then(t=>t.includes('25,000')));
       assert.equal(await rmi.locator('a[href="https://matteocavo.github.io/rome-mobility-intelligence/"]').count(),1);
       assert.equal(await rmi.getByRole('link',{name:'GitHub',exact:true}).getAttribute('href'),'https://github.com/matteocavo/rome-mobility-intelligence');
+      assert(!(await rmi.innerText()).includes('Render Free'));
+      await rmi.getByRole('button',{name:'Show details',exact:true}).click();
       assert(await rmi.innerText().then(t=>t.includes('Render Free')&&t.includes('not yet provisioned')));
       await page.getByRole('button',{name:'IT',exact:true}).click();
       assert(await rmi.innerText().then(t=>t.includes('9.975.703')&&t.includes('0,7916')&&t.includes('25.000')));
@@ -98,6 +101,29 @@ async function settled(page, id) {
       assert.equal(await page.locator('#rome-mobility-intelligence').count(),1);
       await context.unroute('**/data/projects.json');
     }
-    console.log('PASS runtime flagship change: zero/multiple fallback and unrelated flagship, no duplicates');await context.close();
+    console.log('PASS runtime flagship change: zero/multiple fallback and unrelated flagship, no duplicates');
+    // Simulate two hourly exports: Notes/Dataset remain runtime-owned, evidence stays separate.
+    for (const revision of [1, 2]) {
+      const changed=records.map(p=>({...p, notes:`Runtime project notes ${revision}: ${p.github}`, dataset:`Runtime dataset ${revision}: ${p.github}`}));
+      await context.route('**/data/projects.json',route=>route.fulfill({json:changed}));
+      await page.goto(base);await page.locator('#rome-mobility-intelligence').waitFor();
+      for(const lang of ['it','en']) {
+        await page.getByRole('button',{name:lang.toUpperCase(),exact:true}).click();
+        for(const id of ['rome-mobility-intelligence','rome-transport']) {
+          const card=page.locator('#'+id);
+          assert(!(await card.innerText()).includes('Runtime project notes'));
+          await card.getByRole('button',{name:lang==='it'?'Mostra dettagli':'Show details',exact:true}).click();
+          const record=changed.find(p=>p.github.endsWith(id==='rome-transport'?'/rome-public-transport-reliability':'/rome-mobility-intelligence'));
+          await card.getByText(record.notes,{exact:true}).waitFor();
+          assert.equal(await card.getByText(record.notes,{exact:true}).count(),1);
+          assert.equal(await card.locator('p').filter({hasText:record.dataset}).count(),1);
+          assert.equal(await card.getByText(lang==='it'?'Note del progetto':'Project notes',{exact:true}).count(),1);
+          await card.getByRole('button',{name:lang==='it'?'Nascondi dettagli':'Hide details',exact:true}).click();
+        }
+      }
+      await context.unroute('**/data/projects.json');
+    }
+    console.log('PASS separate data sources: refreshed Notion Notes/Dataset render once in expanded details in IT/EN');
+    await context.close();
   } finally { await browser.close(); }
 })().catch(e=>{console.error(e);process.exitCode=1;});
