@@ -1,5 +1,35 @@
 [
   {
+    "name": "rome-mobility-intelligence",
+    "full_name": "matteocavo/rome-mobility-intelligence",
+    "description": "Machine learning API for Rome public transport delay prediction with FastAPI, scikit-learn, read-only Databricks integration and optional PostgreSQL prediction history. Includes n8n orchestration workflows and OCI Always Free deployment tooling; public deployment pending.",
+    "html_url": "https://github.com/matteocavo/rome-mobility-intelligence",
+    "topics": [
+      "databricks",
+      "delay-prediction",
+      "docker",
+      "fastapi",
+      "machine-learning",
+      "mlops",
+      "n8n",
+      "oracle-cloud",
+      "portfolio",
+      "postgresql",
+      "public-transport",
+      "python",
+      "rome",
+      "scikit-learn"
+    ],
+    "stargazers_count": 0,
+    "updated_at": "2026-10-29T06:57:20Z",
+    "pushed_at": "2026-10-29T09:18:58Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "matteocavo"
+    }
+  },
+  {
     "name": "Quaero",
     "full_name": "matteocavo/Quaero",
     "description": "Question-driven analytics pipeline: raw datasets → analytical marts, semantic metrics, and dashboard-ready outputs.",
@@ -49,36 +79,6 @@
     "stargazers_count": 1,
     "updated_at": "2026-10-28T13:10:56Z",
     "pushed_at": "2026-10-28T13:11:03Z",
-    "archived": false,
-    "fork": false,
-    "owner": {
-      "login": "matteocavo"
-    }
-  },
-  {
-    "name": "rome-mobility-intelligence",
-    "full_name": "matteocavo/rome-mobility-intelligence",
-    "description": "Machine learning API for Rome public transport delay prediction with FastAPI, scikit-learn, read-only Databricks integration and optional PostgreSQL prediction history. Includes n8n orchestration workflows and OCI Always Free deployment tooling; public deployment pending.",
-    "html_url": "https://github.com/matteocavo/rome-mobility-intelligence",
-    "topics": [
-      "databricks",
-      "delay-prediction",
-      "docker",
-      "fastapi",
-      "machine-learning",
-      "mlops",
-      "n8n",
-      "oracle-cloud",
-      "portfolio",
-      "postgresql",
-      "public-transport",
-      "python",
-      "rome",
-      "scikit-learn"
-    ],
-    "stargazers_count": 0,
-    "updated_at": "2026-10-28T07:13:13Z",
-    "pushed_at": "2026-10-28T07:53:23Z",
     "archived": false,
     "fork": false,
     "owner": {

@@ -1,5 +1,33 @@
 [
   {
+    "id": "406dbce0-1b30-81e4-a7a8-e7b2a87310ea",
+    "title": "FTS EU Grants — Dashboard Executive Power BI",
+    "businessGoal": "Trasformare i record granulari dei finanziamenti diretti UE a beneficiari italiani (Financial Transparency System) in una dashboard executive Power BI che spiega come si distribuiscono i fondi per programma, beneficiario, territorio dichiarato e anno.",
+    "businessGoalIt": "Trasformare i record granulari dei finanziamenti diretti UE a beneficiari italiani, pubblicati dal Financial Transparency System della Commissione europea e puliti da DataCivicLab, in una dashboard executive Power BI che risponde a domande decisionali: quanti fondi arrivano, quali programmi concentrano le risorse, chi li riceve e quanto è concentrata la distribuzione, dove sono localizzati i beneficiari, come è cambiato il profilo dei finanziamenti tra 2020 e 2024.",
+    "businessGoalEn": "Turn granular EU direct-funding records to Italian beneficiaries (Financial Transparency System, cleaned by DataCivicLab) into an executive Power BI dashboard answering decision-relevant questions: how much funding flows in, which programmes concentrate it, who receives it and how concentrated that distribution is, where beneficiaries are located, and how the funding profile changed between 2020 and 2024.",
+    "status": "Portfolio Ready",
+    "tools": [
+      "Power BI",
+      "DAX",
+      "KPI engineering",
+      "ETL / Automation",
+      "EDA",
+      "KPI"
+    ],
+    "keyKPIs": [
+      "Importo Contrattato Totale",
+      "Beneficiari Univoci",
+      "HHI Funding Concentration"
+    ],
+    "github": "https://github.com/dataciviclab/dataset-incubator/tree/main/candidates/fts-eu-grants",
+    "dashboard": "https://app.powerbi.com/view?r=eyJrIjoiNjNjMDVkOWQtNTllNS00MmUzLWI4OGEtN2IwNTdjYjNiYWNkIiwidCI6IjgwNjZmMmRlLTgxZDctNGVjNC04Y2E5LTgzNzVjOTA4NjViNSJ9",
+    "dataset": "Financial Transparency System (Commissione europea): XLSX ufficiale annuale (2020-2024, 38 colonne), scaricato ed ingerito dal toolkit community DataCivicLab dataset-incubator (DuckDB SQL, step raw -> clean -> mart, filtro paese_beneficiario = Italy) e pubblicato come parquet puliti su Google Cloud Storage. Beneficiari italiani 2020-2024: 40.444 grant, 6.120 beneficiari univoci, €108,6 mld contrattati, 140 programmi, HHI operativo (escluso Stati membri/agenzie nazionali) ≈ 0,0361. FTS copre solo la gestione diretta UE (~20% del budget UE); i fondi strutturali (80%, gestione concorrente) restano fuori perimetro e sono coperti da OpenCoesione/RNA. Alcuni beneficiari persona fisica sono oscurati ('*****') per privacy. Modello Power BI a star schema (Fact_Grants + dimensioni Programma/TipoBeneficiario/Geografia/Anno), misure DAX deployate via Tabular Editor 2.",
+    "date": "2026-10-27",
+    "notes": "Progetto quasi ultimato: modello dati, Power Query, misure DAX e documentazione (Architecture, Data Dictionary, Methodology, QA_Data_Validation) sono completi; mancano ancora screenshot/preview, export PDF finale e pubblicazione pubblica (nessun repository GitHub collegato per ora, file .pbix non versionato).\n\nCaso di validazione documentato: l'HHI iniziale risultava anomalo (~0,73). Invece di correggere subito la formula, sono stati verificati DAX, pipeline ETL e dati sorgente, individuando che 507 record 'REPUBBLICA ITALIANA' (allocazioni Recovery and Resilience Facility, €92,57 mld, di cui 6 grant RRF = €91,58 mld) sono classificati come Member States/agenzie nazionali pass-through. L'HHI raw è risultato matematicamente corretto e fedele alla fonte; il modello mantiene quindi due misure distinte: 'Funding Concentration HHI' (raw, fedele a FTS) e 'Funding Concentration HHI Excl Member States' (KPI operativo usato nell'Executive Summary).\n\nNota sul conteggio righe: una validazione precedente aveva registrato 40.449 righe; la sorgente live attualmente caricata conta 40.444 righe al primo step Power Query, prima di qualunque trasformazione — il numero corrente autorevole è 40.444 grant.\n\nLessons learned: i dataset amministrativi richiedono conoscenza di dominio prima di interpretare i KPI; la validazione dati deve precedere il design della dashboard; meglio preservare la fact originale e aggiungere misure alternative che modificare i dati per far tornare un indicatore; ETL, modello semantico e visualizzazione devono avere responsabilità separate.",
+    "image": "https://github.com/matteocavo/matteocavo.github.io/blob/main/images/FTS_EU_GRANTS_executive-summary.png",
+    "isFlagship": false
+  },
+  {
     "id": "3f2dbce0-1b30-8161-89c3-d6b201ffa418",
     "title": "Rome Public Transport Reliability & Delay Prediction",
     "businessGoal": "Analizzare l’affidabilità del trasporto pubblico romano e prevedere il rischio di ritardo alla fermata successiva tramite una pipeline end-to-end su dati GTFS e GTFS-Realtime.",
