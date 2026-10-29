@@ -51,18 +51,22 @@ async function settled(page, id) {
       await page.evaluate(()=>{location.hash='rome-transport';}); await settled(page,'rome-transport');
       await page.goBack(); await settled(page,'rome-mobility-intelligence');
       await page.goForward(); await settled(page,'rome-transport');
-      await page.locator('#rome-transport').getByRole('button',{name:'Show details',exact:true}).click();
-      await page.locator('#rome-transport').getByRole('link',{name:/Related case study/}).click(); await settled(page,'rome-mobility-intelligence');
+      await page.evaluate(()=>{location.hash='rome-mobility-intelligence';});await settled(page,'rome-mobility-intelligence');
       const rmi=page.locator('#rome-mobility-intelligence');
-      for(const value of ['9,975,703','0.9565','0.7842','0.7991','0.7916','0.9717','0.8742']) assert(await rmi.innerText().then(t=>t.includes(value)));
-      assert(await rmi.innerText().then(t=>t.includes('25,000')));
+      for(const value of ['9,975,703','0.7916','0.8742']) assert((await rmi.innerText()).includes(value));
+      assert.equal(await rmi.locator('dd').count(),3);
       assert.equal(await rmi.locator('a[href="https://matteocavo.github.io/rome-mobility-intelligence/"]').count(),1);
       assert.equal(await rmi.getByRole('link',{name:'GitHub',exact:true}).getAttribute('href'),'https://github.com/matteocavo/rome-mobility-intelligence');
+      assert.match(await rmi.getByRole('link',{name:/Metrics source/}).getAttribute('href'),/blob\/[a-f0-9]{40}\/docs\/REAL_MODEL_EVALUATION.md$/);
       assert(!(await rmi.innerText()).includes('Render Free'));
-      await rmi.getByRole('button',{name:'Show details',exact:true}).click();
-      assert(await rmi.innerText().then(t=>t.includes('Render Free')&&t.includes('not yet provisioned')));
+      for(const card of await page.locator('article.featured-card').all()) {
+        assert((await card.locator('dd').count())<=3);
+        assert.equal(await card.getByRole('button',{name:/Show details|methodology|Mostra dettagli|Mostra metodologia/}).count(),0);
+        assert.equal(await card.getByRole('link',{name:'GitHub',exact:true}).count(),1);
+        assert(!(await card.innerText()).includes('.view'));
+      }
       await page.getByRole('button',{name:'IT',exact:true}).click();
-      assert(await rmi.innerText().then(t=>t.includes('9.975.703')&&t.includes('0,7916')&&t.includes('25.000')));
+      assert(await rmi.innerText().then(t=>t.includes('9.975.703')&&t.includes('0,7916')&&t.includes('0,8742')));
       await page.evaluate(()=>scrollTo(0,0));
       await page.getByRole('button',{name:/Apri l.assistente/}).click();
       const input=page.locator('input[placeholder*="Databricks"]');await input.fill('Quali tecnologie e strumenti padroneggia?');await input.press('Enter');
@@ -87,7 +91,7 @@ async function settled(page, id) {
       await page.evaluate(()=>window.finishCopy());await rmi.getByText('Copiato!',{exact:true}).waitFor();
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
       if(process.env.TEST_SCREENSHOTS) await page.screenshot({path:path.join(process.env.TEST_SCREENSHOTS,`rmi-${viewport.width}.png`)});
-      assert.deepEqual(errors,[]); console.log(`PASS ${viewport.width}px: filters, history, relationship, metrics, sources, chatbot, clipboard failure/deferred success, CV IT/EN, responsive width`);
+      assert.deepEqual(errors,[]); console.log(`PASS ${viewport.width}px: filters, history, repository/output actions, metrics, sources, chatbot, clipboard failure/deferred success, CV IT/EN, responsive width`);
       await context.close();
     }
     // A runtime sync may change the selected flagship without rebuilding the app.
@@ -112,18 +116,14 @@ async function settled(page, id) {
         for(const id of ['rome-mobility-intelligence','rome-transport']) {
           const card=page.locator('#'+id);
           assert(!(await card.innerText()).includes('Runtime project notes'));
-          await card.getByRole('button',{name:lang==='it'?'Mostra dettagli':'Show details',exact:true}).click();
-          const record=changed.find(p=>p.github.endsWith(id==='rome-transport'?'/rome-public-transport-reliability':'/rome-mobility-intelligence'));
-          await card.getByText(record.notes,{exact:true}).waitFor();
-          assert.equal(await card.getByText(record.notes,{exact:true}).count(),1);
-          assert.equal(await card.locator('p').filter({hasText:record.dataset}).count(),1);
-          assert.equal(await card.getByText(lang==='it'?'Note del progetto':'Project notes',{exact:true}).count(),1);
-          await card.getByRole('button',{name:lang==='it'?'Nascondi dettagli':'Hide details',exact:true}).click();
+          assert(!(await card.innerText()).includes('Runtime dataset'));
+          assert.equal(await card.getByRole('button',{name:/Show details|Mostra dettagli/}).count(),0);
+          assert.equal(await card.locator('dd').count(),3);
         }
       }
       await context.unroute('**/data/projects.json');
     }
-    console.log('PASS separate data sources: refreshed Notion Notes/Dataset render once in expanded details in IT/EN');
+    console.log('PASS separate data sources: Notion export updates remain independent of showcase UI; Notes/Dataset are not rendered as documentation');
     await context.close();
   } finally { await browser.close(); }
 })().catch(e=>{console.error(e);process.exitCode=1;});
