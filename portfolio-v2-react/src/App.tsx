@@ -536,9 +536,16 @@ export default function App() {
   //      — real formatted values (e.g. "TEST · Accuracy: 0,9565").
   //   2. The legacy VERIFIED_PROJECT_METRICS[id] pre-formatted strings, kept
   //      for backward compatibility with any record that still relies on it.
-  //   3. The project's own real Notion keyKPIs labels (bare labels, no
-  //      invented values) — never a fabricated number, never another
-  //      project's figures.
+  //   3. The project's own real Notion keyKPIs labels, kept ONLY when a
+  //      label already carries a real figure (e.g. "Spesa corrente media
+  //      (64.0%)", "Deficit strutturale (22/22)") — a bare metric NAME with
+  //      no digit (e.g. "Beneficiari Univoci") is not a value and is
+  //      dropped rather than shown as if it were one. Never a fabricated
+  //      number, never another project's figures.
+  // When none of the three tiers yields anything (e.g. a flagship with no
+  // evidence entry and no keyKPIs carrying real figures, or an empty
+  // keyKPIs array), the result is [] and the whole metrics box is hidden
+  // in the render below — never shown empty or label-only.
   const flagshipMetricTiles = useMemo((): string[] => {
     if (!flagshipProject) return [];
     const evidence = PROJECT_EVIDENCE[flagshipProject.githubUrl];
@@ -548,7 +555,9 @@ export default function App() {
         return `${label}: ${formatVerifiedMetric(metric, siteLang)}`;
       });
     }
-    return VERIFIED_PROJECT_METRICS[flagshipProject.id] ?? flagshipProject.keyKPIs;
+    const legacy = VERIFIED_PROJECT_METRICS[flagshipProject.id];
+    if (legacy) return legacy;
+    return flagshipProject.keyKPIs.filter((kpi) => /\d/.test(kpi));
   }, [flagshipProject, siteLang]);
 
   // Curated balanced list of project and service questions (Phase 4.2 Requirement 3)
@@ -1491,17 +1500,21 @@ export default function App() {
                           {/* Real KPIs Grid: pinned, source-verified metrics keyed by this
                               project's own githubUrl (see PROJECT_EVIDENCE / flagshipMetricTiles),
                               falling back to legacy VERIFIED_PROJECT_METRICS or the project's own
-                              bare Notion keyKPIs labels — never another project's figures. */}
-                          <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-3 mb-4 space-y-1.5">
-                            <span className="text-[10px] font-semibold text-[#64748B] uppercase tracking-wider block">
-                              {siteLang === 'it' ? 'Metriche Verificate dal Dataset:' : 'Verified Dataset Metrics:'}
-                            </span>
-                            <div className="grid grid-cols-2 gap-2 text-[11px] font-mono text-[#111111]">
-                              {flagshipMetricTiles.map((metric, mIdx) => (
-                                <span key={`${metric}-${mIdx}`} className="bg-[#FFFFFF] p-1.5 rounded border border-[#CBD5E1]">{metric}</span>
-                              ))}
+                              keyKPIs labels that carry a real figure — never another project's
+                              figures. Hidden entirely (not rendered empty or label-only) when no
+                              tier yields a usable value. */}
+                          {flagshipMetricTiles.length > 0 && (
+                            <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-3 mb-4 space-y-1.5">
+                              <span className="text-[10px] font-semibold text-[#64748B] uppercase tracking-wider block">
+                                {siteLang === 'it' ? 'Metriche Verificate dal Dataset:' : 'Verified Dataset Metrics:'}
+                              </span>
+                              <div className="grid grid-cols-2 gap-2 text-[11px] font-mono text-[#111111]">
+                                {flagshipMetricTiles.map((metric, mIdx) => (
+                                  <span key={`${metric}-${mIdx}`} className="bg-[#FFFFFF] p-1.5 rounded border border-[#CBD5E1]">{metric}</span>
+                                ))}
+                              </div>
                             </div>
-                          </div>
+                          )}
 
                           {/* Collapsible Methodology Drawer */}
                           <div className="mb-4">
