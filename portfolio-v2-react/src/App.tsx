@@ -11,6 +11,7 @@ import {
 import { fetchLiveData, LiveData } from './data/liveData';
 import { copyText } from './data/clipboard';
 import { scrollProjectWhenReady } from './data/projectNavigation';
+import { PROJECT_EVIDENCE, formatVerifiedMetric } from './data/projectEvidence';
 import {
   computeTechCategoryStats,
   getConciseProjectBadges,
@@ -526,6 +527,29 @@ export default function App() {
     if (!flagshipProject) return filteredProjects;
     return filteredProjects.filter((p) => p.id !== flagshipProject.id);
   }, [filteredProjects, flagshipProject]);
+
+  // Flagship "Verified Dataset Metrics" tile content, keyed by repository
+  // identity (project.githubUrl), never by flagship status or a hardcoded
+  // project id — so the tile works correctly for ANY eligible flagship:
+  //   1. Pinned, source-verified metrics from PROJECT_EVIDENCE
+  //      (data/projectEvidence.ts) when this exact repo has a reviewed entry
+  //      — real formatted values (e.g. "TEST · Accuracy: 0,9565").
+  //   2. The legacy VERIFIED_PROJECT_METRICS[id] pre-formatted strings, kept
+  //      for backward compatibility with any record that still relies on it.
+  //   3. The project's own real Notion keyKPIs labels (bare labels, no
+  //      invented values) — never a fabricated number, never another
+  //      project's figures.
+  const flagshipMetricTiles = useMemo((): string[] => {
+    if (!flagshipProject) return [];
+    const evidence = PROJECT_EVIDENCE[flagshipProject.githubUrl];
+    if (evidence) {
+      return evidence.metrics.map((metric) => {
+        const label = siteLang === 'it' ? metric.labelIt : metric.labelEn;
+        return `${label}: ${formatVerifiedMetric(metric, siteLang)}`;
+      });
+    }
+    return VERIFIED_PROJECT_METRICS[flagshipProject.id] ?? flagshipProject.keyKPIs;
+  }, [flagshipProject, siteLang]);
 
   // Curated balanced list of project and service questions (Phase 4.2 Requirement 3)
   const suggestedQuestionsList = useMemo(() => {
@@ -1464,15 +1488,16 @@ export default function App() {
                             {siteLang === 'it' ? flagshipProject.businessGoalIt : flagshipProject.businessGoalEn}
                           </p>
 
-                          {/* Real KPIs Grid: verified pre-formatted metrics when this project has
-                              them (see VERIFIED_PROJECT_METRICS), otherwise the real bare keyKPIs
-                              labels from Notion — never Rome Transport's numbers on another project. */}
+                          {/* Real KPIs Grid: pinned, source-verified metrics keyed by this
+                              project's own githubUrl (see PROJECT_EVIDENCE / flagshipMetricTiles),
+                              falling back to legacy VERIFIED_PROJECT_METRICS or the project's own
+                              bare Notion keyKPIs labels — never another project's figures. */}
                           <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-3 mb-4 space-y-1.5">
                             <span className="text-[10px] font-semibold text-[#64748B] uppercase tracking-wider block">
                               {siteLang === 'it' ? 'Metriche Verificate dal Dataset:' : 'Verified Dataset Metrics:'}
                             </span>
                             <div className="grid grid-cols-2 gap-2 text-[11px] font-mono text-[#111111]">
-                              {(VERIFIED_PROJECT_METRICS[flagshipProject.id] ?? flagshipProject.keyKPIs).map((metric, mIdx) => (
+                              {flagshipMetricTiles.map((metric, mIdx) => (
                                 <span key={`${metric}-${mIdx}`} className="bg-[#FFFFFF] p-1.5 rounded border border-[#CBD5E1]">{metric}</span>
                               ))}
                             </div>
