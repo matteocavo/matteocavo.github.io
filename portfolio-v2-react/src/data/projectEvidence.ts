@@ -10,6 +10,12 @@ export interface VerifiedMetric {
   decimals: number;
   unit?: string;
   scope: 'dataset' | 'test-classification' | 'test-regression';
+  // Display-only toggle: when true, this metric is kept out of the flagship
+  // card's compact summary tile grid (App.tsx's flagshipMetricTiles) but the
+  // metric itself — id, label, value, decimals, scope — is untouched and
+  // still authoritative for any other consumer (methodology drawer, future
+  // detail views, GitHub documentation). Never deletes or alters the value.
+  hideFromFlagshipSummary?: boolean;
 }
 export interface ProjectEvidence {
   sourceUrl: string;
@@ -43,7 +49,10 @@ export const PROJECT_EVIDENCE: Readonly<Record<string, ProjectEvidence>> = {
       { id: 'recall', labelIt: 'TEST · Richiamo', labelEn: 'TEST · Recall', value: 0.799071, decimals: 4, scope: 'test-classification' },
       { id: 'f1', labelIt: 'TEST · F1 di classificazione', labelEn: 'TEST · Classification F1', value: 0.791563, decimals: 4, scope: 'test-classification' },
       { id: 'roc-auc', labelIt: 'TEST · ROC-AUC', labelEn: 'TEST · ROC-AUC', value: 0.971677, decimals: 4, scope: 'test-classification' },
-      { id: 'pr-auc', labelIt: 'TEST · PR-AUC (Average Precision)', labelEn: 'TEST · PR-AUC (Average Precision)', value: 0.874161, decimals: 4, scope: 'test-classification' }
+      // Kept in the evidence data (and in the linked GitHub documentation)
+      // exactly as verified; hidden only from the flagship card's compact
+      // summary tile grid per the approved six-metric presentation.
+      { id: 'pr-auc', labelIt: 'TEST · PR-AUC (Average Precision)', labelEn: 'TEST · PR-AUC (Average Precision)', value: 0.874161, decimals: 4, scope: 'test-classification', hideFromFlagshipSummary: true }
     ],
     contextIt: 'Valutazione sklearn del 26 ottobre 2026: HistGradientBoosting con pesi di inclusione, Delta v12. TRAIN 81.014 righe; validation e TEST 25.000 righe ciascuno, campioni uniformi deterministici. Split temporale UTC con purge: TRAIN 25 settembre–1 ottobre, validation 1–2 ottobre, TEST 2 ottobre 00:00–08:03:58 (estremi finali esclusi). Soglia p ≥ 0,35 scelta su validation; TEST valutato una sola volta. Evento: ritardo alla prossima fermata ≥ 300 s.',
     contextEn: 'sklearn evaluation dated 26 October 2026: inclusion-weighted HistGradientBoosting, Delta v12. TRAIN 81,014 rows; validation and TEST 25,000 rows each, deterministic uniform samples. Purged UTC temporal split: TRAIN 25 September–1 October, validation 1–2 October, TEST 2 October 00:00–08:03:58 (end-exclusive). Threshold p ≥ 0.35 selected on validation; TEST evaluated once. Event: next-stop delay ≥ 300 s.',
