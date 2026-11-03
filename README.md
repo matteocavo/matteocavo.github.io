@@ -46,8 +46,8 @@ Structured prompting · Prompt refinement · LLM-assisted analytics · AI-assist
 
 ### Completed
 
-- **Google Advanced Data Analytics Professional Certificate — 2026**
-- **Google AI Professional Certificate — 2026**
+- **[Google Advanced Data Analytics Professional Certificate — 2026](https://www.coursera.org/account/accomplishments/specialization/890TXH56F3JV)**
+- **[Google AI Professional Certificate — 2026](https://www.coursera.org/account/accomplishments/specialization/51MFH4Y84CU6)**
 - **[Databricks Fundamentals Accreditation — 2026](https://credentials.databricks.com/efe62f89-12ff-4802-bd0b-2eb18cb94734#acc.W6Cd2iUt)**
 - **Microsoft Power BI Desktop for Business Intelligence** — Udemy Business, 2026
 - **Microsoft Excel — Excel from Beginner to Advanced** — Udemy Business, 2025
