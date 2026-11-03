@@ -533,7 +533,10 @@ export default function App() {
   // project id — so the tile works correctly for ANY eligible flagship:
   //   1. Pinned, source-verified metrics from PROJECT_EVIDENCE
   //      (data/projectEvidence.ts) when this exact repo has a reviewed entry
-  //      — real formatted values (e.g. "TEST · Accuracy: 0,9565").
+  //      — real formatted values (e.g. "TEST · Accuracy: 0,9565"). A metric
+  //      flagged `hideFromFlagshipSummary` (e.g. RMI's PR-AUC) is left out of
+  //      this compact tile grid only — its value stays intact in the
+  //      evidence data for the methodology drawer and GitHub docs.
   //   2. The legacy VERIFIED_PROJECT_METRICS[id] pre-formatted strings, kept
   //      for backward compatibility with any record that still relies on it.
   //   3. The project's own real Notion keyKPIs labels, kept ONLY when a
@@ -550,10 +553,12 @@ export default function App() {
     if (!flagshipProject) return [];
     const evidence = PROJECT_EVIDENCE[flagshipProject.githubUrl];
     if (evidence) {
-      return evidence.metrics.map((metric) => {
-        const label = siteLang === 'it' ? metric.labelIt : metric.labelEn;
-        return `${label}: ${formatVerifiedMetric(metric, siteLang)}`;
-      });
+      return evidence.metrics
+        .filter((metric) => !metric.hideFromFlagshipSummary)
+        .map((metric) => {
+          const label = siteLang === 'it' ? metric.labelIt : metric.labelEn;
+          return `${label}: ${formatVerifiedMetric(metric, siteLang)}`;
+        });
     }
     const legacy = VERIFIED_PROJECT_METRICS[flagshipProject.id];
     if (legacy) return legacy;
