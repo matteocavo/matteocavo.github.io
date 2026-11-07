@@ -1,19 +1,18 @@
 [
   {
-    "name": "bilancio-pubblico",
-    "full_name": "dataciviclab/bilancio-pubblico",
-    "description": "I conti dello Stato italiano in serie storica — spesa corrente, investimenti e saldi di bilancio.",
-    "html_url": "https://github.com/dataciviclab/bilancio-pubblico",
+    "name": "dataciviclab",
+    "full_name": "dataciviclab/dataciviclab",
+    "description": "Hub pubblico del DataCivicLab. Spieghiamo chi siamo, cosa facciamo e come partecipare.",
+    "html_url": "https://github.com/dataciviclab/dataciviclab",
     "topics": [
       "civic-tech",
+      "data-journalism",
       "italy",
-      "open-data",
-      "public-finance",
-      "public-spending"
+      "open-data"
     ],
-    "stargazers_count": 2,
-    "updated_at": "2026-11-06T20:20:10Z",
-    "pushed_at": "2026-11-06T20:20:05Z",
+    "stargazers_count": 9,
+    "updated_at": "2026-11-07T12:34:14Z",
+    "pushed_at": "2026-11-07T12:34:26Z",
     "archived": false,
     "fork": false,
     "owner": {
@@ -42,12 +41,33 @@
       "scikit-learn"
     ],
     "stargazers_count": 0,
-    "updated_at": "2026-11-04T08:27:23Z",
-    "pushed_at": "2026-11-04T08:27:18Z",
+    "updated_at": "2026-11-07T09:10:36Z",
+    "pushed_at": "2026-11-07T09:12:41Z",
     "archived": false,
     "fork": false,
     "owner": {
       "login": "matteocavo"
+    }
+  },
+  {
+    "name": "bilancio-pubblico",
+    "full_name": "dataciviclab/bilancio-pubblico",
+    "description": "I conti dello Stato italiano in serie storica — spesa corrente, investimenti e saldi di bilancio.",
+    "html_url": "https://github.com/dataciviclab/bilancio-pubblico",
+    "topics": [
+      "civic-tech",
+      "italy",
+      "open-data",
+      "public-finance",
+      "public-spending"
+    ],
+    "stargazers_count": 2,
+    "updated_at": "2026-11-06T20:20:10Z",
+    "pushed_at": "2026-11-06T20:20:05Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "dataciviclab"
     }
   },
   {
@@ -158,26 +178,6 @@
     "fork": false,
     "owner": {
       "login": "matteocavo"
-    }
-  },
-  {
-    "name": "dataciviclab",
-    "full_name": "dataciviclab/dataciviclab",
-    "description": "Hub pubblico del DataCivicLab. Spieghiamo chi siamo, cosa facciamo e come partecipare.",
-    "html_url": "https://github.com/dataciviclab/dataciviclab",
-    "topics": [
-      "civic-tech",
-      "data-journalism",
-      "italy",
-      "open-data"
-    ],
-    "stargazers_count": 9,
-    "updated_at": "2026-10-19T10:48:35Z",
-    "pushed_at": "2026-10-19T10:48:54Z",
-    "archived": false,
-    "fork": false,
-    "owner": {
-      "login": "dataciviclab"
     }
   },
   {
