@@ -1,5 +1,35 @@
 [
   {
+    "name": "rome-mobility-intelligence",
+    "full_name": "matteocavo/rome-mobility-intelligence",
+    "description": "Rome Mobility Intelligence v1.0.0: public Rome transit reliability application with FastAPI, scikit-learn, Databricks current scoring, Neon prediction history and GTFS geography. GitHub Pages frontend and Render Free backend.",
+    "html_url": "https://github.com/matteocavo/rome-mobility-intelligence",
+    "topics": [
+      "databricks",
+      "delay-prediction",
+      "docker",
+      "fastapi",
+      "machine-learning",
+      "mlops",
+      "n8n",
+      "oracle-cloud",
+      "portfolio",
+      "postgresql",
+      "public-transport",
+      "python",
+      "rome",
+      "scikit-learn"
+    ],
+    "stargazers_count": 0,
+    "updated_at": "2026-11-08T18:44:40Z",
+    "pushed_at": "2026-11-08T19:27:23Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "matteocavo"
+    }
+  },
+  {
     "name": "bilancio-pubblico",
     "full_name": "dataciviclab/bilancio-pubblico",
     "description": "I conti dello Stato italiano in serie storica — spesa corrente, investimenti e saldi di bilancio.",
@@ -38,36 +68,6 @@
     "fork": false,
     "owner": {
       "login": "dataciviclab"
-    }
-  },
-  {
-    "name": "rome-mobility-intelligence",
-    "full_name": "matteocavo/rome-mobility-intelligence",
-    "description": "Rome Mobility Intelligence v1.0.0: public Rome transit reliability application with FastAPI, scikit-learn, Databricks current scoring, Neon prediction history and GTFS geography. GitHub Pages frontend and Render Free backend.",
-    "html_url": "https://github.com/matteocavo/rome-mobility-intelligence",
-    "topics": [
-      "databricks",
-      "delay-prediction",
-      "docker",
-      "fastapi",
-      "machine-learning",
-      "mlops",
-      "n8n",
-      "oracle-cloud",
-      "portfolio",
-      "postgresql",
-      "public-transport",
-      "python",
-      "rome",
-      "scikit-learn"
-    ],
-    "stargazers_count": 0,
-    "updated_at": "2026-11-07T09:10:36Z",
-    "pushed_at": "2026-11-07T09:12:41Z",
-    "archived": false,
-    "fork": false,
-    "owner": {
-      "login": "matteocavo"
     }
   },
   {
