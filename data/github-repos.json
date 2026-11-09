@@ -1,5 +1,26 @@
 [
   {
+    "name": "bilancio-pubblico",
+    "full_name": "dataciviclab/bilancio-pubblico",
+    "description": "I conti dello Stato italiano in serie storica — spesa corrente, investimenti e saldi di bilancio.",
+    "html_url": "https://github.com/dataciviclab/bilancio-pubblico",
+    "topics": [
+      "civic-tech",
+      "italy",
+      "open-data",
+      "public-finance",
+      "public-spending"
+    ],
+    "stargazers_count": 2,
+    "updated_at": "2026-11-09T17:31:05Z",
+    "pushed_at": "2026-11-09T17:32:19Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "dataciviclab"
+    }
+  },
+  {
     "name": "rome-mobility-intelligence",
     "full_name": "matteocavo/rome-mobility-intelligence",
     "description": "Rome Mobility Intelligence v1.0.0: public Rome transit reliability application with FastAPI, scikit-learn, Databricks current scoring, Neon prediction history and GTFS geography. GitHub Pages frontend and Render Free backend.",
@@ -21,33 +42,12 @@
       "scikit-learn"
     ],
     "stargazers_count": 0,
-    "updated_at": "2026-11-08T18:44:40Z",
-    "pushed_at": "2026-11-09T05:42:37Z",
+    "updated_at": "2026-11-09T11:03:35Z",
+    "pushed_at": "2026-11-09T11:03:38Z",
     "archived": false,
     "fork": false,
     "owner": {
       "login": "matteocavo"
-    }
-  },
-  {
-    "name": "bilancio-pubblico",
-    "full_name": "dataciviclab/bilancio-pubblico",
-    "description": "I conti dello Stato italiano in serie storica — spesa corrente, investimenti e saldi di bilancio.",
-    "html_url": "https://github.com/dataciviclab/bilancio-pubblico",
-    "topics": [
-      "civic-tech",
-      "italy",
-      "open-data",
-      "public-finance",
-      "public-spending"
-    ],
-    "stargazers_count": 2,
-    "updated_at": "2026-11-08T11:35:00Z",
-    "pushed_at": "2026-11-08T11:34:58Z",
-    "archived": false,
-    "fork": false,
-    "owner": {
-      "login": "dataciviclab"
     }
   },
   {
