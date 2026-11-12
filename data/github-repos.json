@@ -1,5 +1,25 @@
 [
   {
+    "name": "dataciviclab",
+    "full_name": "dataciviclab/dataciviclab",
+    "description": "Hub pubblico del DataCivicLab. Spieghiamo chi siamo, cosa facciamo e come partecipare.",
+    "html_url": "https://github.com/dataciviclab/dataciviclab",
+    "topics": [
+      "civic-tech",
+      "data-journalism",
+      "italy",
+      "open-data"
+    ],
+    "stargazers_count": 10,
+    "updated_at": "2026-11-11T23:03:48Z",
+    "pushed_at": "2026-11-07T12:34:26Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "dataciviclab"
+    }
+  },
+  {
     "name": "rome-mobility-intelligence",
     "full_name": "matteocavo/rome-mobility-intelligence",
     "description": "Rome Mobility Intelligence v1.0.0: public Rome transit reliability application with FastAPI, scikit-learn, Databricks current scoring, Neon prediction history and GTFS geography. GitHub Pages frontend and Render Free backend.",
@@ -44,26 +64,6 @@
     "stargazers_count": 2,
     "updated_at": "2026-11-09T18:48:13Z",
     "pushed_at": "2026-11-09T18:48:09Z",
-    "archived": false,
-    "fork": false,
-    "owner": {
-      "login": "dataciviclab"
-    }
-  },
-  {
-    "name": "dataciviclab",
-    "full_name": "dataciviclab/dataciviclab",
-    "description": "Hub pubblico del DataCivicLab. Spieghiamo chi siamo, cosa facciamo e come partecipare.",
-    "html_url": "https://github.com/dataciviclab/dataciviclab",
-    "topics": [
-      "civic-tech",
-      "data-journalism",
-      "italy",
-      "open-data"
-    ],
-    "stargazers_count": 9,
-    "updated_at": "2026-11-07T12:34:14Z",
-    "pushed_at": "2026-11-07T12:34:26Z",
     "archived": false,
     "fork": false,
     "owner": {
