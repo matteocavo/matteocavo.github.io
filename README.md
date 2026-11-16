@@ -4,6 +4,21 @@
 
 ---
 
+## Explore the projects
+
+| Project | Repository | Demo or evidence |
+| --- | --- | --- |
+| Rome Mobility Intelligence | [Source](https://github.com/matteocavo/rome-mobility-intelligence) | [Dashboard](https://matteocavo.github.io/rome-mobility-intelligence/) — snapshot first, possible Render Free cold start |
+| Quaero | [Source](https://github.com/matteocavo/Quaero) | [Browser-only demo](https://matteocavo.github.io/Quaero/) |
+| Rome Public Transport Reliability | [Source](https://github.com/matteocavo/rome-public-transport-reliability) | [Dated PDF and screenshot evidence](https://github.com/matteocavo/rome-public-transport-reliability/tree/main/dashboard/databricks) |
+| Streaming Competitive Benchmark | [Source](https://github.com/matteocavo/Streaming_Competitive_Benchmark) | [Dashboard and methods](https://github.com/matteocavo/Streaming_Competitive_Benchmark/tree/main/dashboard) |
+| Streaming Metadata Analytics | [Source](https://github.com/matteocavo/streaming-metadata-analytics) | [Synthetic-data dashboard](https://github.com/matteocavo/streaming-metadata-analytics/tree/main/dashboard) |
+| Generative Art · Python | [Source](https://github.com/matteocavo/generative-art-python) | [Live gallery](https://matteocavo.github.io/generative-art-python/) |
+
+Each project has its own license, data provenance and limitations. The transport
+application estimates next-stop delay risk; it does not provide live vehicle
+tracking. Portfolio content rights and exclusions remain as documented below.
+
 ## Chi sono / About
 
 Professionista multidisciplinare con oltre 15 anni di esperienza internazionale tra progetti digitali, content operations, processi data-driven, analytics e sviluppo web.
