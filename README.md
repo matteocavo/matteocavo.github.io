@@ -4,20 +4,20 @@
 
 ---
 
-## Explore the projects
+## Esplora i progetti / Explore the projects
 
-| Project | Repository | Demo or evidence |
+| Progetto / Project | Repository | Demo / Evidenze (Evidence) |
 | --- | --- | --- |
-| Rome Mobility Intelligence | [Source](https://github.com/matteocavo/rome-mobility-intelligence) | [Dashboard](https://matteocavo.github.io/rome-mobility-intelligence/) — snapshot first, possible Render Free cold start |
-| Quaero | [Source](https://github.com/matteocavo/Quaero) | [Browser-only demo](https://matteocavo.github.io/Quaero/) |
-| Rome Public Transport Reliability | [Source](https://github.com/matteocavo/rome-public-transport-reliability) | [Dated PDF and screenshot evidence](https://github.com/matteocavo/rome-public-transport-reliability/tree/main/dashboard/databricks) |
-| Streaming Competitive Benchmark | [Source](https://github.com/matteocavo/Streaming_Competitive_Benchmark) | [Dashboard and methods](https://github.com/matteocavo/Streaming_Competitive_Benchmark/tree/main/dashboard) |
-| Streaming Metadata Analytics | [Source](https://github.com/matteocavo/streaming-metadata-analytics) | [Synthetic-data dashboard](https://github.com/matteocavo/streaming-metadata-analytics/tree/main/dashboard) |
-| Generative Art · Python | [Source](https://github.com/matteocavo/generative-art-python) | [Live gallery](https://matteocavo.github.io/generative-art-python/) |
+| Rome Mobility Intelligence | [GitHub](https://github.com/matteocavo/rome-mobility-intelligence) | [Dashboard](https://matteocavo.github.io/rome-mobility-intelligence/) |
+| Quaero | [GitHub](https://github.com/matteocavo/Quaero) | [Demo browser-only](https://matteocavo.github.io/Quaero/) |
+| Rome Public Transport Reliability | [GitHub](https://github.com/matteocavo/rome-public-transport-reliability) | [PDF e screenshot datati / Dated PDF and screenshots](https://github.com/matteocavo/rome-public-transport-reliability/tree/main/dashboard/databricks) |
+| Streaming Competitive Benchmark | [GitHub](https://github.com/matteocavo/Streaming_Competitive_Benchmark) | [Dashboard e metodi / Dashboard and methods](https://github.com/matteocavo/Streaming_Competitive_Benchmark/tree/main/dashboard) |
+| Streaming Metadata Analytics | [GitHub](https://github.com/matteocavo/streaming-metadata-analytics) | [Dashboard su dati sintetici / Synthetic-data dashboard](https://github.com/matteocavo/streaming-metadata-analytics/tree/main/dashboard) |
+| Generative Art · Python | [GitHub](https://github.com/matteocavo/generative-art-python) | [Galleria live / Live gallery](https://matteocavo.github.io/generative-art-python/) |
 
-Each project has its own license, data provenance and limitations. The transport
-application estimates next-stop delay risk; it does not provide live vehicle
-tracking. Portfolio content rights and exclusions remain as documented below.
+Ogni progetto ha licenza, provenienza dei dati e limiti propri. L'applicazione sul trasporto stima il rischio di ritardo alla fermata successiva e non traccia i veicoli in tempo reale; la dashboard parte da uno snapshot e l'API su Render Free può avere un avvio a freddo. Diritti ed esclusioni dei contenuti del portfolio restano quelli documentati più sotto.
+
+*Each project has its own license, data provenance and limitations. The transport application estimates next-stop delay risk and does not provide live vehicle tracking; the dashboard starts from a snapshot and the Render Free API may have a cold start. Portfolio content rights and exclusions remain as documented below.*
 
 ## Chi sono / About
 
