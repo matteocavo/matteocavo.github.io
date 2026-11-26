@@ -2627,9 +2627,7 @@ export default function App() {
                             </strong>
                           </span>
                           <span className="block mt-1 pl-6 text-[11px] text-[#64748B] leading-relaxed">
-                            {siteLang === 'it'
-                              ? 'Contributi open data · Civic Tech'
-                              : 'Open data contributions · Civic Tech'}
+                            Open Data · Civic Tech
                           </span>
                         </a>
                       </div>
