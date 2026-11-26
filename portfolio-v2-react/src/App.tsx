@@ -579,6 +579,7 @@ export default function App() {
       'projects_quaero',
       'projects_ispra',
       'projects_openbdap',
+      'projects_dataciviclab',
       'projects_streaming_benchmark',
       'projects_streaming_metadata',
       'certifications_overview'
@@ -2815,13 +2816,14 @@ export default function App() {
                   © Matteo Cavo — Portfolio Data &amp; BI Analyst
                 </p>
                 <div className="flex items-center gap-4">
-                  <a href="#preview-hero" className="hover:text-white transition-colors">Top ↑</a>
                   <a href="https://github.com/matteocavo/matteocavo.github.io" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
                     GitHub Repo
                   </a>
                   <a href="https://dataciviclab.org/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
                     DataCivicLab
                   </a>
+                  <span aria-hidden="true" className="h-3 w-px bg-[#334155]" />
+                  <a href="#preview-hero" className="hover:text-white transition-colors">Top ↑</a>
                 </div>
               </div>
             </footer>
@@ -2891,7 +2893,7 @@ export default function App() {
                           {msg.text}
 
                           {msg.links && msg.links.length > 0 && (
-                            <div className="mt-2.5 pt-2 border-t border-[#E2E8F0] space-y-1">
+                            <div className="mt-2.5 pt-2 border-t border-[#E2E8F0] flex flex-wrap gap-x-3 gap-y-1">
                               {msg.links.map((link, lIdx) => {
                                 const isCvLink = link.href.includes('assets/cv/');
                                 return (

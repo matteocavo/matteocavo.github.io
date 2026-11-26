@@ -623,14 +623,15 @@ export const CHATBOT_KNOWLEDGE_BASE: ChatbotQAItem[] = [
   },
   {
     id: 'projects_dataciviclab',
-    triggerIt: 'Cos\u2019\u00e8 DataCivicLab e quali progetti ne fanno parte?',
-    triggerEn: 'What is DataCivicLab and which projects are part of it?',
+    triggerIt: 'Cos’è DataCivicLab e come contribuisce Matteo?',
+    triggerEn: 'What is DataCivicLab and how does Matteo contribute?',
     category: 'projects',
     responseIt:
-      'DataCivicLab \u00e8 una community open-data e civic-tech italiana a cui Matteo contribuisce attivamente. Nel suo portfolio rientrano, tra gli altri, il progetto sui rifiuti urbani ISPRA (raccolta differenziata) e l\'analisi dei saldi storici di finanza pubblica OpenBDAP, entrambi costruiti su dati ufficiali italiani con Power BI e DAX.',
+      'DataCivicLab è una community italiana dedicata agli Open Data e alla Civic Tech, che valorizza i dati pubblici attraverso analisi, strumenti e progetti aperti. Matteo contribuisce con attività di Data Analytics, Business Intelligence e progettazione di soluzioni basate sui dati. Tra i lavori collegati figurano le analisi sui rifiuti urbani ISPRA e sui dati di finanza pubblica OpenBDAP.',
     responseEn:
-      'DataCivicLab is an Italian open-data and civic-tech community Matteo actively contributes to. His portfolio within it includes the ISPRA municipal waste (recycling) project and the OpenBDAP public finance historical balances analysis, both built on official Italian open data with Power BI and DAX.',
+      'DataCivicLab is an Italian Open Data and Civic Tech community that makes public data more accessible and useful through analysis, tools and open projects. Matteo contributes through Data Analytics, Business Intelligence and data-driven solution design. Related work includes the ISPRA municipal waste analysis and OpenBDAP public finance analysis.',
     actionLinks: [
+      { labelIt: 'Visita DataCivicLab', labelEn: 'Visit DataCivicLab', href: 'https://dataciviclab.org/', isExternal: true },
       { labelIt: 'Hub GitHub DataCivicLab', labelEn: 'DataCivicLab GitHub Hub', href: 'https://github.com/dataciviclab', isExternal: true }
     ],
     followUps: ['projects_ispra', 'projects_openbdap', 'services_overview']
