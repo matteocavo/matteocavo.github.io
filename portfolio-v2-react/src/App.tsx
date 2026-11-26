@@ -49,6 +49,7 @@ import {
   Info,
   Github,
   Linkedin,
+  Users,
   MapPin,
   Check,
   Activity,
@@ -2609,6 +2610,26 @@ export default function App() {
                             matteocavo <ExternalLink className="w-3 h-3 text-[#2563EB]" />
                           </strong>
                         </a>
+
+                        <a
+                          href="https://dataciviclab.org/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block text-[#475569] hover:text-[#2563EB] transition-colors py-2 border-t border-[#F1F5F9]"
+                        >
+                          <span className="flex items-center justify-between">
+                            <span className="flex items-center gap-2">
+                              <Users className="w-4 h-4 text-[#2563EB]" />
+                              <span>DataCivicLab:</span>
+                            </span>
+                            <strong className="text-[#111111] flex items-center gap-1 font-mono">
+                              dataciviclab.org <ExternalLink className="w-3 h-3 text-[#2563EB]" />
+                            </strong>
+                          </span>
+                          <span className="block mt-1 pl-6 text-[11px] text-[#64748B] leading-relaxed">
+                            Open Data · Civic Tech
+                          </span>
+                        </a>
                       </div>
                     </RevealCard>
 
@@ -2797,6 +2818,9 @@ export default function App() {
                   <a href="#preview-hero" className="hover:text-white transition-colors">Top ↑</a>
                   <a href="https://github.com/matteocavo/matteocavo.github.io" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
                     GitHub Repo
+                  </a>
+                  <a href="https://dataciviclab.org/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                    DataCivicLab
                   </a>
                 </div>
               </div>
