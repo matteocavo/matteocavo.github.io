@@ -262,6 +262,57 @@ export default function App() {
   // ChatbotQAItem (or 'projects_overview_dynamic'), used to resolve short
   // follow-up questions ("quali tecnologie usa?") against the previous topic.
   const [lastChatTopicId, setLastChatTopicId] = useState<string | null>(null);
+
+  // Chat UX: scroll the message list (never the page) to the newest answer,
+  // show brief tap feedback on suggestions, and swallow accidental repeat taps.
+  const chatScrollRef = useRef<HTMLDivElement>(null);
+  const chatWasOpenRef = useRef(false);
+  const lastChatTriggerRef = useRef<{ id: string; time: number } | null>(null);
+  const tappedQuestionTimerRef = useRef<number | null>(null);
+  const [tappedQuestionId, setTappedQuestionId] = useState<string | null>(null);
+  const CHAT_REPEAT_TAP_WINDOW_MS = 1000;
+
+  useEffect(() => () => {
+    if (tappedQuestionTimerRef.current) window.clearTimeout(tappedQuestionTimerRef.current);
+  }, []);
+
+  useEffect(() => {
+    const justOpened = isChatOpen && !chatWasOpenRef.current;
+    chatWasOpenRef.current = isChatOpen;
+    if (!isChatOpen) return;
+
+    // Wait one frame so the newly rendered messages have their final layout.
+    const frame = window.requestAnimationFrame(() => {
+      const container = chatScrollRef.current;
+      if (!container) return;
+      const items = container.querySelectorAll<HTMLElement>('[data-chat-sender]');
+      const lastItem = items[items.length - 1];
+      if (!lastItem) return;
+
+      const maxTop = container.scrollHeight - container.clientHeight;
+      const offsetOf = (el: HTMLElement) =>
+        container.scrollTop + el.getBoundingClientRect().top - container.getBoundingClientRect().top;
+      let target = maxTop;
+
+      if (lastItem.dataset.chatSender === 'bot' && items.length > 1) {
+        // Show the start of the new answer (with its question when both fit),
+        // so long answers are read from the top instead of from their links.
+        const answerTop = offsetOf(lastItem) - 8;
+        const prevItem = items[items.length - 2];
+        const questionTop = prevItem.dataset.chatSender === 'user' ? offsetOf(prevItem) - 8 : answerTop;
+        const answerBottom = answerTop + lastItem.offsetHeight + 16;
+        target = answerBottom - questionTop <= container.clientHeight ? questionTop : answerTop;
+      }
+
+      const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      container.scrollTo({
+        top: Math.max(0, Math.min(target, maxTop)),
+        behavior: justOpened || reduceMotion ? 'auto' : 'smooth'
+      });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [chatMessages, isChatOpen]);
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formSubmitting, setFormSubmitting] = useState(false);
@@ -603,6 +654,17 @@ export default function App() {
   };
 
   const handleChatTrigger = (item: ChatbotQAItem) => {
+    // Ignore accidental double/triple taps on the same suggestion; the same
+    // question stays usable again once the short window has passed.
+    const now = Date.now();
+    const last = lastChatTriggerRef.current;
+    if (last && last.id === item.id && now - last.time < CHAT_REPEAT_TAP_WINDOW_MS) return;
+    lastChatTriggerRef.current = { id: item.id, time: now };
+
+    setTappedQuestionId(item.id);
+    if (tappedQuestionTimerRef.current) window.clearTimeout(tappedQuestionTimerRef.current);
+    tappedQuestionTimerRef.current = window.setTimeout(() => setTappedQuestionId(null), 600);
+
     const questionText = siteLang === 'it' ? item.triggerIt : item.triggerEn;
     const answerText = siteLang === 'it' ? item.responseIt : item.responseEn;
     const actionLinks = item.actionLinks?.map((link) => ({
@@ -2845,7 +2907,7 @@ export default function App() {
               </button>
 
               {isChatOpen && (
-                <div className="chatbot-window absolute bottom-16 right-0 w-[calc(100vw-32px)] sm:w-[390px] bg-[#FFFFFF] border border-[#CBD5E1] rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[580px] z-50">
+                <div className="chatbot-window absolute bottom-16 right-0 w-[calc(100vw-32px)] sm:w-[390px] bg-[#FFFFFF] border border-[#CBD5E1] rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[min(580px,calc(100dvh-104px))] z-50">
                   {/* Chat Header */}
                   <div className="bg-[#111111] text-white px-4 py-3 flex items-center justify-between border-b border-[#222222]">
                     <div className="flex items-center gap-2">
@@ -2877,10 +2939,16 @@ export default function App() {
                   </div>
 
                   {/* Chat Messages Body (Independently scrollable) */}
-                  <div className="flex-1 overflow-y-auto p-3.5 space-y-2.5 bg-[#F8FAFC] text-xs max-h-[220px]">
+                  <div
+                    ref={chatScrollRef}
+                    role="log"
+                    aria-live="polite"
+                    className="flex-1 overflow-y-auto overscroll-contain p-3.5 space-y-2.5 bg-[#F8FAFC] text-xs max-h-[220px] min-h-[80px]"
+                  >
                     {chatMessages.map((msg, idx) => (
                       <div
                         key={idx}
+                        data-chat-sender={msg.sender}
                         className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
                       >
                         <div
@@ -2925,7 +2993,7 @@ export default function App() {
                   </div>
 
                   {/* Project & Service Suggested Questions (Phase 4.2 Requirement 3) */}
-                  <div className="p-3 bg-[#FFFFFF] border-t border-[#E2E8F0]">
+                  <div className="p-3 bg-[#FFFFFF] border-t border-[#E2E8F0] shrink-0">
                     <div className="flex items-center justify-between mb-2">
                       <p className="text-[10px] font-semibold text-[#64748B] uppercase tracking-wider font-mono">
                         {siteLang === 'it' ? 'Domande su progetti & servizi:' : 'Questions on projects & services:'}
@@ -2943,13 +3011,17 @@ export default function App() {
                       </button>
                     </div>
 
-                    <div className="flex flex-col gap-1.5 max-h-[170px] overflow-y-auto pr-0.5">
+                    <div className="flex flex-col gap-1.5 max-h-[clamp(56px,calc(100dvh-350px),170px)] overflow-y-auto pr-0.5">
                       {(showAllQuestions ? suggestedQuestionsList : suggestedQuestionsList.slice(0, 3)).map((item) => (
                         <button
                           key={item.id}
                           type="button"
                           onClick={() => handleChatTrigger(item)}
-                          className="text-left text-xs font-medium px-3 py-2 rounded-xl bg-[#F8FAFC] hover:bg-[#EFF6FF] hover:border-[#BFDBFE] text-[#1E293B] hover:text-[#1D4ED8] border border-[#E2E8F0] transition-colors cursor-pointer leading-snug w-full whitespace-normal break-words shadow-2xs hover:shadow-xs"
+                          className={`text-left text-xs font-medium px-3 py-2 rounded-xl border transition-[color,background-color,border-color,transform] duration-150 cursor-pointer leading-snug w-full whitespace-normal break-words shadow-2xs hover:shadow-xs touch-manipulation active:scale-[0.98] active:bg-[#DBEAFE] active:border-[#93C5FD] active:text-[#1D4ED8] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#2563EB] ${
+                            tappedQuestionId === item.id
+                              ? 'bg-[#DBEAFE] border-[#93C5FD] text-[#1D4ED8]'
+                              : 'bg-[#F8FAFC] border-[#E2E8F0] text-[#1E293B] hover:bg-[#EFF6FF] hover:border-[#BFDBFE] hover:text-[#1D4ED8]'
+                          }`}
                         >
                           <span className="text-[#2563EB] font-bold mr-1">→</span>
                           {siteLang === 'it' ? item.triggerIt : item.triggerEn}
