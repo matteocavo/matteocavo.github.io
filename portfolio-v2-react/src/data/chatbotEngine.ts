@@ -45,6 +45,8 @@ export function normalizeChatText(text: string): string {
 interface KeywordRule {
   id: string;
   keywords: string[];
+  /** Skip this rule when any of these appear, letting a more specific later rule match. */
+  excludeKeywords?: string[];
 }
 
 // Ported 1:1 from the prior inline if/else chain in App.tsx, reordered only
@@ -52,6 +54,14 @@ interface KeywordRule {
 // DataCivicLab) ahead of the rules they would otherwise be shadowed by.
 const KEYWORD_RULES: KeywordRule[] = [
   { id: 'services_pricing', keywords: ['costo', 'costi', 'prezzo', 'preventivo', 'price', 'pricing', 'quote', 'tariff', 'quanto costa'] },
+  // DataCivicLab sits ahead of the generic collaboration rule so "Collabori con
+  // DataCivicLab?" resolves here; questions naming ISPRA/OpenBDAP fall through
+  // to those project rules.
+  {
+    id: 'projects_dataciviclab',
+    keywords: ['dataciviclab', 'data civic lab', 'datacivic'],
+    excludeKeywords: ['ispra', 'rifiut', 'waste', 'openbdap', 'finanza pubblica', 'public finance']
+  },
   { id: 'services_collaboration', keywords: ['collabor'] },
   { id: 'cv_download', keywords: ['cv', 'curriculum', 'resume', 'scarica cv', 'download cv', 'anteprima cv'] },
   {
@@ -69,10 +79,11 @@ const KEYWORD_RULES: KeywordRule[] = [
       'anomal', 'question-driven', 'question driven'
     ]
   },
-  { id: 'projects_dataciviclab', keywords: ['dataciviclab', 'data civic lab'] },
   {
     id: 'projects_rome',
-    keywords: ['roma', 'rome', 'trasporto', 'transport', 'gtfs', 'ritard', 'delay', 'autobus', 'bus', 'atac', 'random forest']
+    keywords: ['roma', 'rome', 'trasporto', 'transport', 'gtfs', 'ritard', 'delay', 'autobus', 'bus', 'atac', 'random forest'],
+    // "dataciviclab" contains the substring "atac".
+    excludeKeywords: ['datacivic']
   },
   { id: 'projects_ispra', keywords: ['ispra', 'rifiut', 'waste', 'differenziat', 'ricicl', 'virtuos', 'catasto'] },
   { id: 'projects_openbdap', keywords: ['openbdap', 'bilancio', 'deficit', 'debito', 'finanza', 'spesa pubblica', 'ragioneria', 'saldi'] },
@@ -137,6 +148,7 @@ function findSmallTalkRule(normalized: string) {
 
 function matchKeywordRule(normalized: string): string | undefined {
   for (const rule of KEYWORD_RULES) {
+    if (rule.excludeKeywords?.some((kw) => normalized.includes(kw))) continue;
     if (rule.keywords.some((kw) => normalized.includes(kw))) {
       return rule.id;
     }
