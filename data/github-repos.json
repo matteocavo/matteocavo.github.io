@@ -1,5 +1,32 @@
 [
   {
+    "name": "fts-eu-grants-powerbi",
+    "full_name": "matteocavo/fts-eu-grants-powerbi",
+    "description": "Interactive Power BI analysis of EU grants to Italian beneficiaries (2020–2024), featuring DAX, Power Query, data quality validation and reproducible methodology.",
+    "html_url": "https://github.com/matteocavo/fts-eu-grants-powerbi",
+    "topics": [
+      "business-intelligence",
+      "civic-tech",
+      "dashboard",
+      "data-analytics",
+      "data-quality",
+      "dax",
+      "eu-funding",
+      "open-data",
+      "portfolio",
+      "power-bi",
+      "power-query"
+    ],
+    "stargazers_count": 0,
+    "updated_at": "2026-11-27T15:17:39Z",
+    "pushed_at": "2026-11-27T15:20:08Z",
+    "archived": false,
+    "fork": false,
+    "owner": {
+      "login": "matteocavo"
+    }
+  },
+  {
     "name": "dataciviclab",
     "full_name": "dataciviclab/dataciviclab",
     "description": "Hub pubblico del DataCivicLab. Spieghiamo chi siamo, cosa facciamo e come partecipare.",
@@ -42,7 +69,7 @@
     ],
     "stargazers_count": 0,
     "updated_at": "2026-11-10T05:36:09Z",
-    "pushed_at": "2026-11-24T10:23:14Z",
+    "pushed_at": "2026-11-27T15:03:35Z",
     "archived": false,
     "fork": false,
     "owner": {
@@ -88,7 +115,7 @@
     ],
     "stargazers_count": 1,
     "updated_at": "2026-11-01T00:09:25Z",
-    "pushed_at": "2026-11-25T13:37:27Z",
+    "pushed_at": "2026-11-27T11:36:10Z",
     "archived": false,
     "fork": false,
     "owner": {
